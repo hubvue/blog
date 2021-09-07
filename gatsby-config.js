@@ -13,18 +13,43 @@ module.exports = {
   },
   plugins: [
     `gatsby-plugin-image`,
+    // blog
     {
       resolve: `gatsby-source-filesystem`,
       options: {
         path: `${__dirname}/content/blog`,
-        name: `blog`,
-      },
+        name: `blog`
+      }
+    },
+    // book-nodes
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        path: `${__dirname}/content/book-notes`,
+        name: `blog`
+      }
+    },
+    // algorithm
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        path: `${__dirname}/content/algorithm`,
+        name: `blog`
+      }
+    },
+    // essay
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        path: `${__dirname}/content/essay`,
+        name: `blog`
+      }
     },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `images`,
-        path: `${__dirname}/src/images`,
+        path: `${__dirname}/content/assets`,
       },
     },
     {

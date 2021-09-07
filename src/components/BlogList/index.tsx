@@ -1,10 +1,10 @@
 import React, { FC } from "react"
 import { Link } from "gatsby"
-import { rhythm } from '../../common/style/typography'
 
 interface Post {
   frontmatter: {
     title?: string
+    namespace?: string
     date: string
     description: string
   }
@@ -20,15 +20,17 @@ interface Props {
 const BlogList: FC<Props> = ({ posts }) => {
   const postsElement = posts.map(post => {
     const slug = post.fields.slug
-    let { title: frontmatterTitle, description, date } = post.frontmatter
+    let { title: frontmatterTitle, description, date, namespace } = post.frontmatter
+    const ns = namespace || 'blog'
     const title = frontmatterTitle || slug
+    const linkUrl = `${ns}${slug}`
     return (
       <li key={slug}>
         {/* itemType="http://schema.org/Article" */}
         <article className="post-list-item" itemScope >
           <header>
             <h3>
-              <Link to={slug} itemProp="url">
+              <Link to={linkUrl} itemProp="url">
                 <span itemProp="headline">{title}</span>
               </Link>
             </h3>

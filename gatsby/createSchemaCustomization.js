@@ -31,6 +31,7 @@ module.exports = ({ actions }) => {
     type Frontmatter {
       title: String
       description: String
+      namespace: String
       date: Date @dateformat
     }
 

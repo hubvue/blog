@@ -23,7 +23,7 @@ const BlogList: FC<Props> = ({ posts }) => {
     let { title: frontmatterTitle, description, date, ns: frontmatterNS } = post.frontmatter
     const ns = frontmatterNS || 'blog'
     const title = frontmatterTitle || slug
-    const linkUrl = `${ns}${slug}`
+    const linkUrl = `/${ns}${slug}`
     return (
       <li key={slug}>
         {/* itemType="http://schema.org/Article" */}

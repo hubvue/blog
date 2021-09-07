@@ -1,0 +1,24 @@
+version: 2.1
+jobs:
+  build:
+    docker:
+      - image: circleci/node:10.20.1
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD
+    steps:
+      - checkout
+      - run: echo "----- `node -v` -----"
+      - run: echo "----- `npm -v` -----"
+      - run: echo "----- install dependencies -----"
+      - run: npm install
+      - run: echo "----- build -----"
+      - run: npm run build
+      - run: echo "----- deploy -----"
+      - add_ssh_keys:
+          fingerprints:
+            - "22:64:53:e5:25:0e:52:fb:75:d6:50:33:b7:ba:9b:47"
+      - run: echo $REMOTE_HOSTKEY >> ~/.ssh/known_hosts
+      - run: echo "$REMOTE_HOSTKEY-$SSH_USER-$SSH_IP"
+      - run: scp -r public $SSH_USER@$SSH_IP:~/code
+      - run: echo "----- deploy done -----"

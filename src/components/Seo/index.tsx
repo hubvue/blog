@@ -26,19 +26,6 @@ interface SeoQuery {
   }
 }
 
-const GRAPHQL_TEMPLATE = graphql`
-query {
-  site {
-    siteMetadata {
-      title
-      description
-      social {
-        github
-      }
-    }
-  }
-}`
-
 const Seo: FC<Props> = ({ description, lang, meta, title }) => {
   const { site } = useStaticQuery<SeoQuery>(graphql`
   query {

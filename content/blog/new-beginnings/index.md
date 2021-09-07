@@ -1,108 +1,129 @@
 ---
-title: New Beginnings
-date: "2015-05-28T22:40:32.169Z"
-description: This is a custom description for SEO and Open Graph purposes, rather than the default generated excerpt. Simply add a description field to the frontmatter.
+title: 使用 tsd 测试 typescript 类型的准确性
+date: '2020-08-04'
+description: 本篇文章介绍使用 tsd 来测试 typescript 中类型的准确性
 ---
 
-Far far away, behind the word mountains, far from the countries Vokalia and
-Consonantia, there live the blind texts. Separated they live in Bookmarksgrove
-right at the coast of the Semantics, a large language ocean. A small river named
-Duden flows by their place and supplies it with the necessary regelialia.
+目前大多数项目都是使用 typescript 来开发的，当我们去开发一个库或者是框架的时候，必然会输出*.d.ts 这样的文件，这里面包含项目代码的类型声明，开发者在使用的时候可以很好的做类型推断。但是我们写的类型真的是准确的吗？衡量一个框架或者库稳定的标准是这个框架或库的测试覆盖率，那么*.d.ts 作为框架或库的一部分也是需要进行测试的。
 
-## On deer horse aboard tritely yikes and much
+在这之前我也是一脸懵逼 o((⊙﹏⊙))o，这....还能对 ts 测试？？？通过组内同学的一顿摩擦，😯 原来是这么回事。于是就去探究一下是如何对 typescript 类型进行测试的(被逼的)。
 
-The Big Oxmox advised her not to do so, because there were thousands of bad
-Commas, wild Question Marks and devious Semikoli, but the Little Blind Text
-didn’t listen. She packed her seven versalia, put her initial into the belt and
-made herself on the way.
+### tsd
 
-- This however showed weasel
-- Well uncritical so misled
-  - this is very interesting
-- Goodness much until that fluid owl
+tsd 对外暴露了一系列测试 API，方便开发者们对 typescript 的类型进行测试。
 
-When she reached the first hills of the **Italic Mountains**, she had a last
-view back on the skyline of her hometown _Bookmarksgrove_, the headline of
-[Alphabet Village](http://google.com) and the subline of her own road, the Line
-Lane. Pityful a rhetoric question ran over her cheek, then she continued her
-way. On her way she met a copy.
+在测试之前首先要在根目录建一个测试文件夹，先起名为`dts-test`吧，然后再`dts-test`下建立一个`index.d.ts`文件，将项目中所有的 d.ts 文件都引入进来，然后分别建立测试文件。
 
-### Overlaid the jeepers uselessly much excluding
+dts 需要知道测试目录是什么所以需要在`package.json`下配置
 
-But nothing the copy said could convince her and so it didn’t take long until a
-few insidious Copy Writers ambushed her, made her drunk with
-[Longe and Parole](http://google.com) and dragged her into their agency, where
-they abused her for their projects again and again. And if she hasn’t been
-rewritten, then they are still using her.
+```json
+{
+  "types": "./dts-test",
+  "dts": {
+    "directory": "dts-test"
+  }
+}
+```
 
-> Far far away, behind the word mountains, far from the countries Vokalia and
-> Consonantia, there live the blind texts. Separated they live in Bookmarksgrove
-> right at the coast of the Semantics, a large language ocean.
+_需要注意的是：在 dts-test 下建立测试文件的时候不要以`index.test-d.ts`或`index.test-d.tsx`命名，因为在源码里当检测到目录下有这两个文件后，其余的文件就不检测了，也就会导致其他文件下的内容不会被测试到。_
 
-It is a paradisematic country, in which roasted parts of sentences fly into your
-mouth. Even the all-powerful Pointing has no control about the blind texts it is
-an almost unorthographic life One day however a small line of blind text by the
-name of Lorem Ipsum decided to leave for the far World of Grammar.
+我们先`index.d.ts`中简单写一些类型，用于后面的测试。
 
-### According a funnily until pre-set or arrogant well cheerful
+```ts
+declare type HocFunType = <T extends (...args: any[]) => any>(
+  fn: T
+) => (...args: Parameters<T>) => ReturnType<T>
+export declare const hocFun: HocFunType
+export {}
+```
 
-The Big Oxmox advised her not to do so, because there were thousands of bad
-Commas, wild Question Marks and devious Semikoli, but the Little Blind Text
-didn’t listen. She packed her seven versalia, put her initial into the belt and
-made herself on the way.
+上面写了一个高阶函数的类型声明，由于是高阶函数最终直接结果的类型依赖于参数函数的类型，所以我们就去测试类型的准确性。
 
-1.  So baboon this
-2.  Mounted militant weasel gregariously admonishingly straightly hey
-3.  Dear foresaw hungry and much some overhung
-4.  Rash opossum less because less some amid besides yikes jeepers frenetic
-    impassive fruitlessly shut
+**expectType<T>(value)**
 
-When she reached the first hills of the Italic Mountains, she had a last view
-back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet
-Village and the subline of her own road, the Line Lane. Pityful a rhetoric
-question ran over her cheek, then she continued her way. On her way she met a
-copy.
+expectType 用于检测 value 的类型是否与泛型 T 的类型相同，并且是严格检测。
 
-> The copy warned the Little Blind Text, that where it came from it would have
-> been rewritten a thousand times and everything that was left from its origin
-> would be the word "and" and the Little Blind Text should turn around and
-> return to its own, safe country.
+```ts
+describe('expectType', () => {
+  const add = (a: number, b: number) => a + b
+  const addStr = (a: number, b: number) => String(a + b)
+  expectType<(a: number, b: number) => number>(hocFun(add)) //pass
+  expectType<(a: number, b: number) => string>(hocFun(addStr)) //pass
+  expectType<(a: number, b: number) => number | string>(hocFun(add)) //fail
+})
+```
 
-But nothing the copy said could convince her and so it didn’t take long until a
-few insidious Copy Writers ambushed her, made her drunk with Longe and Parole
-and dragged her into their agency, where they abused her for their projects
-again and again. And if she hasn’t been rewritten, then they are still using
-her. Far far away, behind the word mountains, far from the countries Vokalia and
-Consonantia, there live the blind texts.
+**expectNotType<T>(value)**
 
-#### Silent delightfully including because before one up barring chameleon
+expectNotType 用于检测 value 的类型是否与泛型 T 的类型不同，并且是严格检测
 
-Separated they live in Bookmarksgrove right at the coast of the Semantics, a
-large language ocean. A small river named Duden flows by their place and
-supplies it with the necessary regelialia. It is a paradisematic country, in
-which roasted parts of sentences fly into your mouth.
+```ts
+describe('expectNotType', () => {
+  const add = (a: number, b: string) => a + b
+  expectNotType<(a: number, b: string) => string>(hocFun(add)) //fail
+  expectNotType<(a: number, b: string) => number>(hocFun(add)) //pass
+})
+```
 
-Even the all-powerful Pointing has no control about the blind texts it is an
-almost unorthographic life One day however a small line of blind text by the
-name of Lorem Ipsum decided to leave for the far World of Grammar. The Big Oxmox
-advised her not to do so, because there were thousands of bad Commas, wild
-Question Marks and devious Semikoli, but the Little Blind Text didn’t listen.
+**expectAssignable<T>(value)**
 
-##### Wherever far wow thus a squirrel raccoon jeez jaguar this from along
+expectAssignable 用于检测 value 的类型是否可分配给泛型 T
 
-She packed her seven versalia, put her initial into the belt and made herself on
-the way. When she reached the first hills of the Italic Mountains, she had a
-last view back on the skyline of her hometown Bookmarksgrove, the headline of
-Alphabet Village and the subline of her own road, the Line Lane. Pityful a
-rhetoric question ran over her cheek, then she continued her way. On her way she
-met a copy.
+```ts
+describe('expectAssignable', () => {
+  const add = (a: number, b: string) => a + b
+  expectAssignable<(a: number, b: string) => string>(hocFun(add)) //pass
+  expectAssignable<(a: number, b: string) => string | number>(hocFun(add)) //pass
+})
+```
 
-###### Slapped cozy a that lightheartedly and far
+**expectNotAssignable<T>(value)**
 
-The copy warned the Little Blind Text, that where it came from it would have
-been rewritten a thousand times and everything that was left from its origin
-would be the word "and" and the Little Blind Text should turn around and return
-to its own, safe country. But nothing the copy said could convince her and so it
-didn’t take long until a few insidious Copy Writers ambushed her, made her drunk
-with Longe and Parole and dragged her into their agency, where they abused her
-for their projects again and again.
+expectNotAssignable 用户检测 value 的类型是否可分配给泛型 T，如果可分配，抛出测试错误。
+
+```ts
+describe('expectNotAssignable', () => {
+  const add = (a: number, b: string) => a + b
+  expectNotAssignable<(a: number, b: string) => number>(hocFun(add)) //pass
+  expectNotAssignable<(a: number, b: string) => string>(hocFun(add)) //fail
+  expectNotAssignable<(a: number, b: string) => string | number>(hocFun(add)) //fail
+})
+```
+
+**expectError<T>(value)**
+
+value 可以是函数也可以是值，当 value 是函数的时候检测函数的参数类型是否错误，且只有参数类型正确的时候会抛出错误；当 value 是值的时候检测 value 的类型是否和泛型 T 的类型相同，且只有当类型相同的时候回抛出错误。
+
+```ts
+describe('expectError', () => {
+  const add = (a: number, b: string) => a + b
+  expectError(add(1, '12')) //fail
+  expectError(add(1, 2)) //pass
+  expectError<string>(add(1, '123')) //fail
+  expectError<number>(add(1, '123')) //pass
+})
+```
+
+**expectDeprecated(value)**
+
+expectDeprecated 用于检测该值是否标记为`@deprecated`
+
+```ts
+describe('expectDeprecated', () => {
+  expectDeprecated(hocFun) //fail
+})
+```
+
+**expectNotDeprecated(value)**
+expectNotDeprecated 用于检测该值是否没有被标记为`@deprecated`
+
+```ts
+describe('expectNotDeprecated', () => {
+  expectNotDeprecated(hocFun) //pass
+})
+```
+
+### 思考 🤔
+
+当我看完 tsd 的 API 并且实战一遍后，脑子里萌生出一个思考 🤔。d.ts 是否真的需要测试呢？对类型测试有必要吗？
+其实对于一些简单的类型声明或者输出类型很明确的函数，就已经文档即测试，再进行类型测试就是在做无用功了，而对于一些复杂类型声明，比如说函数重载、类型中带有 infer 的这种类型，还是有必要测试一下，保证类型的准确性。

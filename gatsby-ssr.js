@@ -1,0 +1,1 @@
+exports.onRenderBody = require('./gatsby/renderBody.js')

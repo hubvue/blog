@@ -1,7 +1,7 @@
 import React, { FC, ReactNode } from "react"
 import { Link } from "gatsby"
 
-interface Location {
+export interface Location {
   pathname: string
 }
 interface Props {

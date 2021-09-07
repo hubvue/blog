@@ -5,8 +5,40 @@ module.exports = async ({ graphql, actions, reporter }) => {
   const { createPage } = actions
   // 404
   createPage({
-    path: "/404",
-    component: resolve("./src/templates/NotFoundTemplate.tsx"),
+    path: '/404',
+    component: resolve('./src/templates/NotFoundTemplate.tsx')
+  })
+  // blog
+  createPage({
+    path: '/blog',
+    component: resolve('./src/templates/BlogListTemplate.tsx'),
+    context: {
+      ns: 'blog'
+    }
+  })
+  // algorithm
+  createPage({
+    path: '/algorithm',
+    component: resolve('./src/templates/BlogListTemplate.tsx'),
+    context: {
+      ns: 'algorithm'
+    }
+  })
+  // book-notes
+  createPage({
+    path: '/book-notes',
+    component: resolve('./src/templates/BlogListTemplate.tsx'),
+    context: {
+      ns: 'book-notes'
+    }
+  })
+  // essay
+  createPage({
+    path: '/essay',
+    component: resolve('./src/templates/BlogListTemplate.tsx'),
+    context: {
+      ns: 'essay'
+    }
   })
 
   // Get all markdown blog posts sorted by date

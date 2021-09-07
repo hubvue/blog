@@ -51,7 +51,7 @@ module.exports = async ({ graphql, actions, reporter }) => {
         nodes {
           id
           frontmatter {
-            namespace
+            ns
           }
           fields {
             slug
@@ -72,9 +72,9 @@ module.exports = async ({ graphql, actions, reporter }) => {
     const post = posts[i]
     const previousPostId = i === 0 ? null : posts[i - 1].id
     const nextPostId = i === posts.length - 1 ? null : posts[i + 1].id
-    const namespace = post.frontmatter.namespace || "blog"
+    const ns = post.frontmatter.ns || "blog"
     createPage({
-      path: `${namespace}${post.fields.slug}`,
+      path: `${ns}${post.fields.slug}`,
       component: resolve("./src/templates/PostTemplate.tsx"),
       context: {
         id: post.id,

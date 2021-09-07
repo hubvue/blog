@@ -10,11 +10,11 @@ const PostTemplate: FC<any> = ({ data, location }) => {
   const post = data.markdownRemark
   const siteTitle = data.site.siteMetadata?.title || `Title`
   const { previous, next } = data
-  const { title, description, date, namespace } = post.frontmatter
+  const { title, description, date, ns } = post.frontmatter
   const previousTitle = previous && previous.frontmatter.title
-  const previousLink = previous && `/${namespace}${previous.fields.slug}`
+  const previousLink = previous && `/${ns}${previous.fields.slug}`
   const nextTitle = next && next.frontmatter.title
-  const nextLink = next && `/${namespace}${next.fields.slug}`
+  const nextLink = next && `/${ns}${next.fields.slug}`
   return (
     <Layout location={location} title={siteTitle}>
       <Seo
@@ -90,7 +90,7 @@ export const pageQuery = graphql`
       html
       frontmatter {
         title
-        namespace
+        ns
         date(formatString: "MMMM DD, YYYY")
         description
       }

@@ -4,7 +4,7 @@ import { Link } from "gatsby"
 interface Post {
   frontmatter: {
     title?: string
-    namespace?: string
+    ns?: string
     date: string
     description: string
   }
@@ -20,8 +20,8 @@ interface Props {
 const BlogList: FC<Props> = ({ posts }) => {
   const postsElement = posts.map(post => {
     const slug = post.fields.slug
-    let { title: frontmatterTitle, description, date, namespace } = post.frontmatter
-    const ns = namespace || 'blog'
+    let { title: frontmatterTitle, description, date, ns: frontmatterNS } = post.frontmatter
+    const ns = frontmatterNS || 'blog'
     const title = frontmatterTitle || slug
     const linkUrl = `${ns}${slug}`
     return (

@@ -3,7 +3,7 @@ import { Link } from "gatsby"
 
 interface Post {
   frontmatter: {
-    namespace?: string
+    ns?: string
   }
 }
 interface Props {
@@ -18,8 +18,8 @@ const NS_NAMES: Record<string, string> = {
 }
 
 const TabBar: FC<Props> = ({ posts }) => {
-  const namespaces =  [...new Set(posts.map(post => post.frontmatter.namespace || 'blog'))]
-  const nssElement = namespaces.map(ns => 
+  const nss =  [...new Set(posts.map(post => post.frontmatter.ns || 'blog'))]
+  const nssElement = nss.map(ns => 
     <li key={ns}>
       <Link to={ns} itemProp="url">
         <span itemProp="headline">{NS_NAMES[ns]}</span>

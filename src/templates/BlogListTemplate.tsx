@@ -14,7 +14,7 @@ interface Props {
 
 const BlogListIndex: FC<Props> = ({ data, location, pageContext}) => {
   const siteTitle = data.site.siteMetadata?.title || `Title`
-  const posts = data.allMarkdownRemark.nodes.filter((post: any) => post.frontmatter.namespace === pageContext.ns)
+  const posts = data.allMarkdownRemark.nodes.filter((post: any) => post.frontmatter.ns === pageContext.ns)
   return (
     <Layout location={location} title={siteTitle}>
       <Seo title="All posts" />
@@ -42,7 +42,7 @@ export const pageQuery = graphql`
         frontmatter {
           date(formatString: "MMMM DD, YYYY")
           title
-          namespace
+          ns
           description
         }
       }

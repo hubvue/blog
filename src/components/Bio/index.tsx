@@ -1,7 +1,6 @@
 import React, { FC } from "react"
 import { useStaticQuery, graphql } from "gatsby"
 import { StaticImage } from "gatsby-plugin-image"
-
 interface BioData {
   site: {
     siteMetadata: {
@@ -40,7 +39,7 @@ const Bio: FC = () => {
         className="bio-avatar"
         layout="fixed"
         formats={["auto", "webp", "avif"]}
-        src="../../images/profile-pic.png"
+        src="../../../content/assets/title.png"
         width={50}
         height={50}
         quality={95}

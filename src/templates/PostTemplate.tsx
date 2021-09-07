@@ -4,28 +4,27 @@ import { Link, graphql } from "gatsby"
 import Bio from "../components/Bio"
 import Layout from "../components/Layout"
 import Seo from "../components/Seo"
-import '../common/fonts/fonts-post.css'
+import "../common/fonts/fonts-post.css"
 
 const PostTemplate: FC<any> = ({ data, location }) => {
   const post = data.markdownRemark
   const siteTitle = data.site.siteMetadata?.title || `Title`
   const { previous, next } = data
-
+  const { title, description, date, namespace } = post.frontmatter
+  const previousTitle = previous && previous.frontmatter.title
+  const previousLink = previous && `/${namespace}${previous.fields.slug}`
+  const nextTitle = next && next.frontmatter.title
+  const nextLink = next && `/${namespace}${next.fields.slug}`
   return (
     <Layout location={location} title={siteTitle}>
       <Seo
-        title={post.frontmatter.title}
-        meta={[]}
-        description={post.frontmatter.description || post.excerpt}
+        title={title}
+        description={description || post.excerpt}
       />
-      <article
-        className="blog-post"
-        itemScope
-        itemType="http://schema.org/Article"
-      >
+      <article className="blog-post" itemScope>
         <header>
-          <h1 itemProp="headline">{post.frontmatter.title}</h1>
-          <p>{post.frontmatter.date}</p>
+          <h1 itemProp="headline">{title}</h1>
+          <p>{date}</p>
         </header>
         <section
           dangerouslySetInnerHTML={{ __html: post.html }}
@@ -48,15 +47,21 @@ const PostTemplate: FC<any> = ({ data, location }) => {
         >
           <li>
             {previous && (
-              <Link to={previous.fields.slug} rel="prev">
-                ← {previous.frontmatter.title}
+              <Link
+                to={previousLink}
+                rel="prev"
+              >
+                ← {previousTitle}
               </Link>
             )}
           </li>
           <li>
             {next && (
-              <Link to={next.fields.slug} rel="next">
-                {next.frontmatter.title} →
+              <Link
+                to={nextLink}
+                rel="next"
+              >
+                {nextTitle} →
               </Link>
             )}
           </li>
@@ -85,6 +90,7 @@ export const pageQuery = graphql`
       html
       frontmatter {
         title
+        namespace
         date(formatString: "MMMM DD, YYYY")
         description
       }

@@ -5,7 +5,7 @@ import "typeface-merriweather"
 import "./src/common/style/normalize.css"
 // custom CSS styles
 import "./src/common/style/style.css"
-// import './src/common/style/global.css'
+import './src/common/style/global.css'
 
 
 // Highlighting for code blocks

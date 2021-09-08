@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body {
   --pink: rgb(255, 167, 196);
   background-color: var(--bg);

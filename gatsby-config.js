@@ -153,6 +153,8 @@ module.exports = {
         pathToConfigModule: `src/common/style/typography`
       }
     },
-    `gatsby-plugin-gatsby-cloud`
+    `gatsby-plugin-gatsby-cloud`,
+    // potcss
+    `gatsby-plugin-postcss`
   ]
 }

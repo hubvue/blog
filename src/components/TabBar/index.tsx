@@ -20,13 +20,18 @@ const NS_NAMES: Record<string, string> = {
 const TabBar: FC<Props> = ({ posts }) => {
   const nss =  [...new Set(posts.map(post => post.frontmatter.ns || 'blog'))]
   const nssElement = nss.map(ns => 
-    <li key={ns}>
-      <Link to={ns} itemProp="url">
-        <span itemProp="headline">{NS_NAMES[ns]}</span>
+    <li className="no-underline" key={ns}>
+      <Link style={{ color: 'inherit', textDecoration: 'inherit'}} to={ns}>
+        <span className="no-underline">{NS_NAMES[ns]}</span>
       </Link>
     </li>
   )
-  return <ol>{nssElement}</ol>
+  return (
+    <div className="flex justify-between">
+      Title
+      <ol className="flex flex-none">{nssElement}</ol>
+    </div>
+  )
 }
 
 export default TabBar

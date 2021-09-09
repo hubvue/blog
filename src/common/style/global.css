@@ -7,7 +7,7 @@ body {
   background-color: var(--bg);
 }
 
-body.light {
+body {
   --bg: #ffffff;
   --header: var(--pink);
   --textNormal: #222;

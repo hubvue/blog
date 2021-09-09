@@ -232,11 +232,11 @@ table thead tr th {
 a {
   color: var(--color-primary);
 }
-
+/* 
 a:hover,
 a:focus {
   text-decoration: none;
-}
+} */
 
 /* Custom classes */
 

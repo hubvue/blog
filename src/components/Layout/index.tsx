@@ -23,7 +23,7 @@ const Layout: FC<Props> = ({ location, title, children }) => {
     </Link>
   )
   return (
-    <div className="global-wrapper" data-is-root-path={isRootPath}>
+    <div className="global-wrapper bg-gray-900 text-white" data-is-root-path={isRootPath}>
       <header className="global-header">{Header}</header>
       <main>{children}</main>
       <footer>

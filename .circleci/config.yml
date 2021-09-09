@@ -20,5 +20,13 @@ jobs:
             - "22:64:53:e5:25:0e:52:fb:75:d6:50:33:b7:ba:9b:47"
       - run: echo $REMOTE_HOSTKEY >> ~/.ssh/known_hosts
       - run: echo "$REMOTE_HOSTKEY-$SSH_USER-$SSH_IP"
-      - run: scp -r public $SSH_USER@$SSH_IP:~/code
+      # - run: scp -r public $SSH_USER@$SSH_IP:~/code
+      - deploy:
+          name: deploy
+          command: |
+            if [ "${CIRCLE_BRANCH}" = "main" ]; then
+              rsync -avce ssh public $SSH_USER@$SSH_IP:~/code
+            else
+              echo "Not master branch, dry run only"
+            fi
       - run: echo "----- deploy done -----"

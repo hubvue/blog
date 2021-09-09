@@ -13,6 +13,14 @@ module.exports = {
   },
   plugins: [
     `gatsby-plugin-image`,
+    // pages
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        path: `${__dirname}/content/pages`,
+        name: `blog`
+      }
+    },
     // blog
     {
       resolve: `gatsby-source-filesystem`,

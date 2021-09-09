@@ -7,7 +7,7 @@ const NAME_TO_PATH: Record<string, string> = {
   'Blog': '/blog',
   'Algorithm': '/algorithm',
   'Notes': '/book-notes',
-  '随笔': '/essay'
+  'Essay': '/essay'
 }
 
 const TabBar: FC = () => {

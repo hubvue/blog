@@ -73,14 +73,24 @@ module.exports = async ({ graphql, actions, reporter }) => {
     const previousPostId = i === 0 ? null : posts[i - 1].id
     const nextPostId = i === posts.length - 1 ? null : posts[i + 1].id
     const ns = post.frontmatter.ns || "blog"
-    createPage({
-      path: `${ns}${post.fields.slug}`,
-      component: resolve("./src/templates/PostTemplate.tsx"),
-      context: {
-        id: post.id,
-        previousPostId,
-        nextPostId,
-      },
-    })
+    if (ns === 'index') {
+      createPage({
+        path: `/`,
+        component: resolve("./src/templates/IndexTemplate.tsx"),
+        context: {
+          id: post.id,
+        }
+      })
+    } else {
+      createPage({
+        path: `${ns}${post.fields.slug}`,
+        component: resolve("./src/templates/PostTemplate.tsx"),
+        context: {
+          id: post.id,
+          previousPostId,
+          nextPostId,
+        },
+      })
+    }
   }
 }

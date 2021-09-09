@@ -11,8 +11,7 @@ interface Props {
   pageContext: Record<string, any>
 }
 
-const BlogListIndex: FC<Props> = ({ data, location, pageContext}) => {
-  const siteTitle = data.site.siteMetadata?.title || `Title`
+const BlogListTemplate: FC<Props> = ({ data, pageContext}) => {
   const posts = data.allMarkdownRemark.nodes.filter((post: any) => post.frontmatter.ns === pageContext.ns)
   return (
     <Layout>
@@ -23,7 +22,7 @@ const BlogListIndex: FC<Props> = ({ data, location, pageContext}) => {
   )
 }
 
-export default BlogListIndex
+export default BlogListTemplate
 
 export const pageQuery = graphql`
   query {

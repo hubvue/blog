@@ -1,14 +1,14 @@
 import React, { FC } from "react"
 import { graphql } from "gatsby"
 
-import Layout from "../components/Layout/index1"
+import Layout from "../components/Layout/index"
 import Seo from "../components/Seo"
 
 const NotFoundPage: FC<any> = ({ data, location }) => {
   const siteTitle = data.site.siteMetadata.title
 
   return (
-    <Layout location={location} title={siteTitle}>
+    <Layout>
       <Seo title="404: Not Found" />
       <h1>404: Not Found</h1>
       <p>You just hit a route that doesn&#39;t exist... the sadness.</p>

@@ -1,7 +1,6 @@
 import React, { FC } from "react"
 import { graphql } from "gatsby"
 
-import Bio from "../components/Bio"
 import Layout from "../components/Layout/index"
 import Seo from "../components/Seo"
 import BlogList from '../components/BlogList'

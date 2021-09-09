@@ -147,12 +147,6 @@ module.exports = {
       },
     },
     `gatsby-plugin-react-helmet`,
-    {
-      resolve: `gatsby-plugin-typography`,
-      options: {
-        pathToConfigModule: `src/common/style/typography`
-      }
-    },
     `gatsby-plugin-gatsby-cloud`,
     // potcss
     `gatsby-plugin-postcss`,

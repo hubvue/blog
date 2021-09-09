@@ -3,7 +3,6 @@ import { Link, graphql } from "gatsby"
 
 import Layout from "../components/Layout/index"
 import Seo from "../components/Seo"
-import "../common/fonts/fonts-post.css"
 
 const PostTemplate: FC<any> = ({ data, location }) => {
   const post = data.markdownRemark

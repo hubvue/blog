@@ -2,8 +2,9 @@ import { useEffect, useState } from "react"
 import { usePreferredDark } from "./usePreferredDark"
 
 export const useSwitchTheme = () => {
-  const isDark = usePreferredDark()
-  const [theme, setTheme] = useState<'dark' | 'light'>(isDark ? 'dark' : 'light')
+  // const isDark = usePreferredDark()
+  // const [theme, setTheme] = useState<'dark' | 'light'>(isDark ? 'dark' : 'light')
+  const [theme, setTheme] = useState<'dark' | 'light'>('dark')
   
   const switchTheme = (changedTheme?: 'dark' | 'light') => {
     if (changedTheme) {
@@ -17,27 +18,34 @@ export const useSwitchTheme = () => {
     }
   }
   let htmlElement: HTMLElement | null = null
-  if (document) {
+  let bodyElement: HTMLElement | null = null 
+  if (typeof document !== 'undefined') {
     htmlElement = document.querySelector('html')
+    bodyElement = document.querySelector('body')
   }
 
-  useEffect(() => {
-    if (isDark) {
-      setTheme('dark')
-    } else {
-      setTheme('light')
-    }
-  }, [isDark])
+  // useEffect(() => {
+  //   if (isDark) {
+  //     setTheme('dark')
+  //   } else {
+  //     setTheme('light')
+  //   }
+  // }, [isDark])
 
   useEffect(() => {
-    if (!htmlElement) {
+    if (!htmlElement || !bodyElement) {
       return
     }
-    const classList = htmlElement.classList
+    const htmlClassList = htmlElement.classList
+    const bodyClassList = bodyElement.classList
     if (theme === 'dark') {
-      classList.add('dark')
+      if (!htmlClassList.contains('dark') && !bodyClassList.contains('dark')) {
+        htmlClassList.add('dark')
+        bodyClassList.add('dark')
+      }
     } else {
-      classList.remove('dark')
+      htmlClassList.remove('dark')
+      bodyClassList.remove('dark')
     }
   }, [theme])
 

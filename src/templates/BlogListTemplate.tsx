@@ -2,7 +2,7 @@ import React, { FC } from "react"
 import { graphql } from "gatsby"
 
 import Bio from "../components/Bio"
-import Layout, { Location } from "../components/Layout"
+import Layout from "../components/Layout/index"
 import Seo from "../components/Seo"
 import BlogList from '../components/BlogList'
 
@@ -16,9 +16,9 @@ const BlogListIndex: FC<Props> = ({ data, location, pageContext}) => {
   const siteTitle = data.site.siteMetadata?.title || `Title`
   const posts = data.allMarkdownRemark.nodes.filter((post: any) => post.frontmatter.ns === pageContext.ns)
   return (
-    <Layout location={location} title={siteTitle}>
+    <Layout>
       <Seo title="All posts" />
-      <Bio />
+      {/* <Bio /> */}
       <BlogList posts={posts} />
     </Layout>
   )

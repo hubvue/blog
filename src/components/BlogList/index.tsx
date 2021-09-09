@@ -25,28 +25,38 @@ const BlogList: FC<Props> = ({ posts }) => {
     const title = frontmatterTitle || slug
     const linkUrl = `/${ns}${slug}`
     return (
-      <li key={slug}>
-        {/* itemType="http://schema.org/Article" */}
-        <article className="post-list-item" itemScope >
-          <header>
-            <h3>
-              <Link to={linkUrl} itemProp="url">
-                <span itemProp="headline">{title}</span>
-              </Link>
-            </h3>
-            <small>{date}</small>
-          </header>
-          <section>
-            <p dangerouslySetInnerHTML={{ __html: description || post.excerpt }} itemProp="description" />
-          </section>
-        </article>
-      </li>
+      <Link className="item block font-normal mb-6 mt-2 no-underline" to={linkUrl} key={slug}>
+        <li>
+          <div className="title text-lg">{title}</div>
+          <div className="time opacity-50 text-sm -mt-1">{date}</div>
+          {/* <p className="desc text-base" dangerouslySetInnerHTML={{ __html: description || post.excerpt }}></p> */}
+        </li>        
+      </Link>
     )
+    // return (
+    //   <li key={slug}>
+    //     <article className="post-list-item" itemScope >
+    //       <header>
+    //         <h3>
+    //           <Link to={linkUrl} itemProp="url">
+    //             <span itemProp="headline">{title}</span>
+    //           </Link>
+    //         </h3>
+    //         <small>{date}</small>
+    //       </header>
+    //       <section>
+    //         <p dangerouslySetInnerHTML={{ __html: description || post.excerpt }} itemProp="description" />
+    //       </section>
+    //     </article>
+    //   </li>
+    // )
   })
   return (
-    <ol style={{ listStyle: 'none' }}>
-      {postsElement}
-    </ol>
+    <div className="prose m-auto">
+      <ul>
+        {postsElement}
+      </ul>
+    </div>
   )
 }
 

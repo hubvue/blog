@@ -1,0 +1,327 @@
+/* https://github.com/antfu/prism-theme-vars */
+@import 'prism-theme-vars/base.css';
+
+:root {
+  --prism-font-size: 0.9rem;
+  --prism-font-family: 'Fira Code', monospace;
+}
+
+:root {
+  --prism-font-family: 'Input Mono', monospace;
+}
+
+body:not(.dark) {
+  --prism-foreground: #393a34;
+  --prism-background: #fbfbfb;
+  --prism-comment: #a0ada0;
+  --prism-string: #b56959;
+  --prism-literal: #2f8a89;
+  --prism-number: #296aa3;
+  --prism-keyword: #1c6b48;
+  --prism-function: #6c7834;
+  --prism-boolean: #1c6b48;
+  --prism-constant: #a65e2b;
+  --prism-deleted: #a14f55;
+  --prism-class: #2993a3;
+  --prism-builtin: #ab5959;
+  --prism-property: #b58451;
+  --prism-namespace: #b05a78;
+  --prism-punctuation: #8e8f8b;
+  --prism-decorator: #bd8f8f;
+  --prism-regex: #ab5e3f;
+  --prism-json-property: #698c96;
+}
+
+body.dark {
+  --prism-foreground: #d4cfbf;
+  --prism-background: #111111;
+  --prism-comment: #758575;
+  --prism-string: #d48372;
+  --prism-literal: #429988;
+  --prism-keyword: #4d9375;
+  --prism-boolean: #1c6b48;
+  --prism-number: #6394bf;
+  --prism-variable: #c2b36e;
+  --prism-function: #a1b567;
+  --prism-deleted: #a14f55;
+  --prism-class: #54b1bf;
+  --prism-builtin: #e0a569;
+  --prism-property: #dd8e6e;
+  --prism-namespace: #db889a;
+  --prism-punctuation: #858585;
+  --prism-decorator: #bd8f8f;
+  --prism-regex: #ab5e3f;
+  --prism-json-property: #6b8b9e;
+  --prism-line-number: #888888;
+  --prism-line-number-gutter: #eeeeee;
+  --prism-line-highlight-background: #444444;
+  --prism-selection-background: #444444;
+}
+
+.prose {
+  --fg: #555;
+  --fg-deep: #222;
+  --fg-deeper: #000;
+  
+  color: var(--fg);
+
+  a {
+    font-weight: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(125,125,125,0.1);
+    transition: border .3s ease-in-out;
+
+    &:hover { 
+      border-bottom: 1px solid var(--fg);
+    }
+  }
+
+  a code {
+    color: inherit;
+  }
+
+  hr {
+    width: 50px;
+    margin: 2em auto;
+  }
+}
+
+html.dark .prose {
+  --fg: #bbb;
+  --fg-deep: #ddd;
+  --fg-deeper: #fff;
+}
+
+a.item {
+  transition: .2s all ease-out;
+  text-decoration: none;
+  border-bottom: none !important;
+  opacity: 0.6;
+}
+a.item:hover {
+  opacity: 1;
+}
+
+a.header-anchor {
+  float: left;
+  margin-top: .125em;
+  margin-left: -1.2em;
+  padding-right: .50em;
+  font-size: .85em;
+  opacity: 0;
+  text-decoration: none;
+  border: 0 !important;
+}
+
+a.header-anchor:hover,
+a.header-anchor:focus {
+  text-decoration: none;
+}
+
+h1:hover .header-anchor,
+h1:focus .header-anchor,
+h2:hover .header-anchor,
+h2:focus .header-anchor,
+h3:hover .header-anchor,
+h3:focus .header-anchor,
+h4:hover .header-anchor,
+h4:focus .header-anchor,
+h5:hover .header-anchor,
+h5:focus .header-anchor,
+h6:hover .header-anchor,
+h6:focus .header-anchor {
+  opacity: 0.5;
+}
+
+.prose blockquote {
+  font-weight: normal;
+  font-style: normal;
+  line-height: 1.5em;
+  padding: 0.6em 1.2em;
+  opacity: 0.8;
+}
+
+.prose blockquote > :first-child {
+  margin-top: 0;
+}
+.prose blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+
+.prose blockquote p:first-of-type::before {
+  content: none;
+}
+
+.prose blockquote p:first-of-type::after {
+  content: none;
+}
+
+
+
+code[class*='language-'],
+pre[class*='language-'] {
+  color: white;
+  background: none;
+  font-family: Consolas, Menlo, Monaco, source-code-pro, Courier New, monospace;
+  font-feature-settings: normal;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+  margin-bottom: 0;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+/* Code blocks */
+pre[class*='language-'] {
+  overflow: auto;
+  padding: 1.3125rem;
+}
+
+pre[class*='language-']::-moz-selection {
+  /* Firefox */
+  background: hsl(207, 4%, 16%);
+}
+
+pre[class*='language-']::selection {
+  /* Safari */
+  background: hsl(207, 4%, 16%);
+}
+
+/* Text Selection colour */
+pre[class*='language-']::-moz-selection,
+pre[class*='language-'] ::-moz-selection {
+  text-shadow: none;
+  background: hsla(0, 0%, 100%, 0.15);
+}
+
+pre[class*='language-']::selection,
+pre[class*='language-'] ::selection {
+  text-shadow: none;
+  background: hsla(0, 0%, 100%, 0.15);
+}
+
+/* Inline code */
+:not(pre) > code[class*='language-'] {
+  border-radius: 0.3em;
+  background: var(--inlineCode-bg);
+  color: var(--inlineCode-text);
+  padding: 0.15em 0.2em 0.05em;
+  white-space: normal;
+}
+
+.token.attr-name {
+  color: rgb(173, 219, 103);
+  font-style: italic;
+}
+
+.token.comment {
+  color: rgb(128, 147, 147);
+}
+
+.token.string,
+.token.url {
+  color: rgb(173, 219, 103);
+}
+
+.token.variable {
+  color: rgb(214, 222, 235);
+}
+
+.token.number {
+  color: rgb(247, 140, 108);
+}
+
+.token.builtin,
+.token.char,
+.token.constant,
+.token.function {
+  color: rgb(130, 170, 255);
+}
+
+.token.punctuation {
+  color: rgb(199, 146, 234);
+}
+
+.token.selector,
+.token.doctype {
+  color: rgb(199, 146, 234);
+  font-style: 'italic';
+}
+
+.token.class-name {
+  color: rgb(255, 203, 139);
+}
+
+.token.tag,
+.token.operator,
+.token.keyword {
+  color: #ffa7c4;
+}
+
+.token.boolean {
+  color: rgb(255, 88, 116);
+}
+
+.token.property {
+  color: rgb(128, 203, 196);
+}
+
+.token.namespace {
+  color: rgb(178, 204, 214);
+}
+
+pre[data-line] {
+  padding: 1em 0 1em 3em;
+  position: relative;
+}
+
+.gatsby-highlight-code-line {
+  background-color: hsla(207, 95%, 15%, 1);
+  display: block;
+  margin-right: -1.3125rem;
+  margin-left: -1.3125rem;
+  padding-right: 1em;
+  padding-left: 1.25em;
+  border-left: 0.25em solid #ffa7c4;
+}
+
+.gatsby-highlight {
+  margin-bottom: 1.75rem;
+  margin-left: -1.3125rem;
+  margin-right: -1.3125rem;
+  border-radius: 10px;
+  background: #011627;
+  -webkit-overflow-scrolling: touch;
+  overflow: auto;
+}
+
+@media (max-width: 672px) {
+  .gatsby-highlight {
+    border-radius: 0;
+  }
+}
+
+.gatsby-highlight pre[class*='language-'] {
+  float: left;
+  min-width: 100%;
+}
+
+.prose code::before {
+  content: "";
+}
+
+.prose code::after {
+  content: "";
+}

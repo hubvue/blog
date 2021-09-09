@@ -1,36 +1,31 @@
 import React, { FC } from 'react'
 import { Link } from "gatsby"
+import { useSwitchTheme } from '../../hooks/useSwitchTheme'
+import './index.css'
 
-interface Post {
-  frontmatter: {
-    ns?: string
-  }
-}
-interface Props {
-  posts: Post[]
-}
-
-const NS_NAMES: Record<string, string> = {
-  blog: '博客',
-  algorithm: '算法题解',
-  'book-notes': '读书笔记',
-  essay: '随笔'
+const NAME_TO_PATH: Record<string, string> = {
+  'Blog': '/blog',
+  'Algorithm': '/algorithm',
+  'Notes': '/book-notes',
+  '随笔': '/essay'
 }
 
-const TabBar: FC<Props> = ({ posts }) => {
-  const nss =  [...new Set(posts.map(post => post.frontmatter.ns || 'blog'))]
-  const nssElement = nss.map(ns => 
-    <li className="no-underline" key={ns}>
-      <Link style={{ color: 'inherit', textDecoration: 'inherit'}} to={ns}>
-        <span className="no-underline">{NS_NAMES[ns]}</span>
-      </Link>
-    </li>
+const TabBar: FC = () => {
+
+  const { theme, switchTheme } = useSwitchTheme()
+
+  const nssElement = Object.keys(NAME_TO_PATH).map(name => 
+    <Link className="mr-4" to={NAME_TO_PATH[name]} key={name} >
+      <span>{name}</span>
+    </Link>
   )
   return (
-    <div className="flex justify-between">
-      Title
-      <ol className="flex flex-none">{nssElement}</ol>
-    </div>
+    <header className="px-8 py-6">
+      <div className="logo fixed left-0 top-0">
+        <Link to="/"><span className="logo-title">Kim</span></Link>
+      </div>
+      <nav className="nav flex justify-end py-2">{nssElement}</nav>
+    </header>
   )
 }
 

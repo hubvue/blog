@@ -42,7 +42,6 @@ const Seo: FC<Props> = ({ description, lang, meta, title }) => {
 
   const metaDescription = description || site.siteMetadata.description
   const defaultTitle = site.siteMetadata?.title
-  const defaultLang = lang || 'en'
   let defaultMeta: Meta[] = [
     { name: `description`, content: metaDescription },
     { property: `og:title`, content: title },
@@ -58,7 +57,6 @@ const Seo: FC<Props> = ({ description, lang, meta, title }) => {
   }
   return (
     <Helmet
-      htmlAttributes={{ defaultLang }}
       title={title}
       titleTemplate={defaultTitle ? `%s | ${defaultTitle}` : undefined}
       meta={defaultMeta}

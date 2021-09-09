@@ -1,7 +1,7 @@
 import React, { FC } from "react"
 import { graphql } from "gatsby"
 
-import Layout from "../components/Layout"
+import Layout from "../components/Layout/index1"
 import Seo from "../components/Seo"
 
 const NotFoundPage: FC<any> = ({ data, location }) => {

@@ -28,6 +28,7 @@
     "gatsby-source-filesystem": "^3.13.0",
     "gatsby-transformer-remark": "^4.10.0",
     "gatsby-transformer-sharp": "^3.13.0",
+    "lodash": "^4.17.21",
     "prism-theme-vars": "^0.2.2",
     "prismjs": "^1.24.1",
     "react": "^17.0.1",
@@ -36,8 +37,7 @@
     "react-typography": "^0.16.20",
     "typeface-merriweather": "0.0.72",
     "typeface-montserrat": "0.0.75",
-    "typography": "^0.16.21",
-    "typography-theme-wordpress-2016": "^0.16.19"
+    "typography": "^0.16.21"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.172",

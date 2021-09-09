@@ -15,6 +15,7 @@ jobs:
       - run: echo "----- build -----"
       - run: npm run build
       - run: echo "----- deploy -----"
+      - run: sudo apt-get update && sudo apt-get install rsync
       - add_ssh_keys:
           fingerprints:
             - "22:64:53:e5:25:0e:52:fb:75:d6:50:33:b7:ba:9b:47"

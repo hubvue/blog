@@ -18,7 +18,7 @@ jobs:
       - run: sudo apt-get update && sudo apt-get install rsync
       - add_ssh_keys:
           fingerprints:
-            - "0e:31:46:66:90:a2:a9:7d:62:f0:c7:06:49:78:1f:92"
+            - "d0:7c:94:a3:6e:75:57:95:be:52:e1:20:0f:9b:72:18"
       - run: echo $REMOTE_HOSTKEY >> ~/.ssh/known_hosts
       - run: echo "$REMOTE_HOSTKEY-$SSH_USER-$SSH_IP"
       # - run: scp -r public $SSH_USER@$SSH_IP:~/code

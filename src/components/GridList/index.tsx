@@ -16,13 +16,14 @@ interface Props {
   prefix: string
 }
 
-const GroupList: FC<Props> = ({ groupList, prefix }) => {
+const GridList: FC<Props> = ({ groupList, prefix }) => {
   return (
     <div className="prose m-auto">
+      {JSON.stringify(groupList)}
       <div className="project-grid py-2 -mx-3 gap-2">
         {
           groupList.map(group => (
-            <Link className="item relative flex" to={`${prefix}/${group.group}`}>
+            <Link className="item relative flex" to={`${prefix}/${group.group}`} key={group.title}>
               <div></div>
               <div className="flex-auto">
                 <div className="text-normal">{group.groupName}</div>
@@ -35,4 +36,4 @@ const GroupList: FC<Props> = ({ groupList, prefix }) => {
   )
 }
 
-export default GroupList
+export default GridList

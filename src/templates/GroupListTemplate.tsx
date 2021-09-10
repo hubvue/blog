@@ -3,7 +3,7 @@ import { graphql } from "gatsby"
 
 import Layout from "../components/Layout/index"
 import Seo from "../components/Seo"
-import GroupList from '../components/GroupList'
+import GridList from '../components/GridList'
 import Bio from '../components/Bio'
 import { uniqueWithProp } from "../utils/arrays"
 
@@ -31,7 +31,7 @@ const BlogListTemplate: FC<Props> = ({ data, pageContext}) => {
     <Layout>
       <Seo title="All posts" />
       <Bio title={pageContext.ns}/>
-      <GroupList groupList={posts} prefix={prefix}/>
+      <GridList groupList={posts} prefix={prefix}/>
     </Layout>
   )
 }

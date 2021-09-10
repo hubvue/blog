@@ -1,10 +1,18 @@
 import { useEffect, useState } from "react"
 import { usePreferredDark } from "./usePreferredDark"
+import { useStore } from "./useStore"
 
 export const useSwitchTheme = () => {
-  // const isDark = usePreferredDark()
-  // const [theme, setTheme] = useState<'dark' | 'light'>(isDark ? 'dark' : 'light')
-  const [theme, setTheme] = useState<'dark' | 'light'>('light')
+  const isDark = usePreferredDark()
+  const [ colorTheme, setColorTheme ] = useStore('color-theme')
+
+  useEffect(() => {
+    if(!colorTheme) {
+      setColorTheme(isDark ? 'dark' : 'light')
+    }
+  }, [isDark])
+
+  const [theme, setTheme] = useState<string>(colorTheme)
   
   const switchTheme = (changedTheme?: 'dark' | 'light') => {
     if (changedTheme) {
@@ -13,8 +21,10 @@ export const useSwitchTheme = () => {
     }
     if (theme === 'dark') {
       setTheme('light')
+      setColorTheme('light')
     } else {
       setTheme('dark')
+      setColorTheme('dark')
     }
   }
   let htmlElement: HTMLElement | null = null
@@ -23,15 +33,6 @@ export const useSwitchTheme = () => {
     htmlElement = document.querySelector('html')
     bodyElement = document.querySelector('body')
   }
-
-  // useEffect(() => {
-  //   if (isDark) {
-  //     setTheme('dark')
-  //   } else {
-  //     setTheme('light')
-  //   }
-  // }, [isDark])
-
   useEffect(() => {
     if (!htmlElement || !bodyElement) {
       return

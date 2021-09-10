@@ -3,4 +3,4 @@ export interface ConfigurableWindow {
   window?: Window
 }
 
-export const tuple = <T extends unknown>(...args: T[]) => args
+export const tuple = <T extends any>(...args: T[]) => args

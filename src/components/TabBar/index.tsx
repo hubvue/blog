@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { Link } from "gatsby"
-import { useSwitchTheme } from '../../hooks/useSwitchTheme'
 import { Icon } from '@iconify/react'
+import ToggleTheme from '../ToggleTheme'
 import './index.css'
 
 interface PathMeta {
@@ -28,23 +28,27 @@ const NAME_TO_META: Record<string, PathMeta> = {
 }
 
 const TabBar: FC = () => {
-
-  const { theme, switchTheme } = useSwitchTheme()
-
-  const nssElement = Object.keys(NAME_TO_META).map(name => {
+  const nssElement: (JSX.Element | React.FC<{}>)[] = Object.keys(NAME_TO_META).map(name => {
     const icon = NAME_TO_META[name].icon
+    const path = NAME_TO_META[name].path
     let element = <span>{name}</span>
     if (icon) {
       element = <Icon className="text-xl mt-0.5" icon={icon} />
     }
-    return <Link className="mr-4" to={NAME_TO_META[name].path} key={name}>{element}</Link>
+    if (path.includes('http')) {
+      return <a className="mr-4" target="_blank" href={path} key={name}>{element}</a>
+    }
+    return <Link className="mr-4" to={path} key={name}>{element}</Link>
   })
   return (
     <header className="px-8 py-6">
       <div className="logo fixed left-0 top-0">
         <Link to="/"><span className="logo-title">Kim</span></Link>
       </div>
-      <nav className="nav flex justify-end py-2">{nssElement}</nav>
+      <nav className="nav flex justify-end py-2">
+        {nssElement}
+        <ToggleTheme />
+      </nav>
     </header>
   )
 }

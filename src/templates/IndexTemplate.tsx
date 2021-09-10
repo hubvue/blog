@@ -22,7 +22,6 @@ interface Props {
 }
 
 const Index: FC<Props> = ({ data }) => {
-  console.log(data)
   const html = data.markdownRemark.html
   const frontmatter = data.markdownRemark.frontmatter
   return (

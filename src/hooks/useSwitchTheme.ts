@@ -6,13 +6,14 @@ export const useSwitchTheme = () => {
   const isDark = usePreferredDark()
   const [ colorTheme, setColorTheme ] = useStore('color-theme')
 
+  const [theme, setTheme] = useState<string>(colorTheme)
+
   useEffect(() => {
     if(!colorTheme) {
       setColorTheme(isDark ? 'dark' : 'light')
+      setTheme(isDark ? 'dark' : 'light')
     }
   }, [isDark])
-
-  const [theme, setTheme] = useState<string>(colorTheme)
   
   const switchTheme = (changedTheme?: 'dark' | 'light') => {
     if (changedTheme) {

@@ -3,30 +3,35 @@ import { graphql } from "gatsby"
 
 import Layout from "../components/Layout/index"
 import Seo from "../components/Seo"
-import BlogList from '../components/BlogList'
+import GroupList from '../components/GroupList'
 import Bio from '../components/Bio'
-import { toUpperCase } from "../utils/strings"
+import { uniqueWithProp } from "../utils/arrays"
 
 interface Props {
   data: any
-  location: Location
   pageContext: Record<string, any>
 }
 
 const BlogListTemplate: FC<Props> = ({ data, pageContext}) => {
-  let posts = data.allMarkdownRemark.nodes.filter((post: any) => post.frontmatter.ns === pageContext.ns)
-  let title = pageContext.ns
+  let posts = data.allMarkdownRemark.nodes
+                .filter((post: any) => post.frontmatter.ns === pageContext.ns)
+                .map((post: any) => post.frontmatter)
+  posts = uniqueWithProp(posts, 'group')
+  // .reduce((pre, item) => {
+  //   if (pre.length === 0 || (pre.length && pre[pre.length - 1].length === 2)) {
+  //     pre.push([item])
+  //   } else {
+  //     pre[pre.length - 1].push(item)
+  //   }
+  //   return pre
+  // }, [] as any[][])
   let prefix = `/${pageContext.ns}`
-  if (pageContext.group) {
-    posts = data.allMarkdownRemark.nodes.filter((post: any) => post.frontmatter.group === pageContext.group)
-    title = pageContext.groupName
-    prefix += `/${pageContext.group}`
-  }
+
   return (
     <Layout>
-      <Seo title={toUpperCase(title)} />
-      <Bio title={title}/>
-      <BlogList posts={posts} prefix={prefix} />
+      <Seo title="All posts" />
+      <Bio title={pageContext.ns}/>
+      <GroupList groupList={posts} prefix={prefix}/>
     </Layout>
   )
 }

@@ -32,6 +32,8 @@ module.exports = ({ actions }) => {
       title: String
       description: String
       ns: String
+      group: String
+      groupName: String
       date: Date @dateformat
     }
 

@@ -15,15 +15,16 @@ interface Post {
 }
 interface Props {
   posts: Post[]
+  prefix: string
 }
 
-const BlogList: FC<Props> = ({ posts }) => {
+const BlogList: FC<Props> = ({ posts, prefix }) => {
   const postsElement = posts.map(post => {
     const slug = post.fields.slug
     let { title: frontmatterTitle, description, date, ns: frontmatterNS } = post.frontmatter
     const ns = frontmatterNS || 'blog'
     const title = frontmatterTitle || slug
-    const linkUrl = `/${ns}${slug}`
+    const linkUrl = `${prefix}${slug}`
     return (
       <Link className="item block font-normal mb-6 mt-2 no-underline" to={linkUrl} key={slug}>
         <li>

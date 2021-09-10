@@ -3,7 +3,6 @@ title: Kim
 ns: index
 ---
 
-# Blog
 ```ts
 const Me = {
   Name: 'Kim',

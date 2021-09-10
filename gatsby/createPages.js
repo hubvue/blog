@@ -19,7 +19,7 @@ module.exports = async ({ graphql, actions, reporter }) => {
   // algorithm
   createPage({
     path: '/algorithm',
-    component: resolve('./src/templates/BlogListTemplate.tsx'),
+    component: resolve('./src/templates/GroupListTemplate.tsx'),
     context: {
       ns: 'algorithm'
     }
@@ -51,7 +51,9 @@ module.exports = async ({ graphql, actions, reporter }) => {
         nodes {
           id
           frontmatter {
-            ns
+            ns,
+            group
+            groupName
           }
           fields {
             slug
@@ -68,11 +70,13 @@ module.exports = async ({ graphql, actions, reporter }) => {
     return
   }
   const posts = result.data.allMarkdownRemark.nodes
+  const groupList = new Set()
   for (let i = 0; i < posts.length; i++) {
     const post = posts[i]
     const previousPostId = i === 0 ? null : posts[i - 1].id
     const nextPostId = i === posts.length - 1 ? null : posts[i + 1].id
     const ns = post.frontmatter.ns || "blog"
+    const { group, groupName } = post.frontmatter
     if (ns === 'index') {
       createPage({
         path: `/`,
@@ -82,8 +86,20 @@ module.exports = async ({ graphql, actions, reporter }) => {
         }
       })
     } else {
+      if (group && !groupList.has(`${ns}/${group}`)) {
+        createPage({
+          path: `${ns}/${group}`,
+          component: resolve('./src/templates/BlogListTemplate.tsx'),
+          context: {
+            ns,
+            group,
+            groupName,
+          }
+        })
+        groupList.add(`${ns}/${group}`)
+      }
       createPage({
-        path: `${ns}${post.fields.slug}`,
+        path: `${ns}${group ? `/${group}` : ''}${post.fields.slug}`,
         component: resolve("./src/templates/PostTemplate.tsx"),
         context: {
           id: post.id,

@@ -4,7 +4,7 @@ import { usePreferredDark } from "./usePreferredDark"
 export const useSwitchTheme = () => {
   // const isDark = usePreferredDark()
   // const [theme, setTheme] = useState<'dark' | 'light'>(isDark ? 'dark' : 'light')
-  const [theme, setTheme] = useState<'dark' | 'light'>('dark')
+  const [theme, setTheme] = useState<'dark' | 'light'>('light')
   
   const switchTheme = (changedTheme?: 'dark' | 'light') => {
     if (changedTheme) {

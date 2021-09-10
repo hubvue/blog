@@ -10,6 +10,11 @@
   @apply opacity-100;
   text-decoration-color: inherit;
 }
+
+..nav svg {
+  color: inherit;
+  stroke-color: inherit;
+}
 .logo {
   @apply px-8;
 }

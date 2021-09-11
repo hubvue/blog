@@ -4,14 +4,22 @@ import { Link, graphql } from "gatsby"
 import Layout from "../components/Layout/index"
 import Seo from "../components/Seo"
 
-const PostTemplate: FC<any> = ({ data, location }) => {
+const PostTemplate: FC<any> = ({ data }) => {
   const post = data.markdownRemark
   const { previous, next } = data
   const { title, description, date, ns } = post.frontmatter
-  const previousTitle = previous && previous.frontmatter.title
-  const previousLink = previous && `/${ns}${previous.fields.slug}`
-  const nextTitle = next && next.frontmatter.title
-  const nextLink = next && `/${ns}${next.fields.slug}`
+  let previousTitle = ''
+  let previousLink = ''
+  let nextTitle = ''
+  let nextLink = ''
+  if (previous && previous.frontmatter.ns === ns && !previous.frontmatter.undone) {
+    previousTitle = previous.frontmatter.title
+    previousLink = `/${ns}${previous.fields.slug}`
+  }
+  if (next && next.frontmatter.ns === ns && !next.frontmatter.undone) {
+    nextTitle = next.frontmatter.title
+    nextLink = `/${ns}${next.fields.slug}`
+  }
   return (
     <Layout>
       <Seo title={title} description={description || post.excerpt} />
@@ -26,7 +34,7 @@ const PostTemplate: FC<any> = ({ data, location }) => {
         <ul className="flex flex-wrap justify-between">
           <div>
             <li className="list-none">
-              {next && (
+              {nextTitle && (
                 <Link className="item" to={nextLink} rel="next">
                   ← {nextTitle}
                 </Link>
@@ -35,7 +43,7 @@ const PostTemplate: FC<any> = ({ data, location }) => {
           </div>
           <div>
             <li className="list-none">
-              {previous && (
+              {previousTitle && (
                 <Link className="item" to={previousLink} rel="prev">
                   {previousTitle} →
                 </Link>
@@ -78,6 +86,8 @@ export const pageQuery = graphql`
       }
       frontmatter {
         title
+        ns
+        undone
       }
     }
     next: markdownRemark(id: { eq: $nextPostId }) {
@@ -86,6 +96,8 @@ export const pageQuery = graphql`
       }
       frontmatter {
         title
+        ns
+        undone
       }
     }
   }

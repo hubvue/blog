@@ -76,7 +76,7 @@ module.exports = async ({ graphql, actions, reporter }) => {
     const previousPostId = i === 0 ? null : posts[i - 1].id
     const nextPostId = i === posts.length - 1 ? null : posts[i + 1].id
     const ns = post.frontmatter.ns || "blog"
-    const { group, groupName, undone } = post.frontmatter
+    const { group, groupName } = post.frontmatter
     if (ns === 'index') {
       createPage({
         path: `/`,

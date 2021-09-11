@@ -14,17 +14,11 @@ interface Props {
 
 const BlogListTemplate: FC<Props> = ({ data, pageContext}) => {
   let posts = data.allMarkdownRemark.nodes
-                .filter((post: any) => post.frontmatter.ns === pageContext.ns)
+                .filter((post: any) => {
+                  return post.frontmatter.ns === pageContext.ns && !post.frontmatter.undone
+                })
                 .map((post: any) => post.frontmatter)
   posts = uniqueWithProp(posts, 'group')
-  // .reduce((pre, item) => {
-  //   if (pre.length === 0 || (pre.length && pre[pre.length - 1].length === 2)) {
-  //     pre.push([item])
-  //   } else {
-  //     pre[pre.length - 1].push(item)
-  //   }
-  //   return pre
-  // }, [] as any[][])
   let prefix = `/${pageContext.ns}`
 
   return (
@@ -58,6 +52,7 @@ export const pageQuery = graphql`
           group
           groupName
           description
+          undone
         }
       }
     }

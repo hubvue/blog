@@ -35,6 +35,7 @@ module.exports = ({ actions }) => {
       group: String
       groupName: String
       date: Date @dateformat
+      undone: Boolean
     }
 
     type Fields {

@@ -19,7 +19,7 @@ module.exports = async ({ graphql, actions, reporter }) => {
   // algorithm
   createPage({
     path: '/algorithm',
-    component: resolve('./src/templates/GroupListTemplate.tsx'),
+    component: resolve('./src/templates/GridListTemplate.tsx'),
     context: {
       ns: 'algorithm'
     }
@@ -76,7 +76,7 @@ module.exports = async ({ graphql, actions, reporter }) => {
     const previousPostId = i === 0 ? null : posts[i - 1].id
     const nextPostId = i === posts.length - 1 ? null : posts[i + 1].id
     const ns = post.frontmatter.ns || "blog"
-    const { group, groupName } = post.frontmatter
+    const { group, groupName, undone } = post.frontmatter
     if (ns === 'index') {
       createPage({
         path: `/`,

@@ -19,7 +19,6 @@ interface Props {
 const GridList: FC<Props> = ({ groupList, prefix }) => {
   return (
     <div className="prose m-auto">
-      {JSON.stringify(groupList)}
       <div className="project-grid py-2 -mx-3 gap-2">
         {
           groupList.map(group => (

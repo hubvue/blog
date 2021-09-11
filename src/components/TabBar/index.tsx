@@ -24,6 +24,10 @@ const NAME_TO_META: Record<string, PathMeta> = {
   'Github': {
     path: 'https://github.com/hubvue',
     icon: 'uil:github-alt'
+  },
+  'Email': {
+    path: 'mailto:cckcc.kim@gmail.com',
+    icon: 'ic:outline-email'
   }
 }
 
@@ -35,7 +39,7 @@ const TabBar: FC = () => {
     if (icon) {
       element = <Icon className="text-xl mt-0.5" icon={icon} />
     }
-    if (path.includes('http')) {
+    if (path.includes('http') || path.includes('mailto')) {
       return <a className="mr-4" target="_blank" href={path} key={name}>{element}</a>
     }
     return <Link className="mr-4" to={path} key={name}>{element}</Link>

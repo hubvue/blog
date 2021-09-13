@@ -1,7 +1,6 @@
 import React, { FC } from 'react'
 import { Link } from 'gatsby'
-import './index.css'
-
+import "./index.css"
 interface Group {
   title: string
   ns: string
@@ -19,7 +18,7 @@ interface Props {
 const GridList: FC<Props> = ({ groupList, prefix }) => {
   return (
     <div className="prose m-auto">
-      <div className="project-grid py-2 -mx-3 gap-2">
+      <div className="group-list py-2 -mx-3">
         {
           groupList.map(group => (
             <Link className="item relative flex" to={`${prefix}/${group.group}`} key={group.title}>

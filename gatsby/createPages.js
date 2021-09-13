@@ -19,7 +19,8 @@ module.exports = async ({ graphql, actions, reporter }) => {
   // algorithm
   createPage({
     path: '/algorithm',
-    component: resolve('./src/templates/GridListTemplate.tsx'),
+    // component: resolve('./src/templates/GridListTemplate.tsx'),
+    component: resolve('./src/templates/BlogListTemplate.tsx'),
     context: {
       ns: 'algorithm'
     }
@@ -86,20 +87,20 @@ module.exports = async ({ graphql, actions, reporter }) => {
         }
       })
     } else {
-      if (group && !groupList.has(`${ns}/${group}`)) {
-        createPage({
-          path: `${ns}/${group}`,
-          component: resolve('./src/templates/BlogListTemplate.tsx'),
-          context: {
-            ns,
-            group,
-            groupName,
-          }
-        })
-        groupList.add(`${ns}/${group}`)
-      }
+      // if (group && !groupList.has(`${ns}/${group}`)) {
+      //   createPage({
+      //     path: `${ns}/${group}`,
+      //     component: resolve('./src/templates/BlogListTemplate.tsx'),
+      //     context: {
+      //       ns,
+      //       group,
+      //       groupName,
+      //     }
+      //   })
+      //   groupList.add(`${ns}/${group}`)
+      // }
       createPage({
-        path: `${ns}${group ? `/${group}` : ''}${post.fields.slug}`,
+        path: `${ns}${post.fields.slug}`,
         component: resolve("./src/templates/PostTemplate.tsx"),
         context: {
           id: post.id,

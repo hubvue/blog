@@ -17,39 +17,7 @@ module.exports = {
     {
       resolve: `gatsby-source-filesystem`,
       options: {
-        path: `${__dirname}/content/pages`,
-        name: `blog`
-      }
-    },
-    // blog
-    {
-      resolve: `gatsby-source-filesystem`,
-      options: {
-        path: `${__dirname}/content/blog`,
-        name: `blog`
-      }
-    },
-    // book-nodes
-    {
-      resolve: `gatsby-source-filesystem`,
-      options: {
-        path: `${__dirname}/content/book-notes`,
-        name: `blog`
-      }
-    },
-    // algorithm
-    {
-      resolve: `gatsby-source-filesystem`,
-      options: {
-        path: `${__dirname}/content/algorithm`,
-        name: `blog`
-      }
-    },
-    // essay
-    {
-      resolve: `gatsby-source-filesystem`,
-      options: {
-        path: `${__dirname}/content/essay`,
+        path: `${__dirname}/content`,
         name: `blog`
       }
     },
@@ -57,9 +25,16 @@ module.exports = {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `images`,
-        path: `${__dirname}/content/assets`,
+        path: `${__dirname}/assets`,
       },
     },
+    {
+      resolve: "gatsby-plugin-page-creator",
+      options: {
+        path: `${__dirname}/content`,
+      },
+    },
+    'gatsby-plugin-mdx',
     {
       resolve: `gatsby-transformer-remark`,
       options: {
@@ -145,7 +120,7 @@ module.exports = {
         background_color: `#ffffff`,
         theme_color: `#663399`,
         display: `minimal-ui`,
-        icon: `content/assets/favicon.ico`
+        icon: `assets/favicon.ico`
       },
     },
     `gatsby-plugin-react-helmet`,

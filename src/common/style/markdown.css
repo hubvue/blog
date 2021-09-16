@@ -56,6 +56,7 @@ body.dark {
   --prism-line-number-gutter: #eeeeee;
   --prism-line-highlight-background: #444444;
   --prism-selection-background: #444444;
+  --prism-constant: #54b1bf;
 }
 
 .prose {
@@ -173,4 +174,8 @@ h6:focus .header-anchor {
 
 .prose code::after {
   content: "";
+}
+
+.token.maybe-class-name {
+  color: var(--prism-class);
 }

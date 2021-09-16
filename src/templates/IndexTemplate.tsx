@@ -1,13 +1,14 @@
 import React, { FC } from "react"
-import { graphql } from 'gatsby'
+import { graphql } from "gatsby"
+import { MDXRenderer } from "gatsby-plugin-mdx"
 
 import Seo from "../components/Seo"
-import Layout from '../components/Layout'
+import Layout from "../components/Layout"
 
 interface Data {
-  markdownRemark: {
+  mdx: {
     id: string
-    html: string
+    body: string
     frontmatter: {
       title: string
       ns: string
@@ -22,26 +23,24 @@ interface Props {
 }
 
 const Index: FC<Props> = ({ data }) => {
-  const html = data.markdownRemark.html
-  const frontmatter = data.markdownRemark.frontmatter
+  const body = data.mdx.body
   return (
     <Layout>
-      <Seo title="Blog"/>
-      <div className="prose m-auto mb-8" dangerouslySetInnerHTML={{ __html: html }}></div>
+      <Seo title="Blog" />
+      <div className="prose m-auto mb-8">
+        <MDXRenderer>{body}</MDXRenderer>
+      </div>
     </Layout>
   )
 }
 
 export default Index
 
-
-export const pageQuery = graphql`
-  query BlogIndex(
-    $id: String!
-  ) {
-    markdownRemark(id: { eq: $id }) {
+export const query = graphql`
+  query BlogIndex($id: String!) {
+    mdx(id: { eq: $id }) {
       id
-      html
+      body
       frontmatter {
         title
         ns

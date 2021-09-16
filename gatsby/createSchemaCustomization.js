@@ -37,6 +37,15 @@ module.exports = ({ actions }) => {
       date: Date @dateformat
       undone: Boolean
     }
+    type MdxFrontmatter {
+      title: String
+      description: String
+      ns: String
+      group: String
+      groupName: String
+      date: Date @dateformat
+      undone: Boolean
+    }
 
     type Fields {
       slug: String

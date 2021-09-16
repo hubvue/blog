@@ -1,3 +1,4 @@
+import CodeRoot from './src/components/CodeRoot'
 // custom typefaces
 import "typeface-montserrat"
 import "typeface-merriweather"
@@ -7,3 +8,5 @@ import "./src/common/style/normalize.css"
 import './src/common/style/fonts.css'
 import './src/common/style/main.css'
 import './src/common/style/markdown.css'
+
+export const wrapPageElement = CodeRoot

@@ -1,10 +1,10 @@
 import React, { FC }from "react"
 import { MDXProvider } from "@mdx-js/react"
 
-import CodeBlock from "../CodeBlock"
+import Block from "../Block"
 
 const component = {
-    pre: CodeBlock
+    pre: Block
 }
 
 const CodeRoot: FC<any> = ({ element }) => {

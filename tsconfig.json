@@ -8,7 +8,7 @@
     "lib": ["dom", "ESNext"],
     "jsx": "react",
     "paths": {
-      "@/*": ["./src"]
+      "@/*": ["./"]
     },
     "strict": true,
     "esModuleInterop": true,

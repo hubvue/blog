@@ -24,6 +24,7 @@ interface Props {
 
 const Index: FC<Props> = ({ data }) => {
   const body = data.mdx.body
+  console.log('body',body)
   return (
     <Layout>
       <Seo title="Blog" />

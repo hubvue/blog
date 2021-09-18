@@ -1,4 +1,4 @@
-import CodeRoot from './src/components/CodeRoot'
+import CodeRoot from './src/components/MDXProviderRoot'
 // custom typefaces
 import "typeface-montserrat"
 import "typeface-merriweather"

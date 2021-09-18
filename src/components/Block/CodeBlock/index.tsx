@@ -1,23 +1,12 @@
-import React, { FC, ReactElement, ReactNode } from "react"
+import React, { FC } from "react"
 import Highlight, { defaultProps, Language } from "prism-react-renderer"
 
-interface MDXRendererProps {
-  className: string
-  children: string
-}
 interface Props {
-  children: ReactElement<MDXRendererProps>
+  code: string
+  language: Language
 }
 
-const CodeBlock: FC<Props> = props => {
-  let { className, children } = props.children.props as MDXRendererProps
-
-  className = className || "language-text"
-  const matches = className.match(/language-(?<lang>.*)/)
-  const code = children.trim()
-  const language = (
-    matches && matches.groups && matches.groups.lang ? matches.groups.lang : ""
-  ) as Language
+const CodeBlock: FC<Props> = ({ code, language }) => {
   return (
     <div className="gatsby-highlight">
       <Highlight {...defaultProps} code={code} language={language}>

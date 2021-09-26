@@ -73,7 +73,6 @@ module.exports = async ({ graphql, actions, reporter }) => {
   }
   const posts = result.data.allMdx.nodes
   const indexPages = posts.filter(post => post.frontmatter.ns === 'index')
-  console.log('indexPages', indexPages)
   if (indexPages.length) {
     createPage({
       path: `/`,

@@ -20,7 +20,6 @@ const BlogListTemplate: FC<Props> = ({ data, pageContext}) => {
     posts = posts.filter((post: any) => post.frontmatter.group === pageContext.group )
     title = pageContext.groupName
   }
-  console.log('11111')
   return (
     <Layout>
       <Seo title={toUpperCase(title)} />

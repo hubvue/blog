@@ -20,7 +20,7 @@ const PostTemplate: FC<any> = ({ children, pageContext: { frontmatter } }) => {
         {children}
       </article>
       <footer className="prose m-auto mb-8">
-        <a className="font-mono no-underline opacity-50 hover:opacity-75" onClick={goBack}>cd ..</a>
+        <a className="font-mono no-underline opacity-50 hover:opacity-75 cursor-pointer" onClick={goBack}>cd ..</a>
       </footer>
     </Layout>
   )

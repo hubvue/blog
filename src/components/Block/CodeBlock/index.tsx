@@ -22,16 +22,8 @@ const CodeBlock: FC<Props> = ({ code, language }) => {
                           token,
                           key,
                         })
-                        const classNames = className.split(" ")
                         let cn = className
-                        if (
-                          classNames[1] === "class-name" &&
-                          classNames.length > 2
-                        ) {
-                          cn = `${classNames[0]} ${classNames
-                            .slice(2)
-                            .join(" ")}`
-                        }
+                        cn = cn.replaceAll("module", "").trim()
                         return (
                           <span className={cn} key={key}>
                             {children}

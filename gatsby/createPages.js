@@ -45,22 +45,6 @@ module.exports = async ({ graphql, actions, reporter }) => {
   // Get all markdown blog posts sorted by date
   const result = await graphql(`
     {
-      allMarkdownRemark(
-        sort: { fields: [frontmatter___date], order: ASC }
-        limit: 1000
-      ) {
-        nodes {
-          id
-          frontmatter {
-            ns,
-            group
-            groupName
-          }
-          fields {
-            slug
-          }
-        }
-      }
       allMdx(
         sort: { fields: [frontmatter___date], order: ASC }
         limit: 1000
@@ -78,7 +62,6 @@ module.exports = async ({ graphql, actions, reporter }) => {
           }
         }
       }
-
     }
   `)
   if (result.errors) {
@@ -89,29 +72,15 @@ module.exports = async ({ graphql, actions, reporter }) => {
     return
   }
   const posts = result.data.allMdx.nodes
-  for (let i = 0; i < posts.length; i++) {
-    const post = posts[i]
-    const previousPostId = i === 0 ? null : posts[i - 1].id
-    const nextPostId = i === posts.length - 1 ? null : posts[i + 1].id
-    const ns = post.frontmatter.ns || 'blog'
-    if (ns === 'index') {
-      createPage({
-        path: `/`,
-        component: resolve("./src/templates/IndexTemplate.tsx"),
-        context: {
-          id: post.id,
-        }
-      })
-    } else {
-      createPage({
-        path: `${post.fields.slug}`,
-        component: resolve("./src/templates/PostTemplate.tsx"),
-        context: {
-          id: post.id,
-          previousPostId,
-          nextPostId,
-        },
-      })
-    }
+  const indexPages = posts.filter(post => post.frontmatter.ns === 'index')
+  console.log('indexPages', indexPages)
+  if (indexPages.length) {
+    createPage({
+      path: `/`,
+      component: resolve("./src/templates/IndexTemplate.tsx"),
+      context: {
+        id: indexPages[0].id,
+      }
+    })
   }
 }

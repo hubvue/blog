@@ -35,23 +35,27 @@ module.exports = {
         path: `${__dirname}/assets`,
       },
     },
-    // {
-    //   resolve: "gatsby-plugin-page-creator",
-    //   options: {
-    //     path: `${__dirname}/content`,
-    //   },
-    // },
+    {
+      resolve: "gatsby-plugin-page-creator",
+      options: {
+        path: `${__dirname}/content`,
+      },
+    },
     {
       resolve: 'gatsby-plugin-mdx',
       options: {
-          gatsbyRemarkPlugins: [
-            {
-              resolve: `gatsby-remark-images`,
-              options: {
-                maxWidth: 590,
-              },
+        defaultLayouts: {
+          blog: require.resolve('./src/templates/PostTemplate.tsx'),
+          default: require.resolve('./src/templates/PostTemplate.tsx')
+        },
+        gatsbyRemarkPlugins: [
+          {
+            resolve: `gatsby-remark-images`,
+            options: {
+              maxWidth: 630,
             },
-          ],
+          },
+        ],
       }
     },
     {

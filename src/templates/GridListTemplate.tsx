@@ -13,7 +13,7 @@ interface Props {
 }
 
 const BlogListTemplate: FC<Props> = ({ data, pageContext}) => {
-  let posts = data.allMarkdownRemark.nodes
+  let posts = data.allMdx.nodes
                 .filter((post: any) => {
                   return post.frontmatter.ns === pageContext.ns && !post.frontmatter.undone
                 })

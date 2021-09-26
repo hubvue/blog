@@ -35,12 +35,12 @@ module.exports = {
         path: `${__dirname}/assets`,
       },
     },
-    {
-      resolve: "gatsby-plugin-page-creator",
-      options: {
-        path: `${__dirname}/content`,
-      },
-    },
+    // {
+    //   resolve: "gatsby-plugin-page-creator",
+    //   options: {
+    //     path: `${__dirname}/content`,
+    //   },
+    // },
     {
       resolve: 'gatsby-plugin-mdx',
       options: {

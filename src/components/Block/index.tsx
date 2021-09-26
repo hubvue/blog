@@ -14,7 +14,6 @@ interface Props {
 type Block = "slidev"
 
 const Block: FC<Props> = props => {
-  console.log('props',props)
   let { className, children } = props.children.props as MDXRendererProps
   className = className || "language-text"
   const matches = className.match(/language-(?<lang>.*)/)

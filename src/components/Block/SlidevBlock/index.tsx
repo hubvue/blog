@@ -8,7 +8,6 @@ interface Props {
 }
 
 const Slidev: FC<Props> = ({ code }) => {
-  console.log(code)
   const [slidevsPath, setSlidevsPath] = useState<string[]>([])
   useEffect(() => {
     const slidevsPath = code

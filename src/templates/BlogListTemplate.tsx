@@ -14,19 +14,18 @@ interface Props {
 }
 
 const BlogListTemplate: FC<Props> = ({ data, pageContext}) => {
-  let posts = data.allMarkdownRemark.nodes.filter((post: any) => post.frontmatter.ns === pageContext.ns && !post.frontmatter.undone)
   let title = pageContext.ns
-  let prefix = `/${pageContext.ns}`
+  let posts = data.allMdx.nodes
   if (pageContext.group) {
-    posts = data.allMarkdownRemark.nodes.filter((post: any) => post.frontmatter.group === pageContext.group )
+    posts = posts.filter((post: any) => post.frontmatter.group === pageContext.group )
     title = pageContext.groupName
-    prefix += `/${pageContext.group}`
   }
+  console.log('11111')
   return (
     <Layout>
       <Seo title={toUpperCase(title)} />
       <Bio title={title}/>
-      <BlogList posts={posts} prefix={prefix} />
+      <BlogList posts={posts} />
     </Layout>
   )
 }
@@ -34,26 +33,26 @@ const BlogListTemplate: FC<Props> = ({ data, pageContext}) => {
 export default BlogListTemplate
 
 export const pageQuery = graphql`
-  query {
-    site {
-      siteMetadata {
-        title
-      }
-    }
-    allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }) {
+  query ($ns: String!) {
+    allMdx(
+      sort: {fields: frontmatter___date, order: DESC}
+      filter: {frontmatter: {ns: {eq: $ns}, undone: {eq: false}}}
+    ) {
       nodes {
+        id
         excerpt
-        fields {
-          slug
-        }
+        slug
         frontmatter {
           date(formatString: "MMMM DD, YYYY")
           title
-          ns
+          description
           group
           groupName
-          description
+          ns
           undone
+        }
+        fields {
+          slug
         }
       }
     }

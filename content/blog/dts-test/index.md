@@ -3,6 +3,7 @@ title: 使用 tsd 测试 typescript 类型的准确性
 date: 2020-08-04
 ns: blog
 description: 本篇文章介绍使用 tsd 来测试 typescript 中类型的准确性
+undone: false
 # socialImage:
 ---
 

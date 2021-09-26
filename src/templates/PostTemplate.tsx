@@ -1,11 +1,12 @@
 import React, { FC } from "react"
 import { Link, graphql } from "gatsby"
-
+import { MDXRenderer } from "gatsby-plugin-mdx"
 import Layout from "../components/Layout/index"
 import Seo from "../components/Seo"
 
 const PostTemplate: FC<any> = ({ data }) => {
-  const post = data.markdownRemark
+  console.log(22222)
+  const post = data.mdx
   const { previous, next } = data
   const { title, description, date, ns } = post.frontmatter
   let previousTitle = ''
@@ -14,11 +15,11 @@ const PostTemplate: FC<any> = ({ data }) => {
   let nextLink = ''
   if (previous && previous.frontmatter.ns === ns && !previous.frontmatter.undone) {
     previousTitle = previous.frontmatter.title
-    previousLink = `/${ns}${previous.fields.slug}`
+    previousLink = previous.fields.slug
   }
   if (next && next.frontmatter.ns === ns && !next.frontmatter.undone) {
     nextTitle = next.frontmatter.title
-    nextLink = `/${ns}${next.fields.slug}`
+    nextLink = next.fields.slug
   }
   return (
     <Layout>
@@ -28,7 +29,7 @@ const PostTemplate: FC<any> = ({ data }) => {
           <h1 itemProp="headline">{title}</h1>
           <p className="opacity-50 !-mt-2">{date}</p>
         </header>
-        <section dangerouslySetInnerHTML={{ __html: post.html }} />
+        <MDXRenderer>{post.body}</MDXRenderer>
       </article>
       <nav className="prose m-auto mb-8">
         <ul className="flex flex-wrap justify-between">
@@ -69,7 +70,7 @@ export const pageQuery = graphql`
         title
       }
     }
-    markdownRemark(id: { eq: $id }) {
+    mdx(id: { eq: $id }) {
       id
       excerpt(pruneLength: 160)
       html

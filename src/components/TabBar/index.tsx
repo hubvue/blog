@@ -16,7 +16,7 @@ const NAME_TO_META: Record<string, PathMeta> = {
     path: '/algorithm'
   },
   'Notes': {
-    path: '/book-notes'
+    path: '/notes'
   },
   'Essay': {
     path: '/essay'

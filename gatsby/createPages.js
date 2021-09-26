@@ -25,12 +25,12 @@ module.exports = async ({ graphql, actions, reporter }) => {
       ns: 'algorithm'
     }
   })
-  // book-notes
+  // notes
   createPage({
-    path: '/book-notes',
+    path: '/notes',
     component: resolve('./src/templates/BlogListTemplate.tsx'),
     context: {
-      ns: 'book-notes'
+      ns: 'notes'
     }
   })
   // essay

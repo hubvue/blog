@@ -159,5 +159,6 @@ module.exports = {
         showSpinner: true,
       },
     },
+    `gatsby-plugin-netlify-cms`
   ]
 }

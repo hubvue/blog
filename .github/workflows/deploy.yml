@@ -8,13 +8,10 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [14.x]
-
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
@@ -29,13 +26,13 @@ jobs:
     - run: echo "----- build -----"
     - run: npm run build
     - run: echo "----- deploy -----"
-    - run: echo "----- deploy done -----"
     - name: deploy
       uses: easingthemes/ssh-deploy@v2.2.11
       env:
         SSH_PRIVATE_KEY: ${{ secrets.ACCESS_TOKEN }}
-        REMOTE_HOST: blog.cckim.cn
-        REMOTE_USER: root
+        REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+        REMOTE_USER: ${{ secrets.REMOTE_USER }}
         ARGS: -avzr --delete
         SOURCE: public/
-        TARGET: ~/code
+        TARGET: /home/code/
+    - run: echo "----- deploy done -----"

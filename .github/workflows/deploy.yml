@@ -26,6 +26,8 @@ jobs:
     - run: echo "----- build -----"
     - run: npm run build
     - run: echo "----- deploy -----"
+    - run: pwd
+    - run: ls
     - name: deploy
       uses: easingthemes/ssh-deploy@v2.2.11
       env:

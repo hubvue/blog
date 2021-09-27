@@ -29,7 +29,7 @@ jobs:
     - run: pwd
     - run: ls
     - name: deploy
-      uses: easingthemes/ssh-deploy@v2.2.11
+      uses: easingthemes/ssh-deploy@v2
       env:
         SSH_PRIVATE_KEY: ${{ secrets.ACCESS_TOKEN }}
         REMOTE_HOST: 49.232.212.40

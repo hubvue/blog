@@ -6,7 +6,6 @@ import { formatDate } from "../utils/date"
 
 const PostTemplate: FC<any> = ({ children, pageContext: { frontmatter } }) => {
   const { title, description, date } = frontmatter
-  console.log(frontmatter, title, date)
   const goBack = () => {
     navigate(-1)
   }

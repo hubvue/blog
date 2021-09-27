@@ -1,0 +1,26 @@
+.prose .ant-timeline {
+  color: inherit;
+}
+.prose .ant-timeline-item {
+  @apply pl-0 mt-0 mb-0;
+}
+
+.prose .ant-timeline-item::before {
+  @apply top-0.5 left-1;
+}
+
+.prose > ul > li > *:first-child {
+  @apply mt-0;
+}
+
+/* .prose .ant-timeline-item a {
+  @apply cursor-pointer no-underline opacity-60;
+  color: inherit;
+  outline: none;
+  transition: opacity 0.2s ease;
+}
+
+.prose .ant-timeline-item a:hover {
+  @apply opacity-100;
+  text-decoration-color: inherit;
+} */

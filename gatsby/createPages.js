@@ -28,7 +28,7 @@ module.exports = async ({ graphql, actions, reporter }) => {
   // notes
   createPage({
     path: '/notes',
-    component: resolve('./src/templates/BlogListTemplate.tsx'),
+    component: resolve('./src/templates/TimeLineTemplate/index.tsx'),
     context: {
       ns: 'notes'
     }

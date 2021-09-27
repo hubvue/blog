@@ -7,7 +7,7 @@ export const formatDate = (rawDate: string): string => {
   let hour = padZero(date.getHours(), 2)
   let minute = padZero(date.getMinutes(), 2)
   let second = padZero(date.getSeconds(), 2)
-  return `${year}-${month}-${day} ${hour}:${minute}:${second}`
+  return `${year}/${month}/${day} ${hour}:${minute}:${second}`
 }
 
 const padZero = <T>(value: T, step = String(value).length): string => {

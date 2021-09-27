@@ -1,0 +1,21 @@
+---
+title: 测试日记
+date: 2021-09-27
+description: 测试日记
+ns: notes
+undone: false
+---
+
+### UnionToIntersection
+
+UnionToIntersection 用于将联合类型转为交叉类型
+
+**实现**
+
+```ts
+export type UnionToIntersection<T> = (
+  T extends any ? (arg: T) => void : never
+) extends (arg: infer V) => void
+  ? V
+  : never
+```

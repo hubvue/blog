@@ -34,5 +34,5 @@ jobs:
         REMOTE_USER: ${{ secrets.REMOTE_USER }}
         ARGS: -avzr --delete
         SOURCE: public/
-        TARGET: /home/code/public/
+        TARGET: /root/code/public/
     - run: echo "----- deploy done -----"

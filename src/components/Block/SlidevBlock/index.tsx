@@ -23,7 +23,7 @@ const Slidev: FC<Props> = ({ code }) => {
     return <></>
   }
   return <>
-    <StaticImage src="../../../../assets/title.png" alt="123"/>
+    <StaticImage src="../../../../static/assets/title.png" alt="123"/>
   </>
 }
 

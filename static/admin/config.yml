@@ -1,6 +1,6 @@
 backend:
-  name: test-repo
-  branch: master
+  name: git-gateway
+  branch: main
   commit_messages:
     create: "Create {{collection}} “{{slug}}”"
     update: "Update {{collection}} “{{slug}}”"
@@ -8,24 +8,30 @@ backend:
     uploadMedia: "[skip ci] Upload “{{path}}”"
     deleteMedia: "[skip ci] Delete “{{path}}”"
 
-media_folder: assets/
+# 发布模式：允许草稿
+publish_mode: editorial_workflow
+# 访问的公共文件夹
 public_folder: assets/
+media_folder: static/assets
+
+site_url: https://blog.cckim.cn
+# 语言
+locale: 'cn'
+# 禁用搜索
+search: false
 
 collections:
   - name: "blog"
     label: "Blog"
     folder: "content/blog"
     create: true
-    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    slug: "{{slug}}"
     fields:
-      - { label: "标题", name: "title", widget: "string" }
-      - { label: "日期", name: "date", widget: "datetime" }
-      - { label: "描述", name: "description", widget: "text"}
-      - { 
-          label: "空间",
-          name: "ns",
-          widget: "string"}
-      - { label: "内容", name: "body", widget: "markdown" }
+      - { label: 标题, name: title, widget: string }
+      - { label: 日期, name: date, widget: datetime }
+      - { label: 描述, name: description, widget: text }
+      - { label: 空间, name: ns, widget: string, default: blog }
+      - { label: 内容, name: body, widget: markdown }
 
   - name: "pages"
     label: "Pages"

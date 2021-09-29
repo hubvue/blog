@@ -6,6 +6,7 @@ interface Post {
   frontmatter: {
     title?: string
     ns?: string
+    label?: string
     date: string
     description: string
   }
@@ -21,12 +22,15 @@ interface Props {
 const BlogList: FC<Props> = ({ posts }) => {
   const postsElement = posts.map(post => {
     const slug = post.fields.slug
-    let { title: frontmatterTitle, date } = post.frontmatter
+    let { title: frontmatterTitle, date, label } = post.frontmatter
     const title = frontmatterTitle || slug
     return (
       <Link className="item block font-normal mb-6 mt-2 no-underline" to={slug} key={post.id}>
         <li>
-          <div className="title text-lg">{title}</div>
+          <div className="title text-lg">
+            {title}
+            {label ? <sup className="text-xs border border-current rounded px-1 ml-0.5">{label}</sup> : "" }
+          </div>
           <div className="time opacity-50 text-sm -mt-1">{date}</div>
         </li>        
       </Link>

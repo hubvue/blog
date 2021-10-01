@@ -1,17 +1,16 @@
 import React, { FC, ReactElement } from "react"
 import { Language } from "prism-react-renderer"
-import SlidevBlock from "./SlidevBlock"
 import CodeBlock from "./CodeBlock"
 
 interface MDXRendererProps {
   className: string
   children: string
+  live?: boolean
 }
 interface Props {
   children: ReactElement<MDXRendererProps>
 }
 
-type Block = "slidev"
 
 const Block: FC<Props> = props => {
   let { className, children } = props.children.props as MDXRendererProps
@@ -20,11 +19,8 @@ const Block: FC<Props> = props => {
   const code = children.trim()
   const language = (
     matches && matches.groups && matches.groups.lang ? matches.groups.lang : ""
-  ) as Language | Block
+  ) as Language
 
-  if (language === "slidev") {
-    return <SlidevBlock code={code}/>
-  }
   return <CodeBlock code={code} language={language} />
 }
 

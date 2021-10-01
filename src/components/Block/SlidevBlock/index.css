@@ -1,0 +1,8 @@
+.prose .slidev img {
+  @apply m-0;
+}
+
+.slidev .ant-carousel .slick-slider .slick-track {
+  display: flex;
+  align-items: center;
+}

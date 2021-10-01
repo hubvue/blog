@@ -24,6 +24,7 @@ const CodeBlock: FC<Props> = ({ code, language }) => {
                         })
                         let cn = className
                         cn = cn.replaceAll("module", "").trim()
+                        cn = cn.replaceAll("control-flow", "").trim()
                         return (
                           <span className={cn} key={key}>
                             {children}

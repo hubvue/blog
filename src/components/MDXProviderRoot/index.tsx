@@ -1,10 +1,12 @@
 import React, { FC }from "react"
 import { MDXProvider } from "@mdx-js/react"
 
-import Block from "../Block"
+import CodeBlock from "../Block"
+import SlidevBlock from '../Block/SlidevBlock'
 
 const component = {
-    pre: Block
+    pre: CodeBlock,
+    slidev: SlidevBlock
 }
 
 const CodeRoot: FC<any> = ({ element }) => {

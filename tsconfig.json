@@ -16,7 +16,8 @@
     "emitDecoratorMetadata": true,
     "noEmit": true,
     "skipLibCheck": true,
-    "typeRoots": ["node_modules/@types"]
+    "typeRoots": ["node_modules/@types"],
+    "types": ["./src/mdx.d.ts"]
   },
   "include": ["src/**/*"]
 }

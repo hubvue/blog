@@ -5,7 +5,6 @@ import { MDXRenderer } from 'gatsby-plugin-mdx'
 import { toUpperCase } from '../../utils/strings'
 import Layout from '../../components/Layout'
 import Seo from '../../components/Seo'
-import { formatDate } from '../../utils/date'
 import './index.css'
 
 const TimeLineTemplate: FC<any> = ({ data, pageContext }) => {

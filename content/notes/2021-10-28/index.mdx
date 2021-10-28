@@ -1,0 +1,68 @@
+---
+title: 在js文件调用ts的多种方式
+date: 2021-10-28T12:24:30.540Z
+description: 在写框架/库过程中会遇到的一个场景。通常框架/库都是经过编译的，都是js文件，而用户的代码（比如配置文件）是ts的，这时候就需要在js(cjs)下调用ts(esm) 来获取用户配置。
+ns: notes
+undone: false
+---
+
+## ts-node
+第一种方式是通过`ts-node`这个库来解决，`ts-node`是不需要将ts文件编译直接执行ts代码的一种方式，使用`ts-node`支持js模块调用ts模块非常简单，我们来看下怎么做。
+
+```javascript
+// 用户ts文件的路径
+const path = require('path')
+let fileUrl = 'xxx/xxx/xxx/xxx.ts'
+if (path.extname(fileUrl) === '.ts') {
+  require('ts-node').register()
+}
+// 调用ts文件
+let res = require(fileUrl).default
+```
+实际上`ts-node`的`register`方法内部调用的是`typescript`的`register`方法用来处理后续require的ts文件。
+
+
+## ts2js
+第二种方式是先将ts代码编译成js代码，然后再调用js文件模块。
+
+代码编译有很多种，像打包工具rollup、esbuild等等都可以，这里我们使用esbuild来演示一下。
+
+```js
+const { build } = require('esbuild')
+const fs = require('fs')
+
+let fileUrl = 'xxx/xxx/xxx/xxx.ts'
+// 使用esbuild编译
+const result = build({
+  absWorkingDir: process.cwd(),
+  entryPoints: [fileUrl],
+  outfile: 'outfile.js',
+  write: false,
+  format: 'cjs'
+})
+// 获取到编译后的代码字符串
+const { test: code } = result.outputFiles[0]
+
+// 将编译后的代码暂时写在js文件里
+const boundleFileUrl = `${fileUrl}.js`
+fs.writeFileSync(boundleFileUrl, code)
+// 引入
+const res = require('boundleFileUrl').default
+// 引入后别忘记将临时文件删除掉
+fs.unlinkSync(boundleFileUrl)
+```
+上面代码就是通过编译工具将ts代码编译成js，然后再require js的方式。
+
+
+## dynamicImport
+上面两种方式我们发现在引入代码的时候都是用的cjs模块的方式，当然，随着esm的发展我们也可以通过动态import的方式。
+
+```mjs
+// 定义动态引入函数
+const dynamicImport = new Funnction('file', 'return import(file)')
+
+const res = (await dynamicImport(fileUrl)).default
+```
+你可能会有疑问，为什么不直接`import`，还需要`Function`构造函数来创建函数呢？
+
+这是因为目前来说大部分的框架/库或者库都是ts来写的，框架/库必然是需要编译的，当我们使用如rollup等构建工具编译时，如果`import`直接暴露出来，会被构建工具认为ESM编译成CJS Module，因此需要写成字符串的形式，避免构建工具编译。

@@ -41,6 +41,14 @@ module.exports = async ({ graphql, actions, reporter }) => {
       ns: 'essay'
     }
   })
+  // tools
+  createPage({
+    path:'/tools',
+    component: resolve('./src/templates/ToolsTemplate/index.tsx'),
+    context: {
+      ns: 'tools'
+    }
+  })
 
   // Get all markdown blog posts sorted by date
   const result = await graphql(`

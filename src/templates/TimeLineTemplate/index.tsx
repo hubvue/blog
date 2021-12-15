@@ -5,6 +5,7 @@ import { MDXRenderer } from 'gatsby-plugin-mdx'
 import { toUpperCase } from '../../utils/strings'
 import Layout from '../../components/Layout'
 import Seo from '../../components/Seo'
+import Bio from '../../components/Bio'
 import './index.css'
 
 const TimeLineTemplate: FC<any> = ({ data, pageContext }) => {
@@ -30,6 +31,7 @@ const TimeLineTemplate: FC<any> = ({ data, pageContext }) => {
   return (
     <Layout>
       <Seo title={toUpperCase(title)}></Seo>
+      <Bio title={title}/>
       <section className="prose m-auto mb-8">
         <Timeline>
           {timelineItems}

@@ -21,6 +21,10 @@ const NAME_TO_META: Record<string, PathMeta> = {
   'Essay': {
     path: '/essay'
   },
+  'Tools': {
+    path: '/tools',
+    icon: 'fluent:window-dev-tools-24-regular'
+  },
   'Github': {
     path: 'https://github.com/hubvue',
     icon: 'uil:github-alt'

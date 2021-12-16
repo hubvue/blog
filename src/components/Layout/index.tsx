@@ -4,7 +4,6 @@ import TabBar from '../TabBar'
 interface Props {
   fullScreen?: boolean
 }
-
 const Layout: FC<Props> = ({ children, fullScreen }) => {
   return (
     <>

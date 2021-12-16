@@ -2,7 +2,7 @@ import React, { FC } from "react"
 import TabBar from '../TabBar'
 
 interface Props {
-  fullScreen: boolean
+  fullScreen?: boolean
 }
 
 const Layout: FC<Props> = ({ children, fullScreen }) => {

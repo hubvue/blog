@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
+import { tuple } from "./types"
 import { usePreferredDark } from "./usePreferredDark"
 import { useStore } from "./useStore"
+
 
 export const useSwitchTheme = () => {
   const isDark = usePreferredDark()
@@ -35,6 +37,7 @@ export const useSwitchTheme = () => {
     bodyElement = document.querySelector('body')
   }
   useEffect(() => {
+    console.log('theme1', theme)
     if (!htmlElement || !bodyElement) {
       return
     }
@@ -51,8 +54,5 @@ export const useSwitchTheme = () => {
     }
   }, [theme])
 
-  return {
-    theme,
-    switchTheme
-  }
+  return tuple(theme, switchTheme)
 }

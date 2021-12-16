@@ -10,6 +10,7 @@
   "dependencies": {
     "@mdx-js/mdx": "^1.6.22",
     "@mdx-js/react": "^1.6.22",
+    "@monaco-editor/react": "^4.3.1",
     "@tailwindcss/typography": "^0.4.1",
     "antd": "^4.16.13",
     "gatsby": "^3.13.0",
@@ -44,6 +45,7 @@
     "react-helmet": "^6.1.0",
     "react-live": "^2.3.0",
     "react-typography": "^0.16.20",
+    "swr": "^1.1.2-beta.0",
     "typeface-merriweather": "0.0.72",
     "typeface-montserrat": "0.0.75",
     "typography": "^0.16.21"

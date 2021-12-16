@@ -3,7 +3,7 @@ import { useSwitchTheme } from "../../hooks/useSwitchTheme"
 import { Icon } from "@iconify/react"
 
 const ToggleTheme: FC = () => {
-  const { theme, switchTheme } = useSwitchTheme()
+  const [theme, switchTheme] = useSwitchTheme()
   const [isDark, setDark] = useState<boolean>(theme === "dark")
   useEffect(() => {
     if (theme === "dark") {

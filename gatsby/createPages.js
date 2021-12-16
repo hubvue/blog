@@ -49,6 +49,13 @@ module.exports = async ({ graphql, actions, reporter }) => {
       ns: 'tools'
     }
   })
+  createPage({
+    path:'/tools/json2type',
+    component: resolve('./src/pages/tools/Json2Type.tsx'),
+    context: {
+      ns: 'json2type'
+    }
+  })
 
   // Get all markdown blog posts sorted by date
   const result = await graphql(`

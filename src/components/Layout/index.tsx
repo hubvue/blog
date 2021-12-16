@@ -1,11 +1,15 @@
 import React, { FC } from "react"
 import TabBar from '../TabBar'
 
-const Layout: FC = ({ children }) => {
+interface Props {
+  fullScreen: boolean
+}
+
+const Layout: FC<Props> = ({ children, fullScreen }) => {
   return (
     <>
       <TabBar />
-      <main className="px-7 py-10">
+      <main className={fullScreen ? "" : "px-7 py-10"}>
         {children}
       </main>
     </>

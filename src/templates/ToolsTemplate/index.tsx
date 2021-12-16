@@ -27,7 +27,7 @@ const tools: Tool[] = [
     desc: 'A lightweight inversion of control nodejs framework based on TypeScript'
   },
   {
-    path: 'https://github.com/hubvue/json2type',
+    path: 'https://blog.cckim.cn/tools/json2type',
     name: 'json2type',
     icon: 'fluent:scan-type-20-filled',
     desc: 'convert JSON of a specific format to a type structure'

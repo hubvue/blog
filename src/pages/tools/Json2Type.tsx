@@ -99,7 +99,7 @@ const ToolsTemplate: FC<Props> = ({ pageContext }) => {
             {/* <Select.Option value="go">Go</Select.Option> */}
           </Select>
         </div>
-        <Button className="ml-4" type="primary" onClick={genClickHandler} danger>Run</Button>
+        <Button className="ml-8" type="primary" onClick={genClickHandler} danger>Run</Button>
       </div>
       <div className="flex justify-center mt-6">
         <Editor

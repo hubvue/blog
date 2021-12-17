@@ -54,7 +54,7 @@ const ToolsTemplate: FC<Props> = ({ pageContext }) => {
     headers.append('Accept', 'application/json');
     headers.append('Access-Control-Allow-Origin', '*');
     headers.append('Access-Control-Allow-Credentials', 'true');
-  
+    const hideLoading = message.loading("Loading...")
     fetch('https://api.cckim.cn/json/json2type', {
       method: 'POST',
       body: formData,
@@ -62,12 +62,14 @@ const ToolsTemplate: FC<Props> = ({ pageContext }) => {
     })
     .then(res => res.json())
     .then(data => {
+      hideLoading()
       if (data.err) {
         message.error(data.err)
       }
       setTypeValue(data.data)
     })
     .catch(err => {
+      hideLoading()
       message.error(`parser error: ${err.message}`)
     })
     
@@ -96,7 +98,7 @@ const ToolsTemplate: FC<Props> = ({ pageContext }) => {
             onChange={langChangeHandler}
           >
             <Select.Option value="typescript">Typescript</Select.Option>
-            {/* <Select.Option value="go">Go</Select.Option> */}
+            <Select.Option value="go">Go</Select.Option>
           </Select>
         </div>
         <Button className="ml-8" type="primary" onClick={genClickHandler} danger>Run</Button>

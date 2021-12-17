@@ -13,16 +13,11 @@ interface Props {
 
 
 const ToolsTemplate: FC<Props> = ({ pageContext }) => {
-  const [theme] = useSwitchTheme()
-  const [editorTheme, setEditorTheme] = useState<"vs-dark" | "light">(
-    theme === "dark" ? "vs-dark" : "light"
-  )
+  const [theme, switchTheme] = useSwitchTheme()
 
   useEffect(() => {
-    if (theme === "dark") {
-      setEditorTheme("vs-dark")
-    } else {
-      setEditorTheme("light")
+    if (theme !== "dark") {
+      switchTheme('dark')
     }
   }, [theme])
 
@@ -73,31 +68,38 @@ const ToolsTemplate: FC<Props> = ({ pageContext }) => {
       setTypeValue(data.data)
     })
     .catch(err => {
-      message.error("parser error!")
+      message.error(`parser error: ${err.message}`)
     })
     
   }
 
   return (
-    <Layout fullScreen={true}>
+    <Layout fullScreen={true} hideTabBar={true}>
+    <div className="pt-10">
       <div className="text-center text-3xl">JSON to Type</div>
       <div className="flex items-center justify-center mt-8">
-        <Input
-          className="w-52"
-          placeholder="type name"
-          value={typeName}
-          onChange={typeNameChangeHandler}
-        />
-        <Select
-          className="w-52 ml-4"
-          defaultValue="typescript"
-          value={lang}
-          onChange={langChangeHandler}
-        >
-          <Select.Option value="typescript">Typescript</Select.Option>
-          {/* <Select.Option value="go">Go</Select.Option> */}
-        </Select>
-        <Button className="ml-4" type="dashed" onClick={genClickHandler}>Run</Button>
+        <div className="flex items-center">
+          <div className="text-lg">Type Name: </div>
+          <Input
+            className="w-52 ml-2"
+            placeholder="type name"
+            value={typeName}
+            onChange={typeNameChangeHandler}
+          />
+        </div>
+        <div className="flex items-center ml-4">
+        <div className="text-lg">Language: </div>
+          <Select
+            className="w-52 ml-2"
+            defaultValue="typescript"
+            value={lang}
+            onChange={langChangeHandler}
+          >
+            <Select.Option value="typescript">Typescript</Select.Option>
+            {/* <Select.Option value="go">Go</Select.Option> */}
+          </Select>
+        </div>
+        <Button className="ml-4" type="primary" onClick={genClickHandler} danger>Run</Button>
       </div>
       <div className="flex justify-center mt-6">
         <Editor
@@ -106,17 +108,18 @@ const ToolsTemplate: FC<Props> = ({ pageContext }) => {
           defaultLanguage="json"
           value={jsonValue}
           onChange={jsonChangeHandler}
-          theme={editorTheme}
+          theme="vs-dark"
         />
         <Editor
           height="80vh"
           width="50%"
-          defaultLanguage="typescript"
+          language={lang}
           defaultValue=""
           value={typeValue}
-          theme={editorTheme}
+          theme="vs-dark"
         />
       </div>
+    </div>
     </Layout>
   )
 }

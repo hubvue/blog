@@ -3,11 +3,12 @@ import TabBar from '../TabBar'
 
 interface Props {
   fullScreen?: boolean
+  hideTabBar?: boolean
 }
-const Layout: FC<Props> = ({ children, fullScreen }) => {
+const Layout: FC<Props> = ({ children, fullScreen, hideTabBar }) => {
   return (
     <>
-      <TabBar />
+      {hideTabBar ? "" : <TabBar />}
       <main className={fullScreen ? "" : "px-7 py-10"}>
         {children}
       </main>

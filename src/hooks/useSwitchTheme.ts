@@ -37,7 +37,6 @@ export const useSwitchTheme = () => {
     bodyElement = document.querySelector('body')
   }
   useEffect(() => {
-    console.log('theme1', theme)
     if (!htmlElement || !bodyElement) {
       return
     }

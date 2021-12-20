@@ -3,7 +3,8 @@ export const formatDate = (rawDate: string): string => {
   const date = new Date(rawDate)
   const year = date.getFullYear()
   let month = padZero(date.getMonth() + 1, 2)
-  let day = padZero(date.getDay(), 2)
+
+  let day = padZero(date.getDate(), 2)
   let hour = padZero(date.getHours(), 2)
   let minute = padZero(date.getMinutes(), 2)
   let second = padZero(date.getSeconds(), 2)

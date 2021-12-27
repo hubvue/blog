@@ -17,7 +17,7 @@ const TimeLineTemplate: FC<any> = ({ data, pageContext }) => {
     const raw = post.rawBody.replace(/---[\s\S]*---/, '').trim()
     const isLangText = raw.length > 1000
     return (
-      <Timeline.Item color="gray" key={post.id}>
+      <Timeline.Item className="timeline-item" color="gray" key={post.id}>
         <Link to={slug} >
           <div className="text-2xl">{title}</div>
           <div className="my-1 italic text-gray-500">{date}</div>

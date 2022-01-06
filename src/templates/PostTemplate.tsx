@@ -1,7 +1,8 @@
 import React, { FC } from "react"
-import { navigate, graphql } from "gatsby"
+import { navigate } from "gatsby"
 import Layout from "../components/Layout/index"
 import Seo from "../components/Seo"
+import Comment from '../components/Comment'
 import { formatDate } from "../utils/date"
 
 const PostTemplate: FC<any> = ({ children, pageContext: { frontmatter } }) => {
@@ -22,6 +23,7 @@ const PostTemplate: FC<any> = ({ children, pageContext: { frontmatter } }) => {
       <footer className="prose m-auto mb-8">
         <a className="font-mono no-underline opacity-50 hover:opacity-75 cursor-pointer" onClick={goBack}>cd ..</a>
       </footer>
+      <Comment />
     </Layout>
   )
 }

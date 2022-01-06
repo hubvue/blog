@@ -17,7 +17,7 @@
     "noEmit": true,
     "skipLibCheck": true,
     "typeRoots": ["node_modules/@types"],
-    "types": ["./src/mdx.d.ts"]
+    "types": []
   },
   "include": ["src/**/*"]
 }

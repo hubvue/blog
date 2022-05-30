@@ -1,6 +1,6 @@
 const { resolve } = require('path')
 
-module.exports = ({ getConfig, actions }) => {
+module.exports = ({ getConfig, actions, stage, loaders }) => {
   const webpackConfig = getConfig()
   if (webpackConfig.mode === 'production') {
     actions.setWebpackConfig({
@@ -9,6 +9,18 @@ module.exports = ({ getConfig, actions }) => {
         alias: {
           '@': resolve(__dirname, '../')
         }
+      }
+    })
+  }
+  if (stage === 'build-html' || stage === 'develop-html') {
+    actions.setWebpackConfig({
+      module: {
+        rules: [
+          {
+            test: /bad-module/,
+            use: loaders.null()
+          }
+        ]
       }
     })
   }

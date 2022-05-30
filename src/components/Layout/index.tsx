@@ -1,8 +1,13 @@
 import React, { FC, useRef, useState, useEffect } from "react"
 import { navigate } from "gatsby"
 import TabBar from '../TabBar'
-import 'ninja-keys'
+// import 'ninja-keys'
 import { useSwitchTheme } from  "../../hooks/useSwitchTheme"
+
+// ninja-keys里用到了windows，因此在SSR时需要判断环境引入包
+if (typeof window !== 'undefined') {
+  require('ninja-keys')
+}
 
 interface Props {
   fullScreen?: boolean

@@ -55,7 +55,7 @@ const ToolsTemplate: FC<Props> = ({ pageContext }) => {
     headers.append('Access-Control-Allow-Origin', '*');
     headers.append('Access-Control-Allow-Credentials', 'true');
     const hideLoading = message.loading("Loading...")
-    fetch('https://api.cckim.cn/json/json2type', {
+    fetch('https://api.cckim.cn/common/json/json2type', {
       method: 'POST',
       body: formData,
       headers

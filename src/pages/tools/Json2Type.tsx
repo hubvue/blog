@@ -52,11 +52,10 @@ const ToolsTemplate: FC<Props> = ({ pageContext }) => {
 
     const headers = new Headers()
     headers.append('Accept', 'application/json');
-    headers.append('Content-Type', "application/x-www-form-urlencoded")
     headers.append('Access-Control-Allow-Origin', '*');
     headers.append('Access-Control-Allow-Credentials', 'true');
     const hideLoading = message.loading("Loading...")
-    fetch('https://api.cckim.cn/common/json/json2type', {
+    fetch('https://api.cckim.cn/tools/json2type', {
       method: 'POST',
       body: formData,
       headers

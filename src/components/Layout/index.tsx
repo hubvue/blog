@@ -61,14 +61,14 @@ const Layout: FC<Props> = ({ children, fullScreen, hideTabBar }) => {
         navigate('/notes')
       },
     },
-    {
-      id: "Essay",
-      title: "Open Essay",
-      hotkey: "cmd+e",
-      handler: () => {
-        navigate('/essay')
-      },
-    },
+    // {
+    //   id: "Essay",
+    //   title: "Open Essay",
+    //   hotkey: "cmd+e",
+    //   handler: () => {
+    //     navigate('/essay')
+    //   },
+    // },
     {
       id: "Tools",
       title: "Open Tools",

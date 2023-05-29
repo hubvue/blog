@@ -18,9 +18,9 @@ const NAME_TO_META: Record<string, PathMeta> = {
   'Notes': {
     path: '/notes'
   },
-  'Essay': {
-    path: '/essay'
-  },
+  // 'Essay': {
+  //   path: '/essay'
+  // },
   'Tools': {
     path: '/tools',
     icon: 'fluent:window-dev-tools-24-regular'

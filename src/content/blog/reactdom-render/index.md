@@ -32,8 +32,8 @@ tags:
 在写 React 的时候，无论是使用 create-react-app 生成的项目还是使用 webpack 自己搭建的项目，基本上都会接触到一个方法
 
 ```jsx
-import { render } from 'react-dom'
-render(<App />, document.querySelector('#root'))
+import { render } from "react-dom";
+render(<App />, document.querySelector("#root"));
 ```
 
 这个 render 函数到底干了什么呢？接下来我们一起来深入源码揭开它神秘的面纱。
@@ -137,17 +137,17 @@ function legacyRenderSubtreeIntoContainer(
 ```js
 function legacyCreateRootFromDOMContainer(container, forceHydrate) {
   const shouldHydrate =
-    forceHydrate || shouldHydrateDueToLegacyHeuristic(container)
+    forceHydrate || shouldHydrateDueToLegacyHeuristic(container);
   if (!shouldHydrate) {
-    let warned = false
-    let rootSibling
+    let warned = false;
+    let rootSibling;
     while ((rootSibling = container.lastChild)) {
       // 这里就是清理操作
-      container.removeChild(rootSibling)
+      container.removeChild(rootSibling);
     }
   }
-  const isConcurrent = false
-  return new ReactRoot(container, isConcurrent, shouldHydrate)
+  const isConcurrent = false;
+  return new ReactRoot(container, isConcurrent, shouldHydrate);
 }
 ```
 

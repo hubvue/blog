@@ -38,9 +38,9 @@ _需要注意的是：在 dts-test 下建立测试文件的时候不要以`index
 ```ts
 declare type HocFunType = <T extends (...args: any[]) => any>(
   fn: T
-) => (...args: Parameters<T>) => ReturnType<T>
-export declare const hocFun: HocFunType
-export {}
+) => (...args: Parameters<T>) => ReturnType<T>;
+export declare const hocFun: HocFunType;
+export {};
 ```
 
 上面写了一个高阶函数的类型声明，由于是高阶函数最终直接结果的类型依赖于参数函数的类型，所以我们就去测试类型的准确性。
@@ -50,13 +50,13 @@ export {}
 expectType 用于检测 value 的类型是否与泛型 T 的类型相同，并且是严格检测。
 
 ```ts
-describe('expectType', () => {
-  const add = (a: number, b: number) => a + b
-  const addStr = (a: number, b: number) => String(a + b)
-  expectType<(a: number, b: number) => number>(hocFun(add)) //pass
-  expectType<(a: number, b: number) => string>(hocFun(addStr)) //pass
-  expectType<(a: number, b: number) => number | string>(hocFun(add)) //fail
-})
+describe("expectType", () => {
+  const add = (a: number, b: number) => a + b;
+  const addStr = (a: number, b: number) => String(a + b);
+  expectType<(a: number, b: number) => number>(hocFun(add)); //pass
+  expectType<(a: number, b: number) => string>(hocFun(addStr)); //pass
+  expectType<(a: number, b: number) => number | string>(hocFun(add)); //fail
+});
 ```
 
 **expectNotType<T>(value)**
@@ -64,11 +64,11 @@ describe('expectType', () => {
 expectNotType 用于检测 value 的类型是否与泛型 T 的类型不同，并且是严格检测
 
 ```ts
-describe('expectNotType', () => {
-  const add = (a: number, b: string) => a + b
-  expectNotType<(a: number, b: string) => string>(hocFun(add)) //fail
-  expectNotType<(a: number, b: string) => number>(hocFun(add)) //pass
-})
+describe("expectNotType", () => {
+  const add = (a: number, b: string) => a + b;
+  expectNotType<(a: number, b: string) => string>(hocFun(add)); //fail
+  expectNotType<(a: number, b: string) => number>(hocFun(add)); //pass
+});
 ```
 
 **expectAssignable<T>(value)**
@@ -76,11 +76,11 @@ describe('expectNotType', () => {
 expectAssignable 用于检测 value 的类型是否可分配给泛型 T
 
 ```ts
-describe('expectAssignable', () => {
-  const add = (a: number, b: string) => a + b
-  expectAssignable<(a: number, b: string) => string>(hocFun(add)) //pass
-  expectAssignable<(a: number, b: string) => string | number>(hocFun(add)) //pass
-})
+describe("expectAssignable", () => {
+  const add = (a: number, b: string) => a + b;
+  expectAssignable<(a: number, b: string) => string>(hocFun(add)); //pass
+  expectAssignable<(a: number, b: string) => string | number>(hocFun(add)); //pass
+});
 ```
 
 **expectNotAssignable<T>(value)**
@@ -88,12 +88,12 @@ describe('expectAssignable', () => {
 expectNotAssignable 用户检测 value 的类型是否可分配给泛型 T，如果可分配，抛出测试错误。
 
 ```ts
-describe('expectNotAssignable', () => {
-  const add = (a: number, b: string) => a + b
-  expectNotAssignable<(a: number, b: string) => number>(hocFun(add)) //pass
-  expectNotAssignable<(a: number, b: string) => string>(hocFun(add)) //fail
-  expectNotAssignable<(a: number, b: string) => string | number>(hocFun(add)) //fail
-})
+describe("expectNotAssignable", () => {
+  const add = (a: number, b: string) => a + b;
+  expectNotAssignable<(a: number, b: string) => number>(hocFun(add)); //pass
+  expectNotAssignable<(a: number, b: string) => string>(hocFun(add)); //fail
+  expectNotAssignable<(a: number, b: string) => string | number>(hocFun(add)); //fail
+});
 ```
 
 **expectError<T>(value)**
@@ -101,13 +101,13 @@ describe('expectNotAssignable', () => {
 value 可以是函数也可以是值，当 value 是函数的时候检测函数的参数类型是否错误，且只有参数类型正确的时候会抛出错误；当 value 是值的时候检测 value 的类型是否和泛型 T 的类型相同，且只有当类型相同的时候回抛出错误。
 
 ```ts
-describe('expectError', () => {
-  const add = (a: number, b: string) => a + b
-  expectError(add(1, '12')) //fail
-  expectError(add(1, 2)) //pass
-  expectError<string>(add(1, '123')) //fail
-  expectError<number>(add(1, '123')) //pass
-})
+describe("expectError", () => {
+  const add = (a: number, b: string) => a + b;
+  expectError(add(1, "12")); //fail
+  expectError(add(1, 2)); //pass
+  expectError<string>(add(1, "123")); //fail
+  expectError<number>(add(1, "123")); //pass
+});
 ```
 
 **expectDeprecated(value)**
@@ -115,18 +115,18 @@ describe('expectError', () => {
 expectDeprecated 用于检测该值是否标记为`@deprecated`
 
 ```ts
-describe('expectDeprecated', () => {
-  expectDeprecated(hocFun) //fail
-})
+describe("expectDeprecated", () => {
+  expectDeprecated(hocFun); //fail
+});
 ```
 
 **expectNotDeprecated(value)**
 expectNotDeprecated 用于检测该值是否没有被标记为`@deprecated`
 
 ```ts
-describe('expectNotDeprecated', () => {
-  expectNotDeprecated(hocFun) //pass
-})
+describe("expectNotDeprecated", () => {
+  expectNotDeprecated(hocFun); //pass
+});
 ```
 
 ### 思考 🤔

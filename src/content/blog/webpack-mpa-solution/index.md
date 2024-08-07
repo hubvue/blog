@@ -16,10 +16,10 @@ tags:
 ```js
 module.exports = {
   entry: {
-    index: './src/index.js',
-    about: './src/index.js'
-  }
-}
+    index: "./src/index.js",
+    about: "./src/index.js",
+  },
+};
 ```
 
 上面我们配置了两个入口，如果是打包多页，那么必然会有两个`HTMLWebpackPlugin`去配置 html。
@@ -28,15 +28,15 @@ module.exports = {
 module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
-      filename: 'index.html',
-      template: './src/index.html'
+      filename: "index.html",
+      template: "./src/index.html",
     }),
     new HtmlWebpackPlugin({
-      filename: 'about.html',
-      template: './src/about.html'
-    })
-  ]
-}
+      filename: "about.html",
+      template: "./src/about.html",
+    }),
+  ],
+};
 ```
 
 像上面这些配置，我们配置了两个页面，但是如果后面要继续添加需求的话，我们还是要手动的去配置新的页面。回想一下我们使用 webpack 的目的是什么：配置工程化，解放双手。多页很显然就违背了我们的理念，那么有什么方法解决这样的问题吗？很显然是有的。
@@ -65,25 +65,25 @@ src/pages/about/index.js
 
 ```js
 const setMpa = () => {
-  let htmlPlugins = []
-  let entrys = {}
-  const files = glob.sync(resolve('src/pages/**/*.js'))
+  let htmlPlugins = [];
+  let entrys = {};
+  const files = glob.sync(resolve("src/pages/**/*.js"));
   for (let file of files) {
-    let pageName = file.match(/pages\/[\w\W]*(?=\/index.js)/)[0].split('/')[1]
-    entrys[pageName] = `./src/pages/${pageName}/index.js`
+    let pageName = file.match(/pages\/[\w\W]*(?=\/index.js)/)[0].split("/")[1];
+    entrys[pageName] = `./src/pages/${pageName}/index.js`;
     htmlPlugins.push(
       new HtmlWebpackPlugin({
         template: `./src/pages/${pageName}/index.html`,
         filename: `pages/${pageName}.html`,
-        chunks: [pageName]
+        chunks: [pageName],
       })
-    )
+    );
   }
   return {
     entrys,
-    htmlPlugins
-  }
-}
+    htmlPlugins,
+  };
+};
 ```
 
 我们就可以写这样一个函数，通过正则拿到不同，动态的去配置 entry 和 HtmlWebpackPlugin。
@@ -91,15 +91,15 @@ const setMpa = () => {
 执行这个函数就可以得到 entrys 和 htmlPlugins
 
 ```js
-const { entrys, htmlPlugins } = setMpa()
+const { entrys, htmlPlugins } = setMpa();
 
 module.exports = {
   entry: entrys,
   plugins: [
     new webpack.optimize.ModuleConcatenationPlugin(),
-    new CleanWebpackPlugin()
-  ].concat(htmlPlugins)
-}
+    new CleanWebpackPlugin(),
+  ].concat(htmlPlugins),
+};
 ```
 
 这样之后要添加新页面，只要按照目录的规则去添加，不再需要修改配置了 😁。

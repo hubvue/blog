@@ -14,17 +14,17 @@ tags:
 
 ```ts
 interface DogInterface {
-  run(): void
+  run(): void;
 }
 interface CatInterface {
-  jump(): void
+  jump(): void;
 }
 // 定义一个交叉类型
-type Animal = DogInterface & CatInterface
+type Animal = DogInterface & CatInterface;
 let animal: Animal = {
   run() {},
-  jump() {}
-}
+  jump() {},
+};
 ```
 
 上面定义了两个接口类型`DogInterface`、`CatInterface`，然后定义了`Animal`交叉类型，定义`animal`的类型为`Animal`,因此 animal 这个对象必须实现两个接口类型中所有的属性和方法。
@@ -33,9 +33,9 @@ let animal: Animal = {
 
 ```ts
 function extend<T, U>(first: T, second: U): T & U {
-  let result: T & U = {}
+  let result: T & U = {};
   //.....一些操作
-  return result
+  return result;
 }
 ```
 

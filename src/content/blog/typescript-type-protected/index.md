@@ -13,24 +13,24 @@ tags:
 ```ts
 enum Animal {
   Dog,
-  Cat
+  Cat,
 }
 class Dog {
   dogSay() {
-    console.log('汪汪汪')
+    console.log("汪汪汪");
   }
 }
 class Cat {
   catSay() {
-    console.log('喵喵喵')
+    console.log("喵喵喵");
   }
 }
 function animalSay(animal: Animal) {
-  let animal = animale === Animal.Dog ? new Dog() : new Cat()
+  let animal = animale === Animal.Dog ? new Dog() : new Cat();
   if (animal.dogSay) {
-    animal.dogSay()
+    animal.dogSay();
   } else {
-    animal.catSay()
+    animal.catSay();
   }
 }
 ```
@@ -49,11 +49,11 @@ function animalSay(animal: Animal) {
 
 ```ts
 function animalSay(animal: Animal) {
-  let animal = animal === Animal.Dog ? new Dog() : new Cat()
+  let animal = animal === Animal.Dog ? new Dog() : new Cat();
   if ((animal as Dog).dogSay) {
-    ;(animal as Dog).dogSay()
+    (animal as Dog).dogSay();
   } else {
-    ;(animal as Cat).catSay()
+    (animal as Cat).catSay();
   }
 }
 ```
@@ -77,11 +77,11 @@ function animalSay(animal: Animal) {
 
 ```ts
 function animalSay(animal: Animal) {
-  let animal = animal === Animal.Dog ? new Dog() : new Cat()
+  let animal = animal === Animal.Dog ? new Dog() : new Cat();
   if (animal instanceof Dog) {
-    animal.dogSay()
+    animal.dogSay();
   } else {
-    animal.catSay()
+    animal.catSay();
   }
 }
 ```
@@ -93,22 +93,22 @@ in 运算符的作用是判断一个属性是否存在于一个对象身上。�
 ```ts
 class Dog {
   dogSay() {
-    console.log('汪汪汪')
+    console.log("汪汪汪");
   }
-  isDog: true
+  isDog: true;
 }
 class Cat {
   catSay() {
-    console.log('喵喵喵')
+    console.log("喵喵喵");
   }
-  isCat: true
+  isCat: true;
 }
 function animalSay(animal: Animal) {
-  let animal = animal === Animal.Dog ? new Dog() : new Cat()
-  if ('isDog' in animal) {
-    animal.dogSay()
+  let animal = animal === Animal.Dog ? new Dog() : new Cat();
+  if ("isDog" in animal) {
+    animal.dogSay();
   } else {
-    animal.catSay()
+    animal.catSay();
   }
 }
 ```
@@ -121,10 +121,10 @@ typeof 运算符并不能用于上面例子，因为都是 Object 类型，它�
 
 ```ts
 function log(value: string | number) {
-  if (typeof value === 'number') {
-    console.log(value.toFixed(2))
+  if (typeof value === "number") {
+    console.log(value.toFixed(2));
   } else {
-    console.log(value.length)
+    console.log(value.length);
   }
 }
 ```
@@ -137,7 +137,7 @@ function log(value: string | number) {
 
 ```ts
 function isDog(animal: Dog | Cat): animal is Dog {
-  return (animal as Dog).dogSay !== undefined
+  return (animal as Dog).dogSay !== undefined;
 }
 ```
 
@@ -145,11 +145,11 @@ function isDog(animal: Dog | Cat): animal is Dog {
 
 ```ts
 function animalSay(animal: Animal) {
-  let animal = animal === Animal.Dog ? new Dog() : new Cat()
+  let animal = animal === Animal.Dog ? new Dog() : new Cat();
   if (isDog(animal)) {
-    animal.dogSay()
+    animal.dogSay();
   } else {
-    animal.catSay()
+    animal.catSay();
   }
 }
 ```

@@ -17,9 +17,9 @@ Vue 的插件机制就是一个 API，即`Vue.use()`。
 当我们在项目中使用 Vuex 的时候，肯定会写这样一段代码。
 
 ```js
-import Vuex from 'vuex'
+import Vuex from "vuex";
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 ```
 
 没有看过原理之前一直都觉得`Vue.use`这个 API 好强大，就 use 了一下，就可以在整个项目中使用 Vuex。现在看了一下源码，也不过尔尔。
@@ -56,13 +56,14 @@ Vue.use = function (plugin: Function | Object) {
 首先对于来注册的第三方插件，只能注册一次，不可以重复注册，从下面代码中可以找到答案。
 
 ```js
-const installedPlugins = this._installedPlugins || (this._installedPlugins = [])
+const installedPlugins =
+  this._installedPlugins || (this._installedPlugins = []);
 if (installedPlugins.indexOf(plugin) > -1) {
-  return this
+  return this;
 }
 //.........code
 
-installedPlugins.push(plugin)
+installedPlugins.push(plugin);
 ```
 
 Vue 中维护了一个插件池`_installedPlugins`，先判断当前注册的插件在插件池中是否存在：如果存在直接放弃本地注册；如果不存在执行逻辑，最后把这个插件放入到插件池中。
@@ -70,8 +71,8 @@ Vue 中维护了一个插件池`_installedPlugins`，先判断当前注册的插
 然后获取到`Vue.use`方法的 arguments，我们都知道 arguments 是一个类数组，将它转换成数据，将 Vue 放在数组的最前面。
 
 ```js
-const args = toArray(arguments, 1)
-args.unshift(this)
+const args = toArray(arguments, 1);
+args.unshift(this);
 ```
 
 由于本次调用时`Vue.use`，那么 use 函数中的 this 就是指向的 Vue。
@@ -79,10 +80,10 @@ args.unshift(this)
 最后就是注册了
 
 ```js
-if (typeof plugin.install === 'function') {
-  plugin.install.apply(plugin, args)
-} else if (typeof plugin === 'function') {
-  plugin.apply(null, args)
+if (typeof plugin.install === "function") {
+  plugin.install.apply(plugin, args);
+} else if (typeof plugin === "function") {
+  plugin.apply(null, args);
 }
 ```
 

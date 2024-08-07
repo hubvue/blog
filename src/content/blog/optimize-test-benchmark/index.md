@@ -25,11 +25,11 @@ Benchmark 是 Node.js 上比较流行的性能测试工具，其链式调用的 
 我们来对上面三个方式写三个方法：
 
 ```js
-exports.useAdd = (str) => +str
+exports.useAdd = str => +str;
 
-exports.useParseInt = (str) => parseInt(str, 10)
+exports.useParseInt = str => parseInt(str, 10);
 
-exports.useNumber = (str) => Number(str)
+exports.useNumber = str => Number(str);
 ```
 
 **安装 benchmark.js**
@@ -39,37 +39,37 @@ exports.useNumber = (str) => Number(str)
 引入 benchmark 并实例化 Suite 类
 
 ```js
-const Benchmark = require('benchmark')
-const suite = new Benckmark.Suite()
+const Benchmark = require("benchmark");
+const suite = new Benckmark.Suite();
 ```
 
 开始写测试用例
 
 ```js
-const { useAdd, useNumber, useParseInt } = require('./string2number.js')
-const Benchmark = require('benchmark')
-const suite = new Benckmark.Suite()
-const number = '100'
+const { useAdd, useNumber, useParseInt } = require("./string2number.js");
+const Benchmark = require("benchmark");
+const suite = new Benckmark.Suite();
+const number = "100";
 
 //测试用例
 suite
-  .add('+', () => {
-    useAdd(number)
+  .add("+", () => {
+    useAdd(number);
   })
-  .add('parseInt', () => {
-    useParseInt(number)
+  .add("parseInt", () => {
+    useParseInt(number);
   })
-  .add('Number', () => {
-    useNumber(number)
+  .add("Number", () => {
+    useNumber(number);
   })
-  .on('cycle', (event) => {
+  .on("cycle", event => {
     //测试跑完输出数据
-    console.log(String(event.target))
+    console.log(String(event.target));
   })
-  .on('complete', function () {
-    console.log(`Fastest is ${this.filter('fastest').map('name')}`)
+  .on("complete", function () {
+    console.log(`Fastest is ${this.filter("fastest").map("name")}`);
   })
-  .run({ async: true })
+  .run({ async: true });
 ```
 
 上面在 suite 实例了使用了三个方法，分别是：add、on、run。

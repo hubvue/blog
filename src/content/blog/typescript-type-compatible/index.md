@@ -14,13 +14,13 @@ TS 在增强 JS 类型的稳定性的同时也不失增加类型的灵活性，T
 
 ```ts
 interface Named {
-  name: string
+  name: string;
 }
 class Person {
-  name: string
+  name: string;
 }
-let p: Named
-p = new Person()
+let p: Named;
+p = new Person();
 ```
 
 在使用名义类型系统的语言中，上面代码是报错的，因为 Person 类没有明确说明其实现了 Named 接口。
@@ -36,8 +36,8 @@ TS 的结构性子类型更亲 JS 代码的书写方式，因为在 JS 中广泛
 例如下面 🌰：
 
 ```ts
-let s: stirng = 'a'
-s = null
+let s: stirng = "a";
+s = null;
 ```
 
 上面代码我们就可以说 string 类型是兼容 null 类型的。
@@ -48,18 +48,18 @@ s = null
 
 ```ts
 interface X {
-  a: any
-  b: any
+  a: any;
+  b: any;
 }
 interface Y {
-  a: any
-  b: any
-  c: any
+  a: any;
+  b: any;
+  c: any;
 }
-let x: X = { a: 1, b: 2 }
+let x: X = { a: 1, b: 2 };
 
-let y: Y = { a: 1, b: 2, c: 3 }
-x = y
+let y: Y = { a: 1, b: 2, c: 3 };
+x = y;
 ```
 
 > note:当接口 X 的属性集是接口 Y 的属性集的子集，那么 X 兼容 Y
@@ -86,8 +86,8 @@ let handler2 = (a: number, b:number) = {}
 例如上面 handler1 函数有一个参数，handler 函数有两个参数，那么 handler2 是兼容 hander1 的，handler1 不兼容 handler2
 
 ```ts
-handler2 = handler1 //✅
-handler1 = handler2 //❌
+handler2 = handler1; //✅
+handler1 = handler2; //❌
 ```
 
 当函数中存在可选参数和剩余参数时，有以下结论：
@@ -103,15 +103,15 @@ handler1 = handler2 //❌
 先来看一个简单类型的 🌰：
 
 ```ts
-let handler1 = (a: number) => {}
-let handler2 = (a: string) => {}
+let handler1 = (a: number) => {};
+let handler2 = (a: string) => {};
 ```
 
 上面两个函数 handler1 和 handler2 由于参数类型不同不兼容。
 
 ```ts
-handler1 = handler2 //❌
-handler2 = handler1 //❌
+handler1 = handler2; //❌
+handler2 = handler1; //❌
 ```
 
 再来看一个复杂类型的 🌰，如果两个函数的参数类型都是对象：
@@ -141,15 +141,15 @@ p2d = p3d //❌
 目标函数的返回值类型必须于源函数返回值类型或者为其子类型（这里的子类型表示结构上的子集）,例如下面两个函数
 
 ```ts
-let a = () => ({ name: 'Wang' })
-let b = () => ({ name: 'Wang', location: 'Beijing' })
+let a = () => ({ name: "Wang" });
+let b = () => ({ name: "Wang", location: "Beijing" });
 ```
 
 此时 a 函数是兼容 b 函数的，而 b 函数则不兼容 a 函数
 
 ```ts
-a = b //✅
-b = a //❌
+a = b; //✅
+b = a; //❌
 ```
 
 只要满足以上三种规则，那么讲个函数类型就是相互兼容。
@@ -157,10 +157,10 @@ b = a //❌
 除此之外函数的重载也是函数类型兼容性的一种体现。例如下面这个函数重载：
 
 ```ts
-function overload(a: number, b: number): number
-function overload(a: string, b: string): string
+function overload(a: number, b: number): number;
+function overload(a: string, b: string): string;
 function overload(a: any, b: any): any {
-  console.log(a, b)
+  console.log(a, b);
 }
 ```
 
@@ -178,12 +178,12 @@ overload 函数列表中的函数为目标函数，具体实现为源函数，�
 ```ts
 enum Fruit {
   Apple,
-  Banana
+  Banana,
 }
-let apple: Fruit = Fruit.Apple
-let n = 123
-apple = n //✅
-n = apple //✅
+let apple: Fruit = Fruit.Apple;
+let n = 123;
+apple = n; //✅
+n = apple; //✅
 ```
 
 枚举类型与枚举类型
@@ -191,17 +191,17 @@ n = apple //✅
 ```ts
 enum Fruit {
   Apple,
-  Banana
+  Banana,
 }
 enum Colors {
   Green,
-  Red
+  Red,
 }
-let apple = Fruit.Apple
-let red = Colors.Red
+let apple = Fruit.Apple;
+let red = Colors.Red;
 
-apple = red //❌
-red = apple //❌
+apple = red; //❌
+red = apple; //❌
 ```
 
 ### 类的兼容性
@@ -213,16 +213,16 @@ red = apple //❌
 ```ts
 class A {
   constructor(a: number) {}
-  id: number = 1
+  id: number = 1;
 }
 class B {
   constructor(a: number, b: number) {}
-  id: number = 2
+  id: number = 2;
 }
-let a = A(1)
-let b = B(1, 2)
-a = b //✅
-b = a //✅
+let a = A(1);
+let b = B(1, 2);
+a = b; //✅
+b = a; //✅
 ```
 
 **存在私有成员的情况**
@@ -230,21 +230,21 @@ b = a //✅
 ```ts
 class A {
   constructor(a: number) {}
-  id: number = 1
-  private name: string = 'wang'
+  id: number = 1;
+  private name: string = "wang";
 }
 class B {
   constructor(a: number, b: number) {}
-  id: number = 2
+  id: number = 2;
 }
 class C extends A {}
-let a = A(1)
-let b = B(1, 2)
-let c = C(1)
-a = b //❌
-b = a //❌
-a = c //✅
-c = a //✅
+let a = A(1);
+let b = B(1, 2);
+let c = C(1);
+a = b; //❌
+b = a; //❌
+a = c; //✅
+c = a; //✅
 ```
 
 ### 泛型兼容性
@@ -257,38 +257,38 @@ c = a //✅
 
 ```ts
 interface Empty<T> {
-  value: string
-  key: string
+  value: string;
+  key: string;
 }
 ```
 
 上面定义了一个 Empty 泛型接口，但是接口内的属性并没有使用到泛型 T。
 
 ```ts
-let obj1: Empty<string> = { key: 'key', value: 'value' }
-let obj2: Empty<number> = { key: 'key1', value: 'value1' }
+let obj1: Empty<string> = { key: "key", value: "value" };
+let obj2: Empty<number> = { key: "key1", value: "value1" };
 //此时两个对象是相互兼容的
-obj1 = obj2 //✅
-obj2 = obj1 //✅
+obj1 = obj2; //✅
+obj2 = obj1; //✅
 ```
 
 如果有使用到泛型 T，例如下面这个 🌰：
 
 ```ts
 interface Empty<T> {
-  value: T
-  key: T
+  value: T;
+  key: T;
 }
 ```
 
 上面 Empty 泛型接口中的属性都用到了泛型 T。
 
 ```ts
-let obj1: Empty<string> = { key: 'key', value: 'value' }
-let obj2: Empty<number> = { key: 1, value: 123 }
+let obj1: Empty<string> = { key: "key", value: "value" };
+let obj2: Empty<number> = { key: 1, value: 123 };
 //此时两个对象是相互兼容的
-obj1 = obj2 //❌
-obj2 = obj1 //❌
+obj1 = obj2; //❌
+obj2 = obj1; //❌
 ```
 
 **泛型函数**
@@ -296,13 +296,13 @@ obj2 = obj1 //❌
 
 ```ts
 let a = <T>(x: T): T => {
-  console.log('x')
-  return x
-}
+  console.log("x");
+  return x;
+};
 let b = <T>(y: T): T => {
-  console.log('y')
-  return y
-}
-a = b //✅
-b = a //✅
+  console.log("y");
+  return y;
+};
+a = b; //✅
+b = a; //✅
 ```

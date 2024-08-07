@@ -8,7 +8,6 @@ tags:
   - Vue
 ---
 
-
 ### 前言
 
 Mixin 也就是混入的意思，就是说通过某种方式将一个对象的一些属性，混入到目标对象身上。对于我个人来说，其实并不太喜欢 Mixin 这是方式的，因为它对开发者来说是透明的，我们不知道什么时候同事去绑定了一个全局的 Mixin，当然用的好那肯定是不方便的，也无奈 Vue 的 Mixin 机制那么强大，所以就驱使我来深入了解它。
@@ -79,8 +78,8 @@ export function mergeOptions(
 首先我们看到 mergeOptions 函数传过来的前两个参数为`parent`和`child`，通过 mixin 里面的调用，我们可以知道要把`child`上的属性 merge 到`parent`上
 
 ```js
-if (process.env.NODE_ENV !== 'production') {
-  checkComponents(child)
+if (process.env.NODE_ENV !== "production") {
+  checkComponents(child);
 }
 ```
 
@@ -89,17 +88,17 @@ if (process.env.NODE_ENV !== 'production') {
 child 也可以是一个方法，如果是一个方法，那么就可以认为这是一个组件，重新赋值 child 为 child.options，下面是源码。
 
 ```js
-if (typeof child === 'function') {
-  child = child.options
+if (typeof child === "function") {
+  child = child.options;
 }
 ```
 
 接下来这段代码用于规范化 Props、Inject 已经 Directives。
 
 ```js
-normalizeProps(child, vm)
-normalizeInject(child, vm)
-normalizeDirectives(child)
+normalizeProps(child, vm);
+normalizeInject(child, vm);
+normalizeDirectives(child);
 ```
 
 我们都知道这三个东西在开发过程中有多种形式存在，就拿最常用的 Props 来说，props 可以是对象也可以是数组，例如：
@@ -169,11 +168,11 @@ function normalizeProps(options: Object, vm: ?Component) {
 ```js
 if (!child._base) {
   if (child.extends) {
-    parent = mergeOptions(parent, child.extends, vm)
+    parent = mergeOptions(parent, child.extends, vm);
   }
   if (child.mixins) {
     for (let i = 0, l = child.mixins.length; i < l; i++) {
-      parent = mergeOptions(parent, child.mixins[i], vm)
+      parent = mergeOptions(parent, child.mixins[i], vm);
     }
   }
 }
@@ -184,19 +183,19 @@ if (!child._base) {
 最后就是这部分合并逻辑
 
 ```js
-const options = {}
-let key
+const options = {};
+let key;
 for (key in parent) {
-  mergeField(key)
+  mergeField(key);
 }
 for (key in child) {
   if (!hasOwn(parent, key)) {
-    mergeField(key)
+    mergeField(key);
   }
 }
 function mergeField(key) {
-  const strat = strats[key] || defaultStrat
-  options[key] = strat(parent[key], child[key], vm, key)
+  const strat = strats[key] || defaultStrat;
+  options[key] = strat(parent[key], child[key], vm, key);
 }
 ```
 
@@ -215,7 +214,7 @@ defaultStart 只是一个简单的选取函数，判断如果 childVal 不存在
 ```js
 for (key in child) {
   if (!hasOwn(parent, key)) {
-    mergeField(key)
+    mergeField(key);
   }
 }
 ```
@@ -225,7 +224,7 @@ for (key in child) {
 上面说了`defaultStart`这个取值函数，对于 start 还有一个判断的逻辑
 
 ```js
-const strat = strats[key] || defaultStrat
+const strat = strats[key] || defaultStrat;
 ```
 
 这里做的是它会根据一些特定的 key 来使用一些特定的函数去处理，例如：`data`，生命周期，特定的`component，directive，filter`，`watch`，`props`，`provide`，``methods`，`inject`，`computed`等等

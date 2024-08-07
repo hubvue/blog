@@ -22,10 +22,10 @@ tags:
 
 ```ts
 function getValue(value: any) {
-  if (typeof value === 'number') {
-    return value.toFixed(2)
+  if (typeof value === "number") {
+    return value.toFixed(2);
   } else {
-    return value.length
+    return value.length;
   }
 }
 ```
@@ -36,10 +36,10 @@ function getValue(value: any) {
 
 ```ts
 function getValue(value: string | number) {
-  if (typeof value === 'number') {
-    return value.toFixed(2)
+  if (typeof value === "number") {
+    return value.toFixed(2);
   } else {
-    return value.length
+    return value.length;
   }
 }
 ```
@@ -56,10 +56,10 @@ function getValue(value: string | number) {
 类型式是定义一个类型为联合类型，所定义值的类型只能是联合类型中的一种。
 
 ```ts
-type Type = string | number | boolean
-let typeString: Type = '1'
-let typeNumber: Type = 1
-let typeBoolean: Type = true
+type Type = string | number | boolean;
+let typeString: Type = "1";
+let typeNumber: Type = 1;
+let typeBoolean: Type = true;
 ```
 
 **字面量式**
@@ -67,8 +67,8 @@ let typeBoolean: Type = true
 字面量式联合类型主要用于限制取值。如果一个变量的类型是字面量联合类型，那么这个变量的取值只能是联合类型中的一个。
 
 ```ts
-type Tag = 'a' | 'b' | 'c'
-let tag: Tag
+type Tag = "a" | "b" | "c";
+let tag: Tag;
 ```
 
 此时 tag 的取值只能是`a` 、`b` 、`c`。
@@ -106,11 +106,11 @@ function getPet(master: Dog | Cat) {
 
 ```ts
 function getPet(master: Dog | Cat) {
-  master.eat()
+  master.eat();
   if (master instanceof Dog) {
-    master.run()
+    master.run();
   } else {
-    master.jump()
+    master.jump();
   }
 }
 ```
@@ -157,10 +157,10 @@ function area(s: Shape) {
 
 ```ts
 interface Circle {
-  kind: 'circle'
-  r: number
+  kind: "circle";
+  r: number;
 }
-type Shape = Square | Rectangle | Circle
+type Shape = Square | Rectangle | Circle;
 ```
 
 加了一个`Circle`接口类型，但是 area 函数中的类型保护区块中并没有报出增加类型的错误，也就是没有检测出来。
@@ -172,16 +172,16 @@ type Shape = Square | Rectangle | Circle
 ```ts
 function area(s: Shape) {
   switch (s.kind) {
-    case 'square':
-      return s.size * s.size
-    case 'rectangle':
-      return s.height * s.width
-    case 'circle':
-      return Math.PI * s.r
+    case "square":
+      return s.size * s.size;
+    case "rectangle":
+      return s.height * s.width;
+    case "circle":
+      return Math.PI * s.r;
     default:
       return ((e: never) => {
-        throw new Error(e)
-      })(s)
+        throw new Error(e);
+      })(s);
   }
 }
 ```

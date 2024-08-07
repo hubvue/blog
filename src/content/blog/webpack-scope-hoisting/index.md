@@ -17,92 +17,92 @@ webpack 万物皆模块的理念，每一个 js 都是一个 JavaScript 模块�
 
 ```js
 //add.js
-export default (a, b) => a + b
+export default (a, b) => a + b;
 ```
 
 ```js
 // sum.js
-export default (arr) => arr.reduce((pre, item) => pre + item, 0)
+export default arr => arr.reduce((pre, item) => pre + item, 0);
 ```
 
 ```js
 //index.js
-import sum from './sum'
-import add from './add'
+import sum from "./sum";
+import add from "./add";
 
 let a = 1,
   b = 2,
-  arr = [1, 2, 3, 4, 5]
+  arr = [1, 2, 3, 4, 5];
 
-console.log(add(a, b))
-console.log(sum(arr))
+console.log(add(a, b));
+console.log(sum(arr));
 ```
 
 打出来的代码如下(删除一些无用的代码)：
 
 ```js
-;(function (modules) {
-  var installedModules = {}
+(function (modules) {
+  var installedModules = {};
   function __webpack_require__(moduleId) {
     if (installedModules[moduleId]) {
-      return installedModules[moduleId].exports
+      return installedModules[moduleId].exports;
     }
     var module = (installedModules[moduleId] = {
       i: moduleId,
       l: false,
-      exports: {}
-    })
+      exports: {},
+    });
     modules[moduleId].call(
       module.exports,
       module,
       module.exports,
       __webpack_require__
-    )
-    module.l = true
-    return module.exports
+    );
+    module.l = true;
+    return module.exports;
   }
 
-  return __webpack_require__((__webpack_require__.s = './src/index.js'))
+  return __webpack_require__((__webpack_require__.s = "./src/index.js"));
 })({
-  /***/ './src/add.js': /***/ function (
+  /***/ "./src/add.js": /***/ function (
     module,
     __webpack_exports__,
     __webpack_require__
   ) {
-    'use strict'
+    "use strict";
     eval(
       '__webpack_require__.r(__webpack_exports__);\n// add.js\n/* harmony default export */ __webpack_exports__["default"] = ((a, b) => a + b);\n\n\n//# sourceURL=webpack:///./src/add.js?'
-    )
+    );
 
     /***/
   },
 
-  /***/ './src/index.js': /***/ function (
+  /***/ "./src/index.js": /***/ function (
     module,
     __webpack_exports__,
     __webpack_require__
   ) {
-    'use strict'
+    "use strict";
     eval(
       '__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _sum__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./sum */ "./src/sum.js");\n/* harmony import */ var _add__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./add */ "./src/add.js");\n\n\n\nlet a = 1,\n  b = 2,\n  arr = [1, 2, 3, 4, 5]\n\nconsole.log(Object(_add__WEBPACK_IMPORTED_MODULE_1__["default"])(a, b))\nconsole.log(Object(_sum__WEBPACK_IMPORTED_MODULE_0__["default"])(arr))\n\n\n//# sourceURL=webpack:///./src/index.js?'
-    )
+    );
 
     /***/
   },
 
-  /***/ './src/sum.js': /***/ function (
+  /***/ "./src/sum.js": /***/ function (
     module,
     __webpack_exports__,
     __webpack_require__
   ) {
-    'use strict'
+    "use strict";
     eval(
       '__webpack_require__.r(__webpack_exports__);\n// sum.js\n/* harmony default export */ __webpack_exports__["default"] = (arr => arr.reduce((pre, item) => pre + item, 0));\n\n\n//# sourceURL=webpack:///./src/sum.js?'
-    )
+    );
 
     /***/
-  }
-})
+  },
+});
 ```
 
 可以看出由 webpack 打包出来的是一个大大的 IIFE，上面一大堆是 webpack 自己实现的 commonjs 规范，下面的传参是我们的代码，可以看出 webpack 把我们的代码的每一个文件使用 IIFE 来做模块化，正式因为如此，问题出来了。
@@ -119,58 +119,58 @@ console.log(sum(arr))
 
 ```js
 module.exports = {
-  plugins: [new webpack.optimize.ModuleConcatenationPlugin()]
-}
+  plugins: [new webpack.optimize.ModuleConcatenationPlugin()],
+};
 ```
 
 - webpack 构建项目生产环境默认开启(mode:production)
 
 ```js
 module.exports = {
-  mode: 'production'
-}
+  mode: "production",
+};
 ```
 
 启动一下先来看打包结果
 
 ```js
-;(function (modules) {
-  var installedModules = {}
+(function (modules) {
+  var installedModules = {};
   function __webpack_require__(moduleId) {
     if (installedModules[moduleId]) {
-      return installedModules[moduleId].exports
+      return installedModules[moduleId].exports;
     }
     var module = (installedModules[moduleId] = {
       i: moduleId,
       l: false,
-      exports: {}
-    })
+      exports: {},
+    });
     modules[moduleId].call(
       module.exports,
       module,
       module.exports,
       __webpack_require__
-    )
+    );
 
-    module.l = true
-    return module.exports
+    module.l = true;
+    return module.exports;
   }
 
-  return __webpack_require__((__webpack_require__.s = './src/index.js'))
+  return __webpack_require__((__webpack_require__.s = "./src/index.js"));
 })({
-  /***/ './src/index.js': /***/ function (
+  /***/ "./src/index.js": /***/ function (
     module,
     __webpack_exports__,
     __webpack_require__
   ) {
-    'use strict'
+    "use strict";
     eval(
-      '__webpack_require__.r(__webpack_exports__);\n\n// CONCATENATED MODULE: ./src/sum.js\n// sum.js\n/* harmony default export */ var sum = (arr => arr.reduce((pre, item) => pre + item, 0));\n\n// CONCATENATED MODULE: ./src/add.js\n// add.js\n/* harmony default export */ var add = ((a, b) => a + b);\n\n// CONCATENATED MODULE: ./src/index.js\n\n\n\nlet a = 1,\n  b = 2,\n  arr = [1, 2, 3, 4, 5]\n\nconsole.log(add(a, b))\nconsole.log(sum(arr))\n\n\n//# sourceURL=webpack:///./src/index.js_+_2_modules?'
-    )
+      "__webpack_require__.r(__webpack_exports__);\n\n// CONCATENATED MODULE: ./src/sum.js\n// sum.js\n/* harmony default export */ var sum = (arr => arr.reduce((pre, item) => pre + item, 0));\n\n// CONCATENATED MODULE: ./src/add.js\n// add.js\n/* harmony default export */ var add = ((a, b) => a + b);\n\n// CONCATENATED MODULE: ./src/index.js\n\n\n\nlet a = 1,\n  b = 2,\n  arr = [1, 2, 3, 4, 5]\n\nconsole.log(add(a, b))\nconsole.log(sum(arr))\n\n\n//# sourceURL=webpack:///./src/index.js_+_2_modules?"
+    );
 
     /***/
-  }
-})
+  },
+});
 ```
 
 你会发现，使用 scope hoisting 方式，IIFE 变成一个了(原来有 3 个)，add.js 和 sum.js 里面的代码被打包到 了 index.js 中，减少了 IIFE 的数量。

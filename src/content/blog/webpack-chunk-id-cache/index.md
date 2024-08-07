@@ -71,31 +71,31 @@ chunkId 的生成策略可以在[官网](https://webpack.js.org/configuration/op
 
 ```js
 if (chunkIds) {
-  const NaturalChunkOrderPlugin = require('./optimize/NaturalChunkOrderPlugin')
-  const NamedChunksPlugin = require('./NamedChunksPlugin')
-  const OccurrenceChunkOrderPlugin = require('./optimize/OccurrenceChunkOrderPlugin')
+  const NaturalChunkOrderPlugin = require("./optimize/NaturalChunkOrderPlugin");
+  const NamedChunksPlugin = require("./NamedChunksPlugin");
+  const OccurrenceChunkOrderPlugin = require("./optimize/OccurrenceChunkOrderPlugin");
   switch (chunkIds) {
-    case 'natural':
-      new NaturalChunkOrderPlugin().apply(compiler)
-      break
-    case 'named':
+    case "natural":
+      new NaturalChunkOrderPlugin().apply(compiler);
+      break;
+    case "named":
       new OccurrenceChunkOrderPlugin({
-        prioritiseInitial: false
-      }).apply(compiler)
-      new NamedChunksPlugin().apply(compiler)
-      break
-    case 'size':
+        prioritiseInitial: false,
+      }).apply(compiler);
+      new NamedChunksPlugin().apply(compiler);
+      break;
+    case "size":
       new OccurrenceChunkOrderPlugin({
-        prioritiseInitial: true
-      }).apply(compiler)
-      break
-    case 'total-size':
+        prioritiseInitial: true,
+      }).apply(compiler);
+      break;
+    case "total-size":
       new OccurrenceChunkOrderPlugin({
-        prioritiseInitial: false
-      }).apply(compiler)
-      break
+        prioritiseInitial: false,
+      }).apply(compiler);
+      break;
     default:
-      throw new Error(`webpack bug: chunkIds: ${chunkIds} is not implemented`)
+      throw new Error(`webpack bug: chunkIds: ${chunkIds} is not implemented`);
   }
 }
 ```
@@ -104,30 +104,30 @@ if (chunkIds) {
 
 ```js
 //这个钩子主要做的是确定以什么规则生成chunkId
-this.hooks.optimizeChunkOrder.call(this.chunks)
+this.hooks.optimizeChunkOrder.call(this.chunks);
 //生成前所要做的事，注：我们可以在这里做手脚
-this.hooks.beforeChunkIds.call(this.chunks)
+this.hooks.beforeChunkIds.call(this.chunks);
 //生成chunkId
-this.applyChunkIds()
-this.hooks.optimizeChunkIds.call(this.chunks)
-this.hooks.afterOptimizeChunkIds.call(this.chunks)
+this.applyChunkIds();
+this.hooks.optimizeChunkIds.call(this.chunks);
+this.hooks.afterOptimizeChunkIds.call(this.chunks);
 ```
 
 在执行流程中可以看出，chunkId 在生成前确定生成规则。可能你的疑问又来了，它是怎么根据 chunkId 的值的不同生成规则呢？其实所有的 chunk 都存放在一个数组里面(也就是 chunks)，在`optimizeChunkOrder`中根据规则的不同对 chunk 进行相应的排序，然后再`applyChunkIds`统一的对`chunk.id`进行赋值。眼见为实，我们先来看一下 applyChunkIds 中是怎么赋值的,定位到 compilation.js 中的 1754 行。
 
 ```js
-let nextFreeChunkId = 0
+let nextFreeChunkId = 0;
 for (let indexChunk = 0; indexChunk < chunks.length; indexChunk++) {
-  const chunk = chunks[indexChunk]
+  const chunk = chunks[indexChunk];
   if (chunk.id === null) {
     if (unusedIds.length > 0) {
-      chunk.id = unusedIds.pop()
+      chunk.id = unusedIds.pop();
     } else {
-      chunk.id = nextFreeChunkId++
+      chunk.id = nextFreeChunkId++;
     }
   }
   if (!chunk.ids) {
-    chunk.ids = [chunk.id]
+    chunk.ids = [chunk.id];
   }
 }
 ```
@@ -139,29 +139,26 @@ for (let indexChunk = 0; indexChunk < chunks.length; indexChunk++) {
 在`WebpackOptionsApply.js`中我们可以知道，chunkIds 值为 natural 的时候，挂载的是`NaturalChunkOrderPlugin`这个插件。
 
 ```js
-compilation.hooks.optimizeChunkOrder.tap(
-  'NaturalChunkOrderPlugin',
-  (chunks) => {
-    //排序
-    chunks.sort((chunkA, chunkB) => {
-      //得到modulesIterable的iterator遍历器
-      const a = chunkA.modulesIterable[Symbol.iterator]()
-      const b = chunkB.modulesIterable[Symbol.iterator]()
-      while (true) {
-        const aItem = a.next()
-        const bItem = b.next()
-        if (aItem.done && bItem.done) return 0
-        if (aItem.done) return -1
-        if (bItem.done) return 1
-        //获取到module的id
-        const aModuleId = aItem.value.id
-        const bModuleId = bItem.value.id
-        if (aModuleId < bModuleId) return -1
-        if (aModuleId > bModuleId) return 1
-      }
-    })
-  }
-)
+compilation.hooks.optimizeChunkOrder.tap("NaturalChunkOrderPlugin", chunks => {
+  //排序
+  chunks.sort((chunkA, chunkB) => {
+    //得到modulesIterable的iterator遍历器
+    const a = chunkA.modulesIterable[Symbol.iterator]();
+    const b = chunkB.modulesIterable[Symbol.iterator]();
+    while (true) {
+      const aItem = a.next();
+      const bItem = b.next();
+      if (aItem.done && bItem.done) return 0;
+      if (aItem.done) return -1;
+      if (bItem.done) return 1;
+      //获取到module的id
+      const aModuleId = aItem.value.id;
+      const bModuleId = bItem.value.id;
+      if (aModuleId < bModuleId) return -1;
+      if (aModuleId > bModuleId) return 1;
+    }
+  });
+});
 ```
 
 首先，在每一个 chunk 中都有一个`modulesIterable`这个属性，它是一个`Set`,里面存放的是所有合并当前的 module，每个 module 的 id 属性表示当前 module 的`相对路径`。`NaturalChunkOrderPlugin`主要做的事就是根据 moduleId 来最为排序规则进行排序。
@@ -173,21 +170,21 @@ named 的生成规则比较简单，根据 chunk 的 name 取值
 ```js
 class NamedChunksPlugin {
   static defaultNameResolver(chunk) {
-    return chunk.name || null
+    return chunk.name || null;
   }
   constructor(nameResolver) {
-    this.nameResolver = nameResolver || NamedChunksPlugin.defaultNameResolver
+    this.nameResolver = nameResolver || NamedChunksPlugin.defaultNameResolver;
   }
   apply(compiler) {
-    compiler.hooks.compilation.tap('NamedChunksPlugin', (compilation) => {
-      compilation.hooks.beforeChunkIds.tap('NamedChunksPlugin', (chunks) => {
+    compiler.hooks.compilation.tap("NamedChunksPlugin", compilation => {
+      compilation.hooks.beforeChunkIds.tap("NamedChunksPlugin", chunks => {
         for (const chunk of chunks) {
           if (chunk.id === null) {
-            chunk.id = this.nameResolver(chunk)
+            chunk.id = this.nameResolver(chunk);
           }
         }
-      })
-    })
+      });
+    });
   }
 }
 ```
@@ -294,19 +291,19 @@ export default About
 
 ```js
 // 引入articleList
-import('./articleList').then((_) => {
-  _.default()
-})
+import("./articleList").then(_ => {
+  _.default();
+});
 
 // 引入articleTag
-import('./articleTag').then((_) => {
-  _.default()
-})
+import("./articleTag").then(_ => {
+  _.default();
+});
 
 // 引入about
-import('./about').then((_) => {
-  _.default()
-})
+import("./about").then(_ => {
+  _.default();
+});
 ```
 
 我们使用生产环境打包一下，得到 dist 目录中的文件如下：
@@ -319,14 +316,14 @@ import('./about').then((_) => {
 
 ```js
 // 引入articleList
-import('./articleList').then((_) => {
-  _.default()
-})
+import("./articleList").then(_ => {
+  _.default();
+});
 
 // 引入articleTag
-import('./articleTag').then((_) => {
-  _.default()
-})
+import("./articleTag").then(_ => {
+  _.default();
+});
 
 // 引入about
 //import('./about').then(_ => {
@@ -348,19 +345,19 @@ import('./articleTag').then((_) => {
 
 ```js
 // 引入articleList
-import(/* webpackChunkName: "articleList" */ './articleList').then((_) => {
-  _.default()
-})
+import(/* webpackChunkName: "articleList" */ "./articleList").then(_ => {
+  _.default();
+});
 
 // 引入articleTag
-import(/* webpackChunkName: "articleTag" */ './articleTag').then((_) => {
-  _.default()
-})
+import(/* webpackChunkName: "articleTag" */ "./articleTag").then(_ => {
+  _.default();
+});
 
 // 引入about
-import(/* webpackChunkName: "about" */ './about').then((_) => {
-  _.default()
-})
+import(/* webpackChunkName: "about" */ "./about").then(_ => {
+  _.default();
+});
 ```
 
 打包结果如下
@@ -396,51 +393,51 @@ import(/* webpackChunkName: "about" */ './about').then((_) => {
 基于上面两点，插件代码如下：
 
 ```js
-const crypto = require('crypto')
-const pluginName = 'WebpackFixedChunkIdPlugin'
+const crypto = require("crypto");
+const pluginName = "WebpackFixedChunkIdPlugin";
 
 class WebpackFixedChunkIdPlugin {
   constructor({ hashLength = 8 } = {}) {
     //todo
-    this.hashStart = 0
-    this.hashLength = hashLength
+    this.hashStart = 0;
+    this.hashLength = hashLength;
   }
   apply(compiler) {
-    compiler.hooks.compilation.tap(pluginName, (compilation) => {
-      compilation.hooks.beforeChunkIds.tap(pluginName, (chunks) => {
+    compiler.hooks.compilation.tap(pluginName, compilation => {
+      compilation.hooks.beforeChunkIds.tap(pluginName, chunks => {
         chunks.forEach((chunk, idx) => {
-          let modulesVal, chunkId
+          let modulesVal, chunkId;
           if (![...chunk._modules].length) {
-            modulesVal = chunk.name
+            modulesVal = chunk.name;
           } else {
-            const modules = chunk._modules
+            const modules = chunk._modules;
             for (let module of modules) {
-              modulesVal += module._source._value
+              modulesVal += module._source._value;
             }
           }
           const chunkIdHash = crypto
-            .createHash('md5')
+            .createHash("md5")
             .update(modulesVal)
-            .digest('hex')
-          chunkId = chunkIdHash.substr(this.hashStart, this.hashLength)
-          chunk.id = chunkId
-        })
-      })
-    })
+            .digest("hex");
+          chunkId = chunkIdHash.substr(this.hashStart, this.hashLength);
+          chunk.id = chunkId;
+        });
+      });
+    });
   }
 }
 
-module.exports = WebpackFixedChunkIdPlugin
+module.exports = WebpackFixedChunkIdPlugin;
 ```
 
 通过挂载到 beforeChunkIds 钩子上，拿到所有的 chunk，遍历每一个 chunk 得到所有合并当前 chunk 的 module 的内容，使用 node 的 crypto 加密模块，对内容计算 hash 值，设置`chunk.id`。下面我们来测试一下，这个插件好不好用。
 
 ```js
 //下载插件：npm install webpack-fixed-chunk-id-plugin
-const WebpackFixedChunkIdPlugin = require('webpack-fixed-chunk-id-plugin')
+const WebpackFixedChunkIdPlugin = require("webpack-fixed-chunk-id-plugin");
 module.exports = {
-  plugins: [new WebpackFixedChunkIdPlugin()]
-}
+  plugins: [new WebpackFixedChunkIdPlugin()],
+};
 ```
 
 打包一下查看结果：
@@ -488,9 +485,9 @@ npm install webpack-cli --save-dev
 ```js
 module.exports = {
   optimization: {
-    chunkIds: 'deterministic'
-  }
-}
+    chunkIds: "deterministic",
+  },
+};
 ```
 
 ### 小结

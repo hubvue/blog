@@ -14,12 +14,12 @@ tags:
 
 ```ts
 const obj = {
-  name: 'kim'
-}
+  name: "kim",
+};
 function render() {
-  document.body.innerText = obj.name
+  document.body.innerText = obj.name;
 }
-obj.name = 'kimwangchong'
+obj.name = "kimwangchong";
 ```
 
 上面代码中定义了一个obj对象有一个name属性，随后定义了一个render函数并且这个函数中引用了`obj.name`输出到body上，然后修改name属性的值。当obj是响应式数据时，我们期望引用`obj.name`的地方，也就是render函数可以重新执行从而更新body的内容。
@@ -36,22 +36,22 @@ vue中是如何感知数据读取或者说如何收集依赖的呢？vue将访�
 
 ```ts
 const runner = effect(() => {
-  console.log('name', obj.name)
-})
+  console.log("name", obj.name);
+});
 ```
 
 我们先简单看一下effect函数具体做了什么事情。
 
 ```ts
-let activeEffect = null
+let activeEffect = null;
 const effect = (fn: Function) => {
   try {
-    activeEffect = fn
-    fn()
+    activeEffect = fn;
+    fn();
   } finally {
-    activeEffect = null
+    activeEffect = null;
   }
-}
+};
 ```
 
 vue中巧妙用到了js单线称的特性，在代码里很多地方都用到全局变量来存储`activeXXX/currentXXX`变量，用来存储某一特性的当前实例，例如组件实例、effect实例等等。
@@ -66,8 +66,8 @@ vue中巧妙用到了js单线称的特性，在代码里很多地方都用到全
 
 ```ts
 const obj = reactive({
-  name: 'kim'
-})
+  name: "kim",
+});
 ```
 
 极简版`reactive`如下：
@@ -75,21 +75,21 @@ const obj = reactive({
 ```ts
 const reactive = (obj: object) => {
   const proxy = new Proxy(obj, {
-   get(target, key, receiver) {
-     track(target, key)
-     const res = Reflect.get(target, key, receiver)
-     return res
-   },
-   set(target, key, value, receiver) {
-     const oldValue = target[key]
-     const res = Relfect.set(target, key, value, receiver)
-     if (!Object.is(value, oldValue)) {
-       trigger(target, ket,  value)
-     }
-     return res
-   }
-  })
-}
+    get(target, key, receiver) {
+      track(target, key);
+      const res = Reflect.get(target, key, receiver);
+      return res;
+    },
+    set(target, key, value, receiver) {
+      const oldValue = target[key];
+      const res = Relfect.set(target, key, value, receiver);
+      if (!Object.is(value, oldValue)) {
+        trigger(target, ket, value);
+      }
+      return res;
+    },
+  });
+};
 ```
 
 我们先来看get函数的内容，极简版比较简单。
@@ -101,8 +101,8 @@ const reactive = (obj: object) => {
 ```ts
 const deps = [];
 const track = (target, key) => {
-  deps.push(activeEffect)
-}
+  deps.push(activeEffect);
+};
 ```
 
 此时全局`activeEffect`就起作用了，将副作用函数（依赖）收集起来。
@@ -114,9 +114,9 @@ const track = (target, key) => {
 ```ts
 const trigger = () => {
   for (let dep of deps) {
-    dep()
+    dep();
   }
-}
+};
 ```
 
 # 源码分析
@@ -133,10 +133,10 @@ reactivity包中将一个对象转为响应式对象API分为两类共四个API�
 并且不同API所产生的响应式对象被隔离开：
 
 ```ts
-export const reactiveMap = new WeakMap<Target, any>()
-export const shallowReactiveMap = new WeakMap<Target, any>()
-export const readonlyMap = new WeakMap<Target, any>()
-export const shallowReadonlyMap = new WeakMap<Target, any>()
+export const reactiveMap = new WeakMap<Target, any>();
+export const shallowReactiveMap = new WeakMap<Target, any>();
+export const readonlyMap = new WeakMap<Target, any>();
+export const shallowReadonlyMap = new WeakMap<Target, any>();
 ```
 
 原本只分了两类：reactiveMap和readonlyMap，这么做是因为这个[issue](https://github.com/vuejs/core/issues/2843),大致内容是他用reactive将一个对象转为响应式，又用shallowReactive将同一个对象转为响应式结果两个响应式对象相同。这个bug出现的原因是：调用API将对象转为响应式对象都会将`对象-响应式对象`的映射关系存到Map中，下次调用在Map中找到映射关系时直接将对应的响应式对象返回出去。
@@ -153,9 +153,9 @@ function createReactiveObject(
 ) {
   if (!isObject(target)) {
     if (__DEV__) {
-      console.warn(`value cannot be made reactive: ${String(target)}`)
+      console.warn(`value cannot be made reactive: ${String(target)}`);
     }
-    return target
+    return target;
   }
   // target is already a Proxy, return it.
   // exception: calling readonly() on a reactive object
@@ -163,24 +163,24 @@ function createReactiveObject(
     target[ReactiveFlags.RAW] &&
     !(isReadonly && target[ReactiveFlags.IS_REACTIVE])
   ) {
-    return target
+    return target;
   }
   // target already has corresponding Proxy
-  const existingProxy = proxyMap.get(target)
+  const existingProxy = proxyMap.get(target);
   if (existingProxy) {
-    return existingProxy
+    return existingProxy;
   }
   // only specific value types can be observed.
-  const targetType = getTargetType(target)
+  const targetType = getTargetType(target);
   if (targetType === TargetType.INVALID) {
-    return target
+    return target;
   }
   const proxy = new Proxy(
     target,
     targetType === TargetType.COLLECTION ? collectionHandlers : baseHandlers
-  )
-  proxyMap.set(target, proxy)
-  return proxy
+  );
+  proxyMap.set(target, proxy);
+  return proxy;
 }
 ```
 
@@ -196,23 +196,23 @@ function createReactiveObject(
 ```ts
 function targetTypeMap(rawType: string) {
   switch (rawType) {
-    case 'Object':
-    case 'Array':
-      return TargetType.COMMON
-    case 'Map':
-    case 'Set':
-    case 'WeakMap':
-    case 'WeakSet':
-      return TargetType.COLLECTION
+    case "Object":
+    case "Array":
+      return TargetType.COMMON;
+    case "Map":
+    case "Set":
+    case "WeakMap":
+    case "WeakSet":
+      return TargetType.COLLECTION;
     default:
-      return TargetType.INVALID
+      return TargetType.INVALID;
   }
 }
 
 function getTargetType(value: Target) {
   return value[ReactiveFlags.SKIP] || !Object.isExtensible(value)
     ? TargetType.INVALID
-    : targetTypeMap(toRawType(value))
+    : targetTypeMap(toRawType(value));
 }
 ```
 
@@ -228,8 +228,8 @@ function getTargetType(value: Target) {
 export function markRaw<T extends object>(
   value: T
 ): T & { [RawSymbol]?: true } {
-  def(value, ReactiveFlags.SKIP, true) // Object.defineProperty
-  return value
+  def(value, ReactiveFlags.SKIP, true); // Object.defineProperty
+  return value;
 }
 ```
 
@@ -246,11 +246,11 @@ function createGetter(isReadonly = false, shallow = false) {
   return function get(target: Target, key: string | symbol, receiver: object) {
     // 访问key为 ReactiveFlags.IS_REACTIVE、ReactiveFlags.IS_READONLY、ReactiveFlags.IS_SHALLOW、		ReactiveFlags.RAW的处理。
     // .....
-    const targetIsArray = isArray(target)
+    const targetIsArray = isArray(target);
     if (!isReadonly && targetIsArray && hasOwn(arrayInstrumentations, key)) {
-      return Reflect.get(arrayInstrumentations, key, receiver)
+      return Reflect.get(arrayInstrumentations, key, receiver);
     }
-    const res = Reflect.get(target, key, receiver)
+    const res = Reflect.get(target, key, receiver);
     // builtInSymbols
     // Symbol(Symbol.asyncIterator)、Symbol(Symbol.hasInstance)、Symbol(Symbol.isConcatSpreadable)
     // Symbol(Symbol.iterator)、Symbol(Symbol.match)、Symbol(Symbol.matchAll)、Symbol(Symbol.replace)
@@ -259,23 +259,23 @@ function createGetter(isReadonly = false, shallow = false) {
     // isNonTrackableKeys
     // __proto__,__v_isRef,__isVue
     if (isSymbol(key) ? builtInSymbols.has(key) : isNonTrackableKeys(key)) {
-      return res
+      return res;
     }
     // 依赖追踪
     if (!isReadonly) {
-      track(target, TrackOpTypes.GET, key)
+      track(target, TrackOpTypes.GET, key);
     }
     if (shallow) {
-      return res
+      return res;
     }
     if (isRef(res)) {
-      return targetIsArray && isIntegerKey(key) ? res : res.value
+      return targetIsArray && isIntegerKey(key) ? res : res.value;
     }
     if (isObject(res)) {
-      return isReadonly ? readonly(res) : reactive(res)
+      return isReadonly ? readonly(res) : reactive(res);
     }
-    return res
-  }
+    return res;
+  };
 }
 ```
 
@@ -292,64 +292,64 @@ function createGetter(isReadonly = false, shallow = false) {
 先看代码
 
 ```ts
-const arrayInstrumentations = /*#__PURE__*/ createArrayInstrumentations()
+const arrayInstrumentations = /*#__PURE__*/ createArrayInstrumentations();
 function createArrayInstrumentations() {
-  const instrumentations: Record<string, Function> = {}
+  const instrumentations: Record<string, Function> = {};
   // instrument identity-sensitive Array methods to account for possible reactive
   // values
-  ;(['includes', 'indexOf', 'lastIndexOf'] as const).forEach(key => {
+  (["includes", "indexOf", "lastIndexOf"] as const).forEach(key => {
     instrumentations[key] = function (this: unknown[], ...args: unknown[]) {
-      const arr = toRaw(this) as any
+      const arr = toRaw(this) as any;
       for (let i = 0, l = this.length; i < l; i++) {
-        track(arr, TrackOpTypes.GET, i + '')
+        track(arr, TrackOpTypes.GET, i + "");
       }
       // we run the method using the original args first (which may be reactive)
-      const res = arr[key](...args)
+      const res = arr[key](...args);
       if (res === -1 || res === false) {
         // if that didn't work, run it again using raw values.
-        return arr[key](...args.map(toRaw))
+        return arr[key](...args.map(toRaw));
       } else {
-        return res
+        return res;
       }
-    }
-  })
+    };
+  });
   // instrument length-altering mutation methods to avoid length being tracked
   // which leads to infinite loops in some cases (#2137)
-  ;(['push', 'pop', 'shift', 'unshift', 'splice'] as const).forEach(key => {
+  (["push", "pop", "shift", "unshift", "splice"] as const).forEach(key => {
     instrumentations[key] = function (this: unknown[], ...args: unknown[]) {
-      pauseTracking()
-      const res = (toRaw(this) as any)[key].apply(this, args)
-      resetTracking()
-      return res
-    }
-  })
-  return instrumentations
+      pauseTracking();
+      const res = (toRaw(this) as any)[key].apply(this, args);
+      resetTracking();
+      return res;
+    };
+  });
+  return instrumentations;
 }
 ```
 
 数组的一些查找、遍历方法时间复杂度是O(n)的（includes', 'indexOf', 'lastIndexOf 竟然不是二分），也就是说其方法内部对数组进行了遍历，那么当数组被Proxy代理后，其内部查找的属性以及索引访问都会触发`get`。例如：
 
 ```ts
-const arr = [1, 2, 3, 4]
+const arr = [1, 2, 3, 4];
 const proxyArr = new Proxy(arr, {
   get(target, key, receiver) {
-    console.log('get: ', key)
-    return Reflect.get(target, key, receiver)
+    console.log("get: ", key);
+    return Reflect.get(target, key, receiver);
   },
   set(target, key, value, receiver) {
-    console.log('set: ', key, value)
-    return Reflect.set(target, key, value, receiver)
-  }
-})
-arr.includes(3)
-// Console: 
+    console.log("set: ", key, value);
+    return Reflect.set(target, key, value, receiver);
+  },
+});
+arr.includes(3);
+// Console:
 // get: includes
 // get: length
 // get: 0
 // get: 1
 // get: 2
 // true
-arr.push(5)
+arr.push(5);
 // Console:
 // get: push
 // get: length
@@ -364,9 +364,9 @@ arr.push(5)
 当数组的项为对象时：
 
 ```ts
-const obj = {}
-const arr = reactive([1, 2, 3, obj])
-const is = arr.includes(obj) // true or false ?
+const obj = {};
+const arr = reactive([1, 2, 3, obj]);
+const is = arr.includes(obj); // true or false ?
 ```
 
 来分析一下过程：
@@ -377,7 +377,7 @@ const is = arr.includes(obj) // true or false ?
 // get: 0 取值 1 === obj false
 // get: 1 取值 2 === obj false
 // get: 2 取值 3 === obj false
-// get: 3 取值 obj === obj ? false 
+// get: 3 取值 obj === obj ? false
 ```
 
 因为`get`对值为对象的逻辑逻辑是`reactive(obj)`，此时返回的是代理对象，而不是原对象，因此需要对这部分方法特殊处理，获取到原对象执行`includes`方法。
@@ -385,12 +385,12 @@ const is = arr.includes(obj) // true or false ?
 在处理过程中`track`所有的索引key是为了与原proxy的拦截逻辑保持一直，去收集索引的依赖
 
 ```ts
-const arr = reactive([1, 2, 3, 4, 5])
+const arr = reactive([1, 2, 3, 4, 5]);
 effect(() => {
-  console.log(arr.includes(6))
-})
+  console.log(arr.includes(6));
+});
 // false
-arr[0] = 6
+arr[0] = 6;
 // true
 ```
 
@@ -399,10 +399,10 @@ arr[0] = 6
 这部分处理是为了避免依赖循环触发的问题，但实际上在trigger阶段已经避免了递归依赖
 
 ```ts
-const arr = reactive([1, 2, 3, 4])
+const arr = reactive([1, 2, 3, 4]);
 effect(() => {
-  arr.push(5)
-})
+  arr.push(5);
+});
 // get push
 // get length
 // set  4 5
@@ -417,9 +417,9 @@ effect(() => {
 
 ```ts
 // 数组索引访问返回原数据
-const refs = reactive([ref(1), ref(2), ref(3)])
-const is = isRef(refs[0]) // true
-console.log(is.value) // 1
+const refs = reactive([ref(1), ref(2), ref(3)]);
+const is = isRef(refs[0]); // true
+console.log(is.value); // 1
 ```
 
 - 当ref作为数组项时并不会自动解包
@@ -428,8 +428,8 @@ console.log(is.value) // 1
 一个类型的问题：
 
 ```ts
-const refs = reactive([ref(1), ref(2)] as const) // readonly[number, number]
-refs[0].value // Type Error.
+const refs = reactive([ref(1), ref(2)] as const); // readonly[number, number]
+refs[0].value; // Type Error.
 ```
 
 ## track
@@ -437,8 +437,8 @@ refs[0].value // Type Error.
 track主要做的事情是依赖收集，在`get`阶段，如果是非readonly情况下，会对所访问对象的属性进行依赖收集
 
 ```ts
-if (!isReadonly){
-  track(target, TrackOpTypes.GET, key)
+if (!isReadonly) {
+  track(target, TrackOpTypes.GET, key);
 }
 ```
 
@@ -482,20 +482,20 @@ obj.a = 2
 ```ts
 export function track(target: object, type: TrackOpTypes, key: unknown) {
   if (shouldTrack && activeEffect) {
-    let depsMap = targetMap.get(target)
+    let depsMap = targetMap.get(target);
     if (!depsMap) {
-      targetMap.set(target, (depsMap = new Map()))
+      targetMap.set(target, (depsMap = new Map()));
     }
-    let dep = depsMap.get(key)
+    let dep = depsMap.get(key);
     if (!dep) {
-      depsMap.set(key, (dep = createDep()))
+      depsMap.set(key, (dep = createDep()));
     }
 
     const eventInfo = __DEV__
       ? { effect: activeEffect, target, type, key }
-      : undefined
+      : undefined;
 
-    trackEffects(dep, eventInfo)
+    trackEffects(dep, eventInfo);
   }
 }
 ```
@@ -516,27 +516,30 @@ targetMap [WeakMap]
 我们再来看下trackEffects做了什么事
 
 ```ts
-export function trackEffects(dep: Dep, debuggerEventExtraInfo?: DebuggerEventExtraInfo ) {
-  let shouldTrack = false
+export function trackEffects(
+  dep: Dep,
+  debuggerEventExtraInfo?: DebuggerEventExtraInfo
+) {
+  let shouldTrack = false;
   // 这块和effect一起说
   if (effectTrackDepth <= maxMarkerBits) {
     if (!newTracked(dep)) {
-      dep.n |= trackOpBit // set newly tracked
-      shouldTrack = !wasTracked(dep)
+      dep.n |= trackOpBit; // set newly tracked
+      shouldTrack = !wasTracked(dep);
     }
   } else {
     // Full cleanup mode.
-    shouldTrack = !dep.has(activeEffect!)
+    shouldTrack = !dep.has(activeEffect!);
   }
 
   if (shouldTrack) {
-    dep.add(activeEffect!)
-    activeEffect!.deps.push(dep)
+    dep.add(activeEffect!);
+    activeEffect!.deps.push(dep);
     if (__DEV__ && activeEffect!.onTrack) {
       activeEffect!.onTrack({
         effect: activeEffect!,
-        ...debuggerEventExtraInfo!
-      })
+        ...debuggerEventExtraInfo!,
+      });
     }
   }
 }
@@ -545,39 +548,39 @@ export function trackEffects(dep: Dep, debuggerEventExtraInfo?: DebuggerEventExt
 shouldTrack这块逻辑和effect过程一起说，我们先假设shouldEffect为true。那么`trackEffects`实际上就做了一件事：建立依赖的双向存储。
 
 ```ts
-dep.add(activeEffect!)
-activeEffect!.deps.push(dep)
+dep.add(activeEffect!);
+activeEffect!.deps.push(dep);
 ```
 
 ## effect
 
 ```ts
 export interface ReactiveEffectOptions extends DebuggerOptions {
-  lazy?: boolean
-  scheduler?: EffectScheduler
-  scope?: EffectScope
-  allowRecurse?: boolean
-  onStop?: () => void
+  lazy?: boolean;
+  scheduler?: EffectScheduler;
+  scope?: EffectScope;
+  allowRecurse?: boolean;
+  onStop?: () => void;
 }
 export function effect<T = any>(
   fn: () => T,
   options?: ReactiveEffectOptions
 ): ReactiveEffectRunner {
   if ((fn as ReactiveEffectRunner).effect) {
-    fn = (fn as ReactiveEffectRunner).effect.fn
+    fn = (fn as ReactiveEffectRunner).effect.fn;
   }
 
-  const _effect = new ReactiveEffect(fn)
+  const _effect = new ReactiveEffect(fn);
   if (options) {
-    extend(_effect, options)
-    if (options.scope) recordEffectScope(_effect, options.scope)
+    extend(_effect, options);
+    if (options.scope) recordEffectScope(_effect, options.scope);
   }
   if (!options || !options.lazy) {
-    _effect.run()
+    _effect.run();
   }
-  const runner = _effect.run.bind(_effect) as ReactiveEffectRunner
-  runner.effect = _effect
-  return runner
+  const runner = _effect.run.bind(_effect) as ReactiveEffectRunner;
+  runner.effect = _effect;
+  return runner;
 }
 ```
 
@@ -591,71 +594,75 @@ export function effect<T = any>(
 
 ```ts
 export class ReactiveEffect<T = any> {
-  active = true
-  deps: Dep[] = []
-  parent: ReactiveEffect | undefined = undefined
-  computed?: ComputedRefImpl<T>
-  allowRecurse?: boolean
-  private deferStop?: boolean
-  onStop?: () => void
+  active = true;
+  deps: Dep[] = [];
+  parent: ReactiveEffect | undefined = undefined;
+  computed?: ComputedRefImpl<T>;
+  allowRecurse?: boolean;
+  private deferStop?: boolean;
+  onStop?: () => void;
   // dev only
-  onTrack?: (event: DebuggerEvent) => void
+  onTrack?: (event: DebuggerEvent) => void;
   // dev only
-  onTrigger?: (event: DebuggerEvent) => void
-  constructor(public fn: () => T,public scheduler: EffectScheduler | null = null,scope?: EffectScope) {
-    recordEffectScope(this, scope)
+  onTrigger?: (event: DebuggerEvent) => void;
+  constructor(
+    public fn: () => T,
+    public scheduler: EffectScheduler | null = null,
+    scope?: EffectScope
+  ) {
+    recordEffectScope(this, scope);
   }
   run() {
     if (!this.active) {
-      return this.fn()
+      return this.fn();
     }
-    let parent: ReactiveEffect | undefined = activeEffect
-    let lastShouldTrack = shouldTrack
+    let parent: ReactiveEffect | undefined = activeEffect;
+    let lastShouldTrack = shouldTrack;
     while (parent) {
       if (parent === this) {
-        return
+        return;
       }
-      parent = parent.parent
+      parent = parent.parent;
     }
     try {
-      this.parent = activeEffect
-      activeEffect = this
-      shouldTrack = true
+      this.parent = activeEffect;
+      activeEffect = this;
+      shouldTrack = true;
 
-      trackOpBit = 1 << ++effectTrackDepth
+      trackOpBit = 1 << ++effectTrackDepth;
 
       if (effectTrackDepth <= maxMarkerBits) {
-        initDepMarkers(this)
+        initDepMarkers(this);
       } else {
-        cleanupEffect(this)
+        cleanupEffect(this);
       }
-      return this.fn()
+      return this.fn();
     } finally {
       if (effectTrackDepth <= maxMarkerBits) {
-        finalizeDepMarkers(this)
+        finalizeDepMarkers(this);
       }
 
-      trackOpBit = 1 << --effectTrackDepth
+      trackOpBit = 1 << --effectTrackDepth;
 
-      activeEffect = this.parent
-      shouldTrack = lastShouldTrack
-      this.parent = undefined
+      activeEffect = this.parent;
+      shouldTrack = lastShouldTrack;
+      this.parent = undefined;
 
       if (this.deferStop) {
-        this.stop()
+        this.stop();
       }
     }
   }
   stop() {
     // stopped while running itself - defer the cleanup
     if (activeEffect === this) {
-      this.deferStop = true
+      this.deferStop = true;
     } else if (this.active) {
-      cleanupEffect(this)
+      cleanupEffect(this);
       if (this.onStop) {
-        this.onStop()
+        this.onStop();
       }
-      this.active = false
+      this.active = false;
     }
   }
 }
@@ -668,17 +675,17 @@ export class ReactiveEffect<T = any> {
 ```ts
 const data = reactive({
   foo: true,
-  bar: true
-})
-let temp1, temp2
-effect(function effectFn1(){
-  console.log('effectFn1执行')
-  effect(function effectFn2 (){
-    console.log('effectFn2执行')
-    temp1 = data.foo
-  })
-  temp2 = data.bar
-})
+  bar: true,
+});
+let temp1, temp2;
+effect(function effectFn1() {
+  console.log("effectFn1执行");
+  effect(function effectFn2() {
+    console.log("effectFn2执行");
+    temp1 = data.foo;
+  });
+  temp2 = data.bar;
+});
 ```
 
 在运行effectFn1时将activeEffect赋值成effectFn1，然后在内部运行effectFn2将activeEffect赋值成effectFn2，然后访问`data.foo`收集依赖effectFn2，effectFn2直接结束退出，访问`data.bar`，收集依赖effectFn2。由于可见当没有处理effect嵌套的情况下依赖收集会错误，因为所有的effect全局公用一个activeEffect，因此需要维护effect的激活与退出。
@@ -687,28 +694,26 @@ effect(function effectFn1(){
 
 ```ts
 try {
-   let lastShouldTrack = shouldTrack
-   this.parent = activeEffect // 指向父effect
-   activeEffect = this       //  activeEffect 指向自己
+  let lastShouldTrack = shouldTrack;
+  this.parent = activeEffect; // 指向父effect
+  activeEffect = this; //  activeEffect 指向自己
 } finally {
-   activeEffect = this.parent   //  activeEffect 指向父effect
-   shouldTrack = lastShouldTrack
-   this.parent = undefined     // 清理 父 effect
+  activeEffect = this.parent; //  activeEffect 指向父effect
+  shouldTrack = lastShouldTrack;
+  this.parent = undefined; // 清理 父 effect
 }
 ```
 
 🌰：
 
 ```ts
-effect(function effectFn1 (){
-  effect(function effectFn2 (){
-  	effect(function effectFn3 (){
-  		effect(function effectFn4 (){
-  
-			})
-		})
-	})
-})
+effect(function effectFn1() {
+  effect(function effectFn2() {
+    effect(function effectFn3() {
+      effect(function effectFn4() {});
+    });
+  });
+});
 ```
 
 effect链为：
@@ -728,21 +733,21 @@ effectFn4
 ```ts
 while (parent) {
   if (parent === this) {
-    return
+    return;
   }
-  parent = parent.parent
+  parent = parent.parent;
 }
 ```
 
 一个场景是：我们已经知道effect返回一个runner其实就是run函数，并且可以在外部执行。🌰
 
 ```ts
-let runner
+let runner;
 runner = effect(() => {
   if (runner) {
-    runner()
+    runner();
   }
-})
+});
 ```
 
 能想到的方案是这个，但是感觉没人会这样做。
@@ -752,7 +757,7 @@ runner = effect(() => {
 ```ts
 function triggerEffect(effect) {
   if (effect !== activeEffect) {
-    effect.run()
+    effect.run();
   }
 }
 ```
@@ -760,11 +765,11 @@ function triggerEffect(effect) {
 这个场景是:
 
 ```ts
-const obj = reactive({ count: 0 })
+const obj = reactive({ count: 0 });
 effect(() => {
-  obj.count ++
+  obj.count++;
   // obj.count = obj.count + 1
-})
+});
 ```
 
 effectFn内，先访问了`obj.count`收集依赖，然后修改`obj.count`的值去trigger依赖，这样就会触发循环依赖。
@@ -779,14 +784,14 @@ effectFn内，先访问了`obj.count`收集依赖，然后修改`obj.count`的�
 
 ```ts
 const obj = reactive({
-  a: 1
-})
+  a: 1,
+});
 let tmp1, tpm2;
 
-effect(function effectFn1(){
-  tmp1 = obj.a
-  tmp2 = obj.a
-})
+effect(function effectFn1() {
+  tmp1 = obj.a;
+  tmp2 = obj.a;
+});
 ```
 
 上面代码在effectFn1中`obj.a`访问了两次，会触发两次track，这样的话就会在a的deps中存两份 effectFn1，并且当effectFn1触发的时候也不应该收集已经收集过的依赖。
@@ -797,13 +802,13 @@ effect(function effectFn1(){
 
 ```ts
 export const createDep = (effects?: ReactiveEffect[]): Dep => {
-  const dep = new Set<ReactiveEffect>(effects) as Dep
-  dep.w = 0
-  dep.n = 0
-  return dep
-}
-export const wasTracked = (dep: Dep): boolean => (dep.w & trackOpBit) > 0 // 判断依赖是否已被收集
-export const newTracked = (dep: Dep): boolean => (dep.n & trackOpBit) > 0 // 判断当前层是否已经收集过依赖
+  const dep = new Set<ReactiveEffect>(effects) as Dep;
+  dep.w = 0;
+  dep.n = 0;
+  return dep;
+};
+export const wasTracked = (dep: Dep): boolean => (dep.w & trackOpBit) > 0; // 判断依赖是否已被收集
+export const newTracked = (dep: Dep): boolean => (dep.n & trackOpBit) > 0; // 判断当前层是否已经收集过依赖
 ```
 
 - w：（was）表示依赖已经被追踪
@@ -812,12 +817,12 @@ export const newTracked = (dep: Dep): boolean => (dep.n & trackOpBit) > 0 // 判
 在effect嵌套的场景中，run函数中会记录嵌套的层级，并且会为每一层增加创建一个二进制标识。
 
 ```ts
-const maxMarkerBits = 30
-trackOpBit = 1 << ++effectTrackDepth
+const maxMarkerBits = 30;
+trackOpBit = 1 << ++effectTrackDepth;
 if (effectTrackDepth <= maxMarkerBits) {
-  initDepMarkers(this) // 对已经触发过的依赖收集打标记
+  initDepMarkers(this); // 对已经触发过的依赖收集打标记
 } else {
-  cleanupEffect(this)
+  cleanupEffect(this);
 }
 ```
 
@@ -825,10 +830,10 @@ if (effectTrackDepth <= maxMarkerBits) {
 export const initDepMarkers = ({ deps }: ReactiveEffect) => {
   if (deps.length) {
     for (let i = 0; i < deps.length; i++) {
-      deps[i].w |= trackOpBit // set was tracked
+      deps[i].w |= trackOpBit; // set was tracked
     }
   }
-}
+};
 ```
 
 effect与属性的deps会双向存储，当第二次触发effectFn的时，会 先将已经收集过的打上标记，避免重复收集。
@@ -836,20 +841,20 @@ effect与属性的deps会双向存储，当第二次触发effectFn的时，会 �
 然后我们回过头来看`track`中跳过的逻辑，如下：
 
 ```ts
-let shouldTrack = false
+let shouldTrack = false;
 if (effectTrackDepth <= maxMarkerBits) {
   if (!newTracked(dep)) {
-    dep.n |= trackOpBit // set newly tracked
-    shouldTrack = !wasTracked(dep)
+    dep.n |= trackOpBit; // set newly tracked
+    shouldTrack = !wasTracked(dep);
   }
 } else {
   // Full cleanup mode.
-  shouldTrack = !dep.has(activeEffect!)
+  shouldTrack = !dep.has(activeEffect!);
 }
-  if (shouldTrack) {
-    dep.add(activeEffect!)
-    activeEffect!.deps.push(dep)
-  }
+if (shouldTrack) {
+  dep.add(activeEffect!);
+  activeEffect!.deps.push(dep);
+}
 ```
 
 先将shouldTrack置为false，然后走下面是否要收集依赖。
@@ -877,12 +882,12 @@ dep.n |= trakcOpBit = 0010 = 2
 ```ts
 const obj = reactive({
   ok: true,
-  text: 'Hello world'
-})
+  text: "Hello world",
+});
 
 effect(function effectFn() {
-  document.body.innerText = obj.ok ? obj.text : 'not'
-})
+  document.body.innerText = obj.ok ? obj.text : "not";
+});
 ```
 
 我们来分析一下此时依赖树是什么样子
@@ -899,13 +904,13 @@ targetMap [WeakMap]
 ```
 
 ```ts
-obj.ok = false
+obj.ok = false;
 ```
 
 当把obj.ok设置为false时，那么后面的逻辑effectFn不会走到obj.text分支。
 
 ```ts
-obj.text = 'Hello Kim'
+obj.text = "Hello Kim";
 ```
 
 由于text已经收集了依赖，那么当obj.text修改时，依然会找到之前收集的effectFn并触发，导致不必要的更新。
@@ -942,26 +947,25 @@ targetMap [WeakMap]
 
 ```ts
 export const finalizeDepMarkers = (effect: ReactiveEffect) => {
-  const { deps } = effect
+  const { deps } = effect;
   if (deps.length) {
-    let ptr = 0
+    let ptr = 0;
     for (let i = 0; i < deps.length; i++) {
-      const dep = deps[i]
+      const dep = deps[i];
       if (wasTracked(dep) && !newTracked(dep)) {
-        dep.delete(effect)
+        dep.delete(effect);
       } else {
-        deps[ptr++] = dep
+        deps[ptr++] = dep;
       }
       // clear bits
-      dep.w &= ~trackOpBit
-      dep.n &= ~trackOpBit
+      dep.w &= ~trackOpBit;
+      dep.n &= ~trackOpBit;
     }
-    deps.length = ptr
+    deps.length = ptr;
   }
-}
+};
 ```
 
 这个函数里遍历与当前effect有关联的dep，如果当前dep已经被收集过并且在本次是一个新的依赖，也就是代码里的`wasTreacked(dep) && !newTracked(dep)`，则认为是一个过期的依赖需要进行清理。
-
 
 未完待续...

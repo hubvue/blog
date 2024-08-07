@@ -20,34 +20,34 @@ tags:
 在页面中`BS`滚动库加载完成之后会执行到`index.js`下的代码。
 
 ```js
-import { eventMixin } from './scroll/event'
-import { initMixin } from './scroll/init'
-import { coreMixin } from './scroll/core'
-import { snapMixin } from './scroll/snap'
-import { wheelMixin } from './scroll/wheel'
-import { scrollbarMixin } from './scroll/scrollbar'
-import { pullDownMixin } from './scroll/pulldown'
-import { pullUpMixin } from './scroll/pullup'
-import { mouseWheelMixin } from './scroll/mouse-wheel'
-import { zoomMixin } from './scroll/zoom'
-import { infiniteMixin } from './scroll/inifinity'
-import { warn } from './util/debug'
+import { eventMixin } from "./scroll/event";
+import { initMixin } from "./scroll/init";
+import { coreMixin } from "./scroll/core";
+import { snapMixin } from "./scroll/snap";
+import { wheelMixin } from "./scroll/wheel";
+import { scrollbarMixin } from "./scroll/scrollbar";
+import { pullDownMixin } from "./scroll/pulldown";
+import { pullUpMixin } from "./scroll/pullup";
+import { mouseWheelMixin } from "./scroll/mouse-wheel";
+import { zoomMixin } from "./scroll/zoom";
+import { infiniteMixin } from "./scroll/inifinity";
+import { warn } from "./util/debug";
 
 function BScroll(el, options) {}
 
-initMixin(BScroll)
-coreMixin(BScroll)
-eventMixin(BScroll)
-snapMixin(BScroll)
-wheelMixin(BScroll)
-scrollbarMixin(BScroll)
-pullDownMixin(BScroll)
-pullUpMixin(BScroll)
-mouseWheelMixin(BScroll)
-zoomMixin(BScroll)
-infiniteMixin(BScroll)
-BScroll.Version = '1.15.2'
-export default BScroll
+initMixin(BScroll);
+coreMixin(BScroll);
+eventMixin(BScroll);
+snapMixin(BScroll);
+wheelMixin(BScroll);
+scrollbarMixin(BScroll);
+pullDownMixin(BScroll);
+pullUpMixin(BScroll);
+mouseWheelMixin(BScroll);
+zoomMixin(BScroll);
+infiniteMixin(BScroll);
+BScroll.Version = "1.15.2";
+export default BScroll;
 ```
 
 可以看出加载完成之后会创建`BScroll`构造函数，并且执行一系列 Mixin。下面主要分析三个 Mixin：`initMixin`、`coreMixin`、`eventMixin`。这个三个是`BS`的核心代码，下面的一些 Mixin 是一些对原本 BS 的扩展插件(高级滚动)。

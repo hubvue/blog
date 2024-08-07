@@ -8,22 +8,21 @@ tags:
   - Typescript
 ---
 
-
 所谓映射类型就是从一个旧的类型上生成一个新的类型。
 
 例如下面这个例子：
 
 ```ts
 interface Obj1 {
-  a: string
-  b: boolean
-  c: number
+  a: string;
+  b: boolean;
+  c: number;
 }
 
 interface Obj2 {
-  readonly a: string
-  readonly b: boolean
-  readonly c: number
+  readonly a: string;
+  readonly b: boolean;
+  readonly c: number;
 }
 ```
 
@@ -33,9 +32,9 @@ interface Obj2 {
 
 ```ts
 type Readobly<T> = {
-  readonly [U in keyof T]: T[U]
-}
-type Obj2 = Readobly<Obj1>
+  readonly [U in keyof T]: T[U];
+};
+type Obj2 = Readobly<Obj1>;
 ```
 
 上面代码使用索引类型的类似于遍历出泛型 T 上的所有属性，将这些属性都加上`readonly`修饰符。
@@ -48,8 +47,8 @@ type Obj2 = Readobly<Obj1>
 
 ```ts
 type Partial<T> = {
-  [P in keyof T]?: T[P]
-}
+  [P in keyof T]?: T[P];
+};
 ```
 
 `Partial`的原理如上面代码可见，使用索引类型分别为每一个属性增加`?`变为可选的。
@@ -60,8 +59,8 @@ type Partial<T> = {
 
 ```ts
 type Required<T> = {
-  [P in keyof T]-?: T[P]
-}
+  [P in keyof T]-?: T[P];
+};
 ```
 
 代码逻辑与`Partial`类似只是去掉了`?`
@@ -72,8 +71,8 @@ type Required<T> = {
 
 ```ts
 type Readonly<T> = {
-  readonly [P in keyof T]: T[P]
-}
+  readonly [P in keyof T]: T[P];
+};
 ```
 
 代码逻辑与上面类似只是将每一个属性前面加上了 readonly。
@@ -84,8 +83,8 @@ type Readonly<T> = {
 
 ```ts
 type Pick<T, K extends keyof T> = {
-  [P in K]: T[P]
-}
+  [P in K]: T[P];
+};
 ```
 
 使用泛型约束约束到 K 必须是泛型 T 的索引类型的子集，遍历所有在泛型 K 上的属性，并赋予相应的类型。
@@ -98,8 +97,8 @@ type Pick<T, K extends keyof T> = {
 
 ```ts
 type Record<K extends keyof any, T> = {
-  [P in K]: T
-}
+  [P in K]: T;
+};
 ```
 
 `Record`的第一个参数类型使用类型约束到 any 的索引类型，因此`K`的类型如上面说的，然后遍历 K 泛型的每一项，将对应的 value 的类型设置为`T`。

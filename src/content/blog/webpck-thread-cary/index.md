@@ -52,22 +52,22 @@ module.exports = {
         test: /\.css$/,
         use: [
           {
-            loader: 'cache-loader'
+            loader: "cache-loader",
           },
           {
-            loader: 'style-loader'
+            loader: "style-loader",
           },
           {
-            loader: 'css-loader'
+            loader: "css-loader",
           },
           {
-            loader: 'less-loader'
-          }
-        ]
-      }
-    ]
-  }
-}
+            loader: "less-loader",
+          },
+        ],
+      },
+    ],
+  },
+};
 ```
 
 这样 loader 的问题就很轻松的解决了。
@@ -89,22 +89,22 @@ module.exports = {
 使用方式(引用一下 npm 上的例子)
 
 ```js
-const HappyPack = require('happypack')
+const HappyPack = require("happypack");
 module.exports = {
   module: {
     rules: [
       {
         test: /\.js$/,
-        use: 'happypack/loader'
-      }
-    ]
+        use: "happypack/loader",
+      },
+    ],
   },
   plugins: [
     new HappyPack({
-      loaders: ['babel-loader?presets[]=es2015']
-    })
-  ]
-}
+      loaders: ["babel-loader?presets[]=es2015"],
+    }),
+  ],
+};
 ```
 
 happypack 其原理就是：每次 webpack 解析一个模块，happypack 会将它及依赖分配给 worker 线程中编译。下面是 happypack 整体流程图。
@@ -128,19 +128,19 @@ module.exports = {
         test: /\.js$/,
         use: [
           {
-            loader: 'thread-loader',
+            loader: "thread-loader",
             options: {
-              workers: 4
-            }
+              workers: 4,
+            },
           },
           {
-            loader: 'babel-loader'
-          }
-        ]
-      }
-    ]
-  }
-}
+            loader: "babel-loader",
+          },
+        ],
+      },
+    ],
+  },
+};
 ```
 
 上面 thread-loader 使用 workers 配置了 4 个线程来编辑 js 文件。
@@ -152,16 +152,16 @@ module.exports = {
 第一种方式就是使用 webpack 内置的`uglify-webpack-plugin`这个插件，只需要配置一个 parallel 参数就可以，parallel 参数默认为当前电脑的 cpu 的核心数(os.cpus().length - 1)
 
 ```js
-const UglifyJsPlugin = require('webpack/uglify-webpack-plugin')
+const UglifyJsPlugin = require("webpack/uglify-webpack-plugin");
 module.exports = {
   optimization: {
     minimizer: [
       new UglifyJsPlugin({
-        parallel: true
-      })
-    ]
-  }
-}
+        parallel: true,
+      }),
+    ],
+  },
+};
 ```
 
 ##### terser-webpack-plugin
@@ -175,17 +175,17 @@ module.exports = {
 使用方式：和`uglify-webpack-plugin`一样 parallel 默认值为当前电脑的 cpu 核心数(os.cpus().length -1 )
 
 ```js
-const TerserPlugin = require('terser-webpack-plugin')
+const TerserPlugin = require("terser-webpack-plugin");
 module.exports = {
   optimization: {
     minimize: true,
     minimizer: [
       new TerserPlugin({
-        parallel: true
-      })
-    ]
-  }
-}
+        parallel: true,
+      }),
+    ],
+  },
+};
 ```
 
 ## 总结

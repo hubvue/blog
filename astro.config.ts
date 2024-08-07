@@ -21,8 +21,8 @@ export default defineConfig({
       [
         remarkToc,
         {
-          heading: '(table[ -]of[ -])?contents?|toc|目录'
-        }
+          heading: "(table[ -]of[ -])?contents?|toc|目录",
+        },
       ],
       [
         remarkCollapse,

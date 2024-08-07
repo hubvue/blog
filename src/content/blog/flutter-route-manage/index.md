@@ -8,7 +8,6 @@ tags:
   - Flutter
 ---
 
-
 无论是前端浏览器页面还是端上 App 路由管理是必不可少的，路由可以让页面间跳转更加流畅。因 Flutter 万物皆 Widget 的特定，路由的跳转其实也就是切换不同的 Widget，这和前端思想很相似（组件化开发），因此很好理解。接下来就看一下 Flutter 中组件是怎么切换的。
 
 在前端中有路由的概念，例如 Vue，有 vue-router 这个库，在 vue-router 中，所有可跳转的组件都会在路由中注册，用 route-link 组件来匹配要展示的视图，最终显示在 route-view 组件所在的位置。而 Flutter 中使用`Navigator`API 来控制路由的跳转。

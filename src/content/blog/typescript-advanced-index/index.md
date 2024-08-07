@@ -16,10 +16,10 @@ tags:
 
 ```ts
 interface Obj {
-  a: number
-  b: number
+  a: number;
+  b: number;
 }
-let keys: keyof Obj
+let keys: keyof Obj;
 ```
 
 此时`keys`的的类型是 Obj 属性的联合类型，也就是`'a' | 'b'`，所以说`keys`的值只能是`'a' | 'b'`这两个。
@@ -29,7 +29,7 @@ let keys: keyof Obj
 `T[K]`这种形式是索引访问操作符，表示对象 T 的属性 K 所代表的的类型。就拿上面的 Obj 接口来说，例如：
 
 ```ts
-let value: Obj['a']
+let value: Obj["a"];
 ```
 
 此时`value`的类型就是 `number` 类型。
@@ -42,10 +42,10 @@ let value: Obj['a']
 let obj = {
   a: 1,
   b: 2,
-  c: 3
-}
+  c: 3,
+};
 function getValues(obj: any, keys: string[]) {
-  return keys.map((key) => obj[key])
+  return keys.map(key => obj[key]);
 }
 ```
 
@@ -54,8 +54,8 @@ function getValues(obj: any, keys: string[]) {
 当我们开始使用的时候。
 
 ```ts
-getValues(obj, ['a', 'b'])
-getValues(obj, ['e', 'f'])
+getValues(obj, ["a", "b"]);
+getValues(obj, ["e", "f"]);
 ```
 
 我们会发现`e`和`f`都不是`obj`上的属性传进去没有被警告，TypeScript 本身就是为我们提供严格的类型约束，这种现象是不能忍受的，此时的解决办法就可以用到索引类型。
@@ -64,7 +64,7 @@ getValues(obj, ['e', 'f'])
 
 ```ts
 function getValues<T, K extends keyof T>(obj: T, keys: K[]): T[K][] {
-  return keys.map((key) => obj[key])
+  return keys.map(key => obj[key]);
 }
 ```
 
@@ -73,6 +73,6 @@ function getValues<T, K extends keyof T>(obj: T, keys: K[]): T[K][] {
 此时我们再调用`getValues`函数就会对没有的属性进行约束。
 
 ```ts
-getValues(obj111, ['a', 'b']) //✅
-getValues(obj111, ['e', 'f']) //❌
+getValues(obj111, ["a", "b"]); //✅
+getValues(obj111, ["e", "f"]); //❌
 ```

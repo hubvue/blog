@@ -45,7 +45,7 @@ tags:
 明白了纯函数，那么在写`reducer`的时候一定见过这么一段代码。
 
 ```js
-const state = reducer((initstate = {}), action)
+const state = reducer((initstate = {}), action);
 ```
 
 上面代码，再结合纯函数，就可以说对于特定的`action`和`initstate`必定会得到相同的`state`，这里正是体现了`redux`的可预测性。
@@ -75,10 +75,10 @@ const addAction = {
 `action`的表示方式也可以是一个函数，这样可以更方面的构建`action`,但这个函数必须返回一个对象。
 
 ```js
-const addAction = (val) => ({
-  type: 'ADD',
-  value: val
-})
+const addAction = val => ({
+  type: "ADD",
+  value: val,
+});
 ```
 
 这样拿到的数据就灵活多了。
@@ -157,8 +157,8 @@ function rootReducer(state = {}, action) {
 ```js
 const rootReducer = combineReducers({
   visibilityFilter,
-  todos
-})
+  todos,
+});
 ```
 
 这部分代码和上面 rootReducer 的作用完全相同。它的原理是通过传入对象的 key-value 把所有的 state 进行一个糅合。
@@ -169,10 +169,10 @@ const rootReducer = combineReducers({
 
 ```js
 const action = {
-  type: 'ADD',
-  value: 'Hello Redux'
-}
-dispatch(action)
+  type: "ADD",
+  value: "Hello Redux",
+};
+dispatch(action);
 ```
 
 #### 4.store
@@ -188,7 +188,7 @@ dispatch(action)
 创建 store：
 
 ```js
-const store = Redux.createStore(reducer, initialState, enhancer)
+const store = Redux.createStore(reducer, initialState, enhancer);
 //1. reducer就是我们书写的reducer
 //2. initialState是初始化状态
 //3. enhancer是中间件
@@ -202,8 +202,8 @@ const store = Redux.createStore(reducer, initialState, enhancer)
 
 ```js
 //异步action中间件
-import thunk from 'redux-thunk'
-const store = Redux.createStore(reducer, initialState, applMiddleware(thunk))
+import thunk from "redux-thunk";
+const store = Redux.createStore(reducer, initialState, applMiddleware(thunk));
 ```
 
 思想先告一段落，既然懂得了`redux`的思想，那么接下来手下一个简易版的`redux`。
@@ -224,7 +224,7 @@ const store = Redux.createStore(reducer, initialState, applMiddleware(thunk))
 //1.接受的rootReducer
 //2.初始化的状态
 //3.dispatch的增强器(中间件)
-const createStore = (reducer, initialState, enhancer) => {}
+const createStore = (reducer, initialState, enhancer) => {};
 ```
 
 `createStore`还返回一些列函数接口提供调用
@@ -235,9 +235,9 @@ const crateStore = (reducer, initialState, enhancer) => {
     getState,
     dispatch,
     subscribe,
-    replaceReducer
-  }
-}
+    replaceReducer,
+  };
+};
 ```
 
 **以下代码都是在 createStore 内部**
@@ -247,10 +247,10 @@ const crateStore = (reducer, initialState, enhancer) => {
 `getStore`方法的作用就是返回当前的`store`。
 
 ```js
-let state = initialState
+let state = initialState;
 const getState = () => {
-  return state
-}
+  return state;
+};
 ```
 
 #### subscribe 的实现
@@ -259,20 +259,20 @@ const getState = () => {
 
 ```js
 //创建一个监听时间队列
-let subQueue = []
+let subQueue = [];
 
-const subscribe = (listener) => {
+const subscribe = listener => {
   //把监听函数放入到监听队列里面
-  subQueue.push(listener)
+  subQueue.push(listener);
   return () => {
     //找到当前监听函数的索引
-    let idx = subQueue.indexOf(listener)
+    let idx = subQueue.indexOf(listener);
     if (idx > -1) {
       //通过监听函数的索引把监听函数移除掉。
-      subQueue.splice(idx, 1)
+      subQueue.splice(idx, 1);
     }
-  }
-}
+  };
+};
 ```
 
 #### dispatch 的实现
@@ -280,24 +280,24 @@ const subscribe = (listener) => {
 `dispatch`是`createStore`的发布者，`dispatch`接受一个`action`，来执行`reducer`。`dispatch`在执行`reducer`的同时会执行所有的监听函数(也就是发布)。
 
 ```js
-let currentReducer = reducer
-let isDispatch = false
-const dispatch = (action) => {
+let currentReducer = reducer;
+let isDispatch = false;
+const dispatch = action => {
   //这里使用isDispatch做标示，就是说只有当上一个派发完成之后才能派发下一个
   if (isDispatch) {
-    throw new Error('dispatch error')
+    throw new Error("dispatch error");
   }
   try {
-    state = currentReducer(state, action)
-    isDispatch = true
+    state = currentReducer(state, action);
+    isDispatch = true;
   } finally {
-    isDispatch = false
+    isDispatch = false;
   }
 
   //执行所有的监听函数
-  subQueue.forEach((sub) => sub.apply(null))
-  return action
-}
+  subQueue.forEach(sub => sub.apply(null));
+  return action;
+};
 ```
 
 #### replaceReducer
@@ -305,12 +305,12 @@ const dispatch = (action) => {
 `replaceReducer`顾名思义就是替换`reducer`的意思。再执行`createState`方法的时候`reducer`就作为第一个参数传进去，如果后面想要重新换一个`reducer`，来代码写一下。
 
 ```js
-const replaceReducer = (reducer) => {
+const replaceReducer = reducer => {
   //传入一个reduce作为参数，把它赋予currentReducer就可以了。
-  currentReducer = reducer
+  currentReducer = reducer;
   //更该之后会派发一次dispatch，为什么会派发等下再说。
-  dispatch({ type: 'REPLACE' })
-}
+  dispatch({ type: "REPLACE" });
+};
 ```
 
 #### dispatch({type:"INIT"});
@@ -343,17 +343,17 @@ const reducer = (state = {}, action){
  * @param {*} middleware   //中间件
  */
 const createStore = (reducer, initState, enhancer) => {
-  let initialState //用于保存状态
-  let currentReducer = reducer //reducer
-  let listenerQueue = [] //存放所有的监听函数
-  let isDispatch = false
+  let initialState; //用于保存状态
+  let currentReducer = reducer; //reducer
+  let listenerQueue = []; //存放所有的监听函数
+  let isDispatch = false;
 
   if (initState) {
-    initialState = initState
+    initialState = initState;
   }
 
   if (enhancer) {
-    return enhancer(createStore)(reducer, initState)
+    return enhancer(createStore)(reducer, initState);
   }
   /**
    * 获取Store
@@ -361,65 +361,65 @@ const createStore = (reducer, initState, enhancer) => {
   const getState = () => {
     //判断是否正在派发
     if (isDispatch) {
-      throw new Error('dispatching...')
+      throw new Error("dispatching...");
     }
-    return initialState
-  }
+    return initialState;
+  };
 
   /**
    * 派发action 并触发所有的listeners
    * @param {*} action
    */
-  const dispatch = (action) => {
+  const dispatch = action => {
     //判断是否正在派发
     if (isDispatch) {
-      throw new Error('dispatching...')
+      throw new Error("dispatching...");
     }
     try {
-      isDispatch = true
-      initialState = currentReducer(initialState, action)
+      isDispatch = true;
+      initialState = currentReducer(initialState, action);
     } finally {
-      isDispatch = false
+      isDispatch = false;
     }
     //执行所有的监听函数
     for (let listener of listenerQueue) {
-      listener.apply(null)
+      listener.apply(null);
     }
-  }
+  };
   /**
    * 订阅监听
    * @param {*} listener
    */
-  const subscribe = (listener) => {
-    listenerQueue.push(listener)
+  const subscribe = listener => {
+    listenerQueue.push(listener);
     //移除监听
     return function unscribe() {
-      let index = listenerQueue.indexOf(listener)
-      let unListener = listenerQueue.splice(index, 1)
-      return unListener
-    }
-  }
+      let index = listenerQueue.indexOf(listener);
+      let unListener = listenerQueue.splice(index, 1);
+      return unListener;
+    };
+  };
 
   /**
    * 替换reducer
    * @param {*} reducer
    */
-  const replaceReducer = (reducer) => {
+  const replaceReducer = reducer => {
     if (reducer) {
-      currentReducer = reducer
+      currentReducer = reducer;
     }
-    dispatch({ type: 'REPLACE' })
-  }
-  dispatch({ type: 'INIT' })
+    dispatch({ type: "REPLACE" });
+  };
+  dispatch({ type: "INIT" });
   return {
     getState,
     dispatch,
     subscribe,
-    replaceReducer
-  }
-}
+    replaceReducer,
+  };
+};
 
-export default createStore
+export default createStore;
 ```
 
 ### compose
@@ -440,13 +440,18 @@ const compose = (...) => {
 首先`compose`接受的是一系列函数。
 
 ```js
-const compose = (...fns) => {}
+const compose = (...fns) => {};
 ```
 
 从右到左执行，我们采用数组的`reduce`方法，利用惰性求值的方式。
 
 ```js
-const compose = (...fns) => fns.reduce((f, g) => (...args) => f(g(args)))
+const compose = (...fns) =>
+  fns.reduce(
+    (f, g) =>
+      (...args) =>
+        f(g(args))
+  );
 ```
 
 这就是一个`compose`函数。
@@ -475,33 +480,38 @@ const createStore = (reducer,state,enhancer) => {
 中间件的构建通过`applyMiddleware`实现，来看一下`applyMiddleware`是怎么实现。由上面可以看出`applyMiddleware`是一个柯里化函数。
 
 ```js
-const applyMiddleware = (crateStore) => (...args) => {}
+const applyMiddleware =
+  crateStore =>
+  (...args) => {};
 ```
 
 在`applyMiddleware`中需要执行`createStore`来得到接口方法。
 
 ```js
-const applyMiddleware = (...middlewares) => (createStore) => (...args) => {
-  let store = createStore(...args)
-  //占位dispatch，避免在中间件过程中调用
-  let dispatch = () => {
-    throw new Error('error')
-  }
-  let midllewareAPI = {
-    getState: store.getState,
-    dispatch
-  }
-  //把middlewareAPI传入每一个中间件中
-  const chain = middlewares.map((middleware) => middleware(middlewareAPI))
-  //增强dispatch生成，重写占位dispatch,把store的默认dispatch传进去，
-  dispatch = compose(...chain)(store.dispatch)
+const applyMiddleware =
+  (...middlewares) =>
+  createStore =>
+  (...args) => {
+    let store = createStore(...args);
+    //占位dispatch，避免在中间件过程中调用
+    let dispatch = () => {
+      throw new Error("error");
+    };
+    let midllewareAPI = {
+      getState: store.getState,
+      dispatch,
+    };
+    //把middlewareAPI传入每一个中间件中
+    const chain = middlewares.map(middleware => middleware(middlewareAPI));
+    //增强dispatch生成，重写占位dispatch,把store的默认dispatch传进去，
+    dispatch = compose(...chain)(store.dispatch);
 
-  //最后把增强的dispatch和store返回出去。
-  return {
-    ...store,
-    dispatch
-  }
-}
+    //最后把增强的dispatch和store返回出去。
+    return {
+      ...store,
+      dispatch,
+    };
+  };
 ```
 
 上面就是`applyMiddleware`的实现方法。
@@ -511,12 +521,12 @@ const applyMiddleware = (...middlewares) => (createStore) => (...args) => {
 根据`applyMiddleware`中间件参数的传入，可以想出一个基本的中间件是这样的：
 
 ```js
-const middleware = (store) => (next) => (action) => {
+const middleware = store => next => action => {
   //业务逻辑
   //store是传入的middlewareAPI
   //next是store基础的dispatch
   //action是dispatch的action
-}
+};
 ```
 
 这就是一个中间件的逻辑了。
@@ -528,12 +538,12 @@ const middleware = (store) => (next) => (action) => {
 异步中间件必须要求`action`是一个函数，根据上面中间件的逻辑，我们来写一下。
 
 ```js
-const middleware = (store) => (next) => (action) => {
-  if (typeof action === 'function') {
-    action(store.dispatch, store.getState)
+const middleware = store => next => action => {
+  if (typeof action === "function") {
+    action(store.dispatch, store.getState);
   }
-  next(action)
-}
+  next(action);
+};
 ```
 
 判断传入的`action`是否是一个函数，如果是函数使用增强`dispatch`，如果不是函数使用普通的`dispatch`。

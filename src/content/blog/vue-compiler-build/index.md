@@ -27,15 +27,15 @@ tags:
 首先会判断有没有 dist 目录，这是存放构建产出物的地方
 
 ```js
-if (!fs.existsSync('dist')) {
-  fs.mkdirSync('dist')
+if (!fs.existsSync("dist")) {
+  fs.mkdirSync("dist");
 }
 ```
 
 读取 config，获得各个平台或环境的 rollup 配置信息。
 
 ```js
-let builds = require('./config').getAllBuilds()
+let builds = require("./config").getAllBuilds();
 ```
 
 下面来看一下 config 文件做了什么。
@@ -43,7 +43,7 @@ let builds = require('./config').getAllBuilds()
 来到 config 定位到 getAllBuilds 方法
 
 ```js
-exports.getAllBuilds = () => Object.keys(builds).map(genConfig)
+exports.getAllBuilds = () => Object.keys(builds).map(genConfig);
 ```
 
 getAllBuilds 方法返回的是将一个对象的 key 变成数组并 map 映射了一下
@@ -52,35 +52,35 @@ getAllBuilds 方法返回的是将一个对象的 key 变成数组并 map 映射
 
 ```js
 const builds = {
-  'web-runtime-cjs-dev': {
-    entry: resolve('web/entry-runtime.js'),
-    dest: resolve('dist/vue.runtime.common.dev.js'),
-    format: 'cjs',
-    env: 'development',
-    banner
+  "web-runtime-cjs-dev": {
+    entry: resolve("web/entry-runtime.js"),
+    dest: resolve("dist/vue.runtime.common.dev.js"),
+    format: "cjs",
+    env: "development",
+    banner,
   },
-  'web-runtime-cjs-prod': {},
-  'web-full-cjs-dev': {},
-  'web-full-cjs-prod': {},
-  'web-runtime-esm': {},
-  'web-full-esm': {},
-  'web-full-esm-browser-dev': {},
-  'web-full-esm-browser-prod': {},
-  'web-runtime-dev': {},
-  'web-runtime-prod': {},
-  'web-full-dev': {},
-  'web-full-prod': {},
-  'web-compiler': {},
-  'web-compiler-browser': {},
-  'web-server-renderer-dev': {},
-  'web-server-renderer-prod': {},
-  'web-server-renderer-basic': {},
-  'web-server-renderer-webpack-server-plugin': {},
-  'web-server-renderer-webpack-client-plugin': {},
-  'weex-factory': {},
-  'weex-framework': {},
-  'weex-compiler': {}
-}
+  "web-runtime-cjs-prod": {},
+  "web-full-cjs-dev": {},
+  "web-full-cjs-prod": {},
+  "web-runtime-esm": {},
+  "web-full-esm": {},
+  "web-full-esm-browser-dev": {},
+  "web-full-esm-browser-prod": {},
+  "web-runtime-dev": {},
+  "web-runtime-prod": {},
+  "web-full-dev": {},
+  "web-full-prod": {},
+  "web-compiler": {},
+  "web-compiler-browser": {},
+  "web-server-renderer-dev": {},
+  "web-server-renderer-prod": {},
+  "web-server-renderer-basic": {},
+  "web-server-renderer-webpack-server-plugin": {},
+  "web-server-renderer-webpack-client-plugin": {},
+  "weex-factory": {},
+  "weex-framework": {},
+  "weex-compiler": {},
+};
 ```
 
 第一个配置中一共有 5 个属性
@@ -96,18 +96,18 @@ const builds = {
 entry 中调用 resolve 方法，resolve 方法通过对 node 的 path.resolve 封装了一下，用于找到构建的入口文件的路径。
 
 ```js
-const aliases = require('./alias')
-const resolve = (p) => {
+const aliases = require("./alias");
+const resolve = p => {
   //得到是什么平台：vue有web平台和weex平台
-  const base = p.split('/')[0]
+  const base = p.split("/")[0];
   // 通过平台拿到platforms下相应平台的目录，
   if (aliases[base]) {
     //拼接编译入口
-    return path.resolve(aliases[base], p.slice(base.length + 1))
+    return path.resolve(aliases[base], p.slice(base.length + 1));
   } else {
-    return path.resolve(__dirname, '../', p)
+    return path.resolve(__dirname, "../", p);
   }
-}
+};
 ```
 
 **dest**
@@ -134,11 +134,11 @@ env 表示是以生产环境构建还是以开发环境构建，生产环境会�
 
 ```js
 const banner =
-  '/*!\n' +
+  "/*!\n" +
   ` * Vue.js v${version}\n` +
   ` * (c) 2014-${new Date().getFullYear()} Evan You\n` +
-  ' * Released under the MIT License.\n' +
-  ' */'
+  " * Released under the MIT License.\n" +
+  " */";
 ```
 
 用于在打包好的文件的顶部添加打包信息。
@@ -180,46 +180,46 @@ function genConfig(name) {
 ```js
 if (process.argv[2]) {
   // 解析shell 参数
-  const filters = process.argv[2].split(',')
+  const filters = process.argv[2].split(",");
   //通过shell参数把builds不需要的平台配置过滤掉
-  builds = builds.filter((b) => {
+  builds = builds.filter(b => {
     return filters.some(
-      (f) => b.output.file.indexOf(f) > -1 || b._name.indexOf(f) > -1
-    )
-  })
+      f => b.output.file.indexOf(f) > -1 || b._name.indexOf(f) > -1
+    );
+  });
 } else {
   // filter out weex builds by default
-  builds = builds.filter((b) => {
-    return b.output.file.indexOf('weex') === -1
-  })
+  builds = builds.filter(b => {
+    return b.output.file.indexOf("weex") === -1;
+  });
 }
 ```
 
 执行 build 函数,开始构建
 
 ```js
-build(builds)
+build(builds);
 ```
 
 由于存在多个不同或环境的编译构建，vue 采用同步 promise 的方式递归编译。类似于 koa 的中间件逻辑
 
 ```js
 function build(builds) {
-  let built = 0
-  const total = builds.length
+  let built = 0;
+  const total = builds.length;
   // 通过next 调用buildEntry同步编译，built对应builds中平台入口的索引，当一个编译完成之后，built++，继续启动next调用下一个。
   const next = () => {
     buildEntry(builds[built])
       .then(() => {
-        built++
+        built++;
         if (built < total) {
-          next()
+          next();
         }
       })
-      .catch(logError)
-  }
+      .catch(logError);
+  };
 
-  next()
+  next();
 }
 ```
 
@@ -227,33 +227,33 @@ function build(builds) {
 
 ```js
 function buildEntry(config) {
-  const output = config.output
+  const output = config.output;
   // file是打包的入口
-  const { file, banner } = output
+  const { file, banner } = output;
   //isProd 判断是否是生产环境的编译
-  const isProd = /(min|prod)\.js$/.test(file)
+  const isProd = /(min|prod)\.js$/.test(file);
   return rollup
     .rollup(config)
-    .then((bundle) => bundle.generate(output))
+    .then(bundle => bundle.generate(output))
     .then(({ output: [{ code }] }) => {
       // terser是一个适用于ES6压缩代码的工具，在生产环境对代码进行压缩
       if (isProd) {
         const minified =
-          (banner ? banner + '\n' : '') +
+          (banner ? banner + "\n" : "") +
           terser.minify(code, {
             toplevel: true,
             output: {
-              ascii_only: true
+              ascii_only: true,
             },
             compress: {
-              pure_funcs: ['makeMap']
-            }
-          }).code
-        return write(file, minified, true)
+              pure_funcs: ["makeMap"],
+            },
+          }).code;
+        return write(file, minified, true);
       } else {
-        return write(file, code)
+        return write(file, code);
       }
-    })
+    });
 }
 ```
 
@@ -265,26 +265,26 @@ function write(dest, code, zip) {
     function report(extra) {
       console.log(
         blue(path.relative(process.cwd(), dest)) +
-          ' ' +
+          " " +
           getSize(code) +
-          (extra || '')
-      )
-      resolve()
+          (extra || "")
+      );
+      resolve();
     }
     // 将编译好的文件写入相应的目录下
-    fs.writeFile(dest, code, (err) => {
-      if (err) return reject(err)
+    fs.writeFile(dest, code, err => {
+      if (err) return reject(err);
       if (zip) {
         //gzip压缩
         zlib.gzip(code, (err, zipped) => {
-          if (err) return reject(err)
-          report(' (gzipped: ' + getSize(zipped) + ')')
-        })
+          if (err) return reject(err);
+          report(" (gzipped: " + getSize(zipped) + ")");
+        });
       } else {
-        report()
+        report();
       }
-    })
-  })
+    });
+  });
 }
 ```
 

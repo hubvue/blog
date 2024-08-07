@@ -23,10 +23,10 @@ JavaScript 语言是解释性语言还是编译性语言其实说法都不固定
 来看下面代码
 
 ```js
-const a = 123
+const a = 123;
 const fun = () => {
-  console.log(a)
-}
+  console.log(a);
+};
 ```
 
 经过 AST 解析
@@ -156,12 +156,12 @@ JavaScript 语言是一门动态的语言，动态性是指在 JavaScript 语言
 
 ```js
 function test(x) {
-  return x + x
+  return x + x;
 }
-test(1)
-test(2)
-test(3)
-test(4)
+test(1);
+test(2);
+test(3);
+test(4);
 ```
 
 对于上面代码来说，如果函数被多次调用并且一直传入`number`类型，那么 V8 就会将这段代码编译成 Machine Code，因为固定了类型，内部不需要做太多的判断逻辑了。
@@ -175,7 +175,7 @@ test(4)
 TypeScript 在我们编写代码的时候就约束类型。
 
 ```ts
-let num: number = 123
+let num: number = 123;
 ```
 
 上面代码此时就是`number`类型，如果我们对 num 赋值一个 string，在编译器上就会抛出错误，能够做到很好的提醒我们。

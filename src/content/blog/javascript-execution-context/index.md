@@ -50,50 +50,50 @@ person()
 1. 当 JavaScript 代码整体执行的时候会把`GlobalExectionContext`push 到 JavaScript 函数执行栈中
 
 ```js
-GlobalExectionContext
+GlobalExectionContext;
 ```
 
 2. 当执行 person 函数的时候，会生成一个`FunctionExecutionContext`，并把它 push 到 JavaScript 函数执行栈中
 
 ```js
-FunctionExecutionContext(person)
-GlobalExectionContext
+FunctionExecutionContext(person);
+GlobalExectionContext;
 ```
 
 3. person 函数内部：首先执行 firstName 函数，为其生成`FunctionExecutionContext`，并把它 push 到 JavaScript 函数执行栈中
 
 ```js
-FunctionExecutionContext(firstName)
-FunctionExecutionContext(person)
-GlobalExectionContext
+FunctionExecutionContext(firstName);
+FunctionExecutionContext(person);
+GlobalExectionContext;
 ```
 
 4. 当 firstName 函数执行结束的时候，JavaScript 函数执行栈会将其对应的执行器上下文 pop 出去
 
 ```js
-FunctionExecutionContext(person)
-GlobalExectionContext
+FunctionExecutionContext(person);
+GlobalExectionContext;
 ```
 
 5. firstName 函数执行完毕之后，会接着执行 lastName 函数，为其生成`FunctionExecutionContext`，并 push 到 JavaScript 函数执行栈中
 
 ```js
-FunctionExecutionContext(lastName)
-FunctionExecutionContext(person)
-GlobalExectionContext
+FunctionExecutionContext(lastName);
+FunctionExecutionContext(person);
+GlobalExectionContext;
 ```
 
 6. 当 lastName 函数执行完毕之后，将其从 JavaScript 函数执行栈中弹出。
 
 ```js
-FunctionExecutionContext(person)
-GlobalExectionContext
+FunctionExecutionContext(person);
+GlobalExectionContext;
 ```
 
 7. person 函数执行结束，将其从 JavaScript 函数执行栈中弹出
 
 ```js
-GlobalExectionContext
+GlobalExectionContext;
 ```
 
 8. 整体代码执行完毕，将全局执行期上下文弹出。
@@ -116,8 +116,8 @@ GlobalExectionContext
 ExecutionContext = {
   scopeChain: [],
   variableObject: {},
-  this: {}
-}
+  this: {},
+};
 ```
 
 当代码执行的时候执行上下文可分为两个阶段
@@ -149,13 +149,13 @@ this 用来确定当前函数的 this 指向。
 
 ```js
 function ecTest(a, b, c) {
-  console.log(d)
-  var d = 1
-  console.log(d)
+  console.log(d);
+  var d = 1;
+  console.log(d);
   function e() {}
-  var f = function () {}
+  var f = function () {};
 }
-ecTest(1, 2, 3)
+ecTest(1, 2, 3);
 ```
 
 根据上面步骤，这部分代码生成的执行器上下文为：
@@ -228,9 +228,9 @@ ExecutionContext = {
     c: 3,
     d: 1,
     f: function () {},
-    e: function () {}
-  }
-}
+    e: function () {},
+  },
+};
 ```
 
 6. 执行完毕
@@ -257,8 +257,8 @@ ExecutionContext = {
   Function: null,
   ScriptOrModule: null,
   Realm: null,
-  Generator: null
-}
+  Generator: null,
+};
 ```
 
 1. LexicalEnvironment：词法环境，当获取变量或者 this 值的时候使用
@@ -333,14 +333,14 @@ GlobalExecutionContext = {
 来看下面这个 🌰
 
 ```js
-let a = 20
-const b = 30
-var c
+let a = 20;
+const b = 30;
+var c;
 function multiply(e, f) {
-  var g = 20
-  return e * f * g
+  var g = 20;
+  return e * f * g;
 }
-c = multiply(20, 30)
+c = multiply(20, 30);
 ```
 
 当代码执行的时候，首先创建全局执行上下文，其顺序如下：

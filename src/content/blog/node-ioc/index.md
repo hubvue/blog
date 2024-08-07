@@ -9,7 +9,6 @@ tags:
   - Nodejs
 ---
 
-
 ## 前言
 
 随着项目需求的增加，Node 模块也相继增加，各模块间的依赖耦合度越来越严重，非常难维护，有时候改一处代码需要懂好几处代码，项目逐渐达到牵一发而动全身的地步，所谓`高内聚、低耦合`完全没得谈，如何做到模块间高度解耦是每个工程师必要思考的问题。
@@ -32,25 +31,25 @@ class Order {
   constructor() {}
   insert() {
     //......数据库操作
-    return true
+    return true;
   }
 }
 
 // 订单类 controllers/OrderController.js
-const Order = require('./Order.js')
+const Order = require("./Order.js");
 
 class OrderController {
   constructor() {
-    this.order = new Order()
+    this.order = new Order();
   }
   craeteOrder(...args) {
-    this.order.insert(...args)
+    this.order.insert(...args);
   }
 }
 
 //router/index.js
-const OrderController = require('../controllers/OrderController.js')
-const orderController = new OrderController()
+const OrderController = require("../controllers/OrderController.js");
+const orderController = new OrderController();
 ```
 
 上面是没有依赖注入的情况，可以看出`OrderController`类严重耦合了`Order`类。上面的`OrderController`类依赖了`Order`类，所以在使用的时候就必须先`require` `Order`类，才可以在`OrderController`类中使用。耦合性太高，假如我们需要把`Order`类文件移动到了别的目录，那么所有依赖这个类的文件都需要变化。
@@ -65,7 +64,7 @@ class Order {
   constructor() {}
   insert() {
     //......数据库操作
-    return true
+    return true;
   }
 }
 
@@ -73,17 +72,17 @@ class Order {
 
 class OrderController {
   constructor(order) {
-    this.order = new order()
+    this.order = new order();
   }
   craeteOrder(...args) {
-    this.order.insert(...args)
+    this.order.insert(...args);
   }
 }
 
 //router/index.js
-const Order = require('../models/Order.js')
-const OrderController = require('../controllers/OrderController.js')
-const orderController = new OrderController(new Order())
+const Order = require("../models/Order.js");
+const OrderController = require("../controllers/OrderController.js");
+const orderController = new OrderController(new Order());
 ```
 
 从上面代码来看`OrderController`类文件中已经不需要手动的引入`Order`类了，而是通过 constructor 在运行时的时候传进去。在 router 文件中，当实例化`OrderController`类的时候，同时也实例化`Order`类，并且作为`OrderController`构造函数的参数传进去。
@@ -109,7 +108,7 @@ const orderController = new OrderController(new Order())
 ```js
 class IOC {
   constructor() {
-    this.container = new Map()
+    this.container = new Map();
   }
 }
 ```
@@ -117,9 +116,9 @@ class IOC {
 我们要有一个方法，用于让我们往容器中存入模块，例如上面 Order 类，IOC 必须要有这么一个方法。
 
 ```js
-const Order = require('../models/Order.js')
-const OrderController = require('../controllers/OrderController.js')
-ioc.bind('order', (...args) => new OrderController(new Order(...args)))
+const Order = require("../models/Order.js");
+const OrderController = require("../controllers/OrderController.js");
+ioc.bind("order", (...args) => new OrderController(new Order(...args)));
 ```
 
 bind 方法用于往 IOC 容器中存放模块间的依赖，并此刻确定高层模块的依赖项。
@@ -127,10 +126,10 @@ bind 方法用于往 IOC 容器中存放模块间的依赖，并此刻确定高�
 ```js
 class IOC {
   constructor() {
-    this.container = new Map()
+    this.container = new Map();
   }
   bind(key, callback) {
-    this.controller.set(key, { callback, single: false })
+    this.controller.set(key, { callback, single: false });
   }
 }
 ```
@@ -140,13 +139,13 @@ class IOC {
 ```js
 class IOC {
   constructor() {
-    this.container = new Map()
+    this.container = new Map();
   }
   bind(key, callback) {
-    this.controller.set(key, { callback, single: false })
+    this.controller.set(key, { callback, single: false });
   }
   singleton(key, callback) {
-    this.controller.set(key, { callback, single: true })
+    this.controller.set(key, { callback, single: true });
   }
 }
 ```
@@ -155,8 +154,8 @@ class IOC {
 
 ```js
 //router.js
-const ioc = require('ioc')
-const orderController = ioc.use('order')
+const ioc = require("ioc");
+const orderController = ioc.use("order");
 ```
 
 上面通过 use 方法就可以获取到了。下面是 use 方法的实现
@@ -164,24 +163,24 @@ const orderController = ioc.use('order')
 ```js
 class IOC {
   constructor() {
-    this.container = new Map()
+    this.container = new Map();
   }
   bind(key, callback) {
-    this.controller.set(key, { callback, single: false })
+    this.controller.set(key, { callback, single: false });
   }
   singleton(key, callback) {
-    this.controller.set(key, { callback, single: true })
+    this.controller.set(key, { callback, single: true });
   }
   use(key) {
-    const item = this.controller.get(key)
+    const item = this.controller.get(key);
     if (!item) {
-      throw new Error('error')
+      throw new Error("error");
     }
     if (item.single && !item.instance) {
-      item.instance = item.callback()
+      item.instance = item.callback();
     }
 
-    return item.single ? item.instance : item.callback()
+    return item.single ? item.instance : item.callback();
   }
 }
 ```
@@ -197,37 +196,37 @@ class IOC {
 ```js
 class IOC {
   constructor() {
-    this.container = new Map()
-    this.fakes = new Map()
+    this.container = new Map();
+    this.fakes = new Map();
   }
   bind(key, callback) {
-    this.controller.set(key, { callback, single: false })
+    this.controller.set(key, { callback, single: false });
   }
   singleton(key, callback) {
-    this.controller.set(key, { callback, single: true })
+    this.controller.set(key, { callback, single: true });
   }
   fake(key, callback) {
-    this.fakes.set(key, { callback, single: false })
+    this.fakes.set(key, { callback, single: false });
   }
   restore(key) {
-    this.fakes.delete(key)
+    this.fakes.delete(key);
   }
   findInContainer(key) {
     if (this.fakes.has(key)) {
-      return this.fakes.get(key)
+      return this.fakes.get(key);
     }
-    return this.controller.get(key)
+    return this.controller.get(key);
   }
   use(key) {
-    const item = this.findInContainer(key)
+    const item = this.findInContainer(key);
     if (!item) {
-      throw new Error('error')
+      throw new Error("error");
     }
     if (item.single && !item.instance) {
-      item.instance = item.callback()
+      item.instance = item.callback();
     }
 
-    return item.single ? item.instance : item.callback()
+    return item.single ? item.instance : item.callback();
   }
 }
 ```
@@ -244,39 +243,39 @@ class IOC {
 
 ```js
 const TYPES = {
-  order: Symbol.for('order')
-}
+  order: Symbol.for("order"),
+};
 module.exports = {
-  TYPES
-}
+  TYPES,
+};
 ```
 
 然后创建一个 orderIOC 文件做 IOC 的注册中心
 
 ```js
-const IOC = require('ioc')
-const Order = require('../models/Order.js')
-const OrderController = require('../controllers/OrderController.js')
-const { TYPES } = require('../constants')
-const ioc = new IOC()
+const IOC = require("ioc");
+const Order = require("../models/Order.js");
+const OrderController = require("../controllers/OrderController.js");
+const { TYPES } = require("../constants");
+const ioc = new IOC();
 
-ioc.bind(TYPES.order, (...args) => new OrderController(new Order(...args)))
+ioc.bind(TYPES.order, (...args) => new OrderController(new Order(...args)));
 
-module.exports = ioc
+module.exports = ioc;
 ```
 
 在 router 文件中通过 IOC 来获取到 OrderController 类的实例,以 koa 为例
 
 ```js
-const Router = require('koa-router')
-const ioc = require('../ioc')
-const { TYPES } = require('../constants')
-const router = new Router()
-const orderController = ioc.use(TYPES.order)
+const Router = require("koa-router");
+const ioc = require("../ioc");
+const { TYPES } = require("../constants");
+const router = new Router();
+const orderController = ioc.use(TYPES.order);
 
-router.post('/create', orderController.create)
+router.post("/create", orderController.create);
 
-module.exports = (app) => app.use(router.routes()).use(router.allowedMethods())
+module.exports = app => app.use(router.routes()).use(router.allowedMethods());
 ```
 
 ## 总结

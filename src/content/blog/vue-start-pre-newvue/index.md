@@ -8,7 +8,6 @@ tags:
   - Vue
 ---
 
-
 本文主要深入源码分析我们在`new Vue()`之前 Vue 到底做了哪些事情。
 
 ## Vue 加载的两种方式
@@ -67,7 +66,7 @@ export default Vue
 在`'./runtime/index'`中发现 Vue 从`core/index`中引入。
 
 ```js
-import Vue from 'core/index'
+import Vue from "core/index";
 ```
 
 继续追踪。
@@ -75,7 +74,7 @@ import Vue from 'core/index'
 在`core/index`中发现 Vue 从`./indextance/index`中引入
 
 ```js
-import Vue from './instance/index'
+import Vue from "./instance/index";
 ```
 
 继续追踪。
@@ -84,11 +83,11 @@ import Vue from './instance/index'
 
 ```js
 function Vue(options) {
-  if (process.env.NODE_ENV !== 'production' && !(this instanceof Vue)) {
-    warn('Vue is a constructor and should be called with the `new` keyword')
+  if (process.env.NODE_ENV !== "production" && !(this instanceof Vue)) {
+    warn("Vue is a constructor and should be called with the `new` keyword");
   }
   // _init方法在initMixin中绑定在Vue.prototype上
-  this._init(options)
+  this._init(options);
 }
 ```
 
@@ -102,16 +101,16 @@ function Vue(options) {
 
 ```js
 function Vue(options) {
-  if (process.env.NODE_ENV !== 'production' && !(this instanceof Vue)) {
-    warn('Vue is a constructor and should be called with the `new` keyword')
+  if (process.env.NODE_ENV !== "production" && !(this instanceof Vue)) {
+    warn("Vue is a constructor and should be called with the `new` keyword");
   }
-  this._init(options)
+  this._init(options);
 }
-initMixin(Vue)
-stateMixin(Vue)
-eventsMixin(Vue)
-lifecycleMixin(Vue)
-renderMixin(Vue)
+initMixin(Vue);
+stateMixin(Vue);
+eventsMixin(Vue);
+lifecycleMixin(Vue);
+renderMixin(Vue);
 ```
 
 从上面代码中可以看出，定义完 Vue 构造函数之后，就直接执行了 5 个 Mixin 方法。接下来看一下这 5 个 Mixin 中做了什么

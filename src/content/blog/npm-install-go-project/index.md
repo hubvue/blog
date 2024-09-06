@@ -17,14 +17,16 @@ tags:
 ## esbuild 是怎么发布到 npm 的
 
 从esbuild的Github上发现，esbuild工程目录下有一个npm目录，内容如下：
-![](./assets/1.png)
+
+<!-- ![](./assets/1.png) -->
 
 可以看到npm目录下有一堆不同平台、不同系统的目录，内容都没什么差别，都是npm发布必要的一些文件: `package.json`、`README`等等。
 
 为什么要区分平台呢？因为go在不同平台下编译的产物不同，例如在linux下编译的是二进制可执行文件（ELF），在windows下编译的是可以在windows平台运行的.exe文件。
 
 esbuild源码太多，看的麻烦，我们可以使用npm安装esbuild，看下都安装了什么东西。
-![](./assets/2.png)
+
+<!-- ![](./assets/2.png) -->
 
 可以看到一共安装了两个包：`esbuild`和`esbuild-darwin-64`
 

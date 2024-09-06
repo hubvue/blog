@@ -181,4 +181,5 @@ export function renderMixin(Vue: Class<Component>) {
 ## 总结
 
 一张图来总结一下整体流程。
-![](./vue从入口到newVue前做了什么.jpg)
+
+<!-- ![](./vue从入口到newVue前做了什么.jpg) -->

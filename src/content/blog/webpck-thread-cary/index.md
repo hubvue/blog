@@ -108,7 +108,8 @@ module.exports = {
 ```
 
 happypack 其原理就是：每次 webpack 解析一个模块，happypack 会将它及依赖分配给 worker 线程中编译。下面是 happypack 整体流程图。
-![](./happypack.jpg)
+
+<!-- ![](./happypack.jpg) -->
 
 ##### thread-loader
 
